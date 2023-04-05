@@ -1,9 +1,13 @@
-import React from "react";
+import { useRoutes } from "react-router-dom";
+
+import {PAGES} from "./pages";
 
 function App() {
+  const routers = useRoutes(PAGES)
+
   return (
     <div>
-      Hello World!!!
+      {routers}
     </div>
   );
 }
