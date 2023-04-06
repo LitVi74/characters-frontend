@@ -26,7 +26,7 @@ const SignupForm: FC = () => {
                 type="email"
                 variant="filled"
                 validate={(value: string) => {
-                  const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                  const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                   let error;
 
                   if (!reg.test(value)) {
