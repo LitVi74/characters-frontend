@@ -1,6 +1,7 @@
 import { Box, Heading} from "@chakra-ui/react";
 import {FC} from "react";
 import LoginForm from "../../components/login form";
+import SignupForm from "../../components/signup form";
 
 const LogIn: FC = () => {
   return (
@@ -10,8 +11,9 @@ const LogIn: FC = () => {
     w="20vw"
     flexGrow={1}
   >
-    <Heading m={4}>Вход</Heading>
-    <LoginForm />
+    <Heading my={4}>Вход</Heading>
+    {/*<LoginForm />*/}
+    <SignupForm />
    </Box>
   );
 };
