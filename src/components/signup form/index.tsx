@@ -15,7 +15,7 @@ const SignupForm: FC = () => {
       }}
     >
       {({handleSubmit, errors, touched, values }) => (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{width: "100%"}}>
           <VStack spacing={4} align="flex-start">
             <FormControl isInvalid={!!errors.email && touched.email}>
               <FormLabel htmlFor="email">Адрес почты</FormLabel>

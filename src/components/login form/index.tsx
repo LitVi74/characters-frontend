@@ -14,7 +14,7 @@ const LoginForm: FC = () => {
       }}
     >
       {({ handleSubmit, errors, touched }) => (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{width: "100%"}}>
           <VStack spacing={4} align="flex-start">
             <FormControl isInvalid={!!errors.email && touched.email}>
               <FormLabel htmlFor="email">Адрес почты</FormLabel>
@@ -28,29 +28,29 @@ const LoginForm: FC = () => {
                   const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                   let error;
 
-                  if (!reg.test(value)) {
-                    error = "Некорректный адрес почты";
-                  }
+                if (!reg.test(value)) {
+                  error = "Некорректный адрес почты";
+                }
 
-                  return error;
-                }}
-              />
-              <FormErrorMessage>{errors.email}</FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={!!errors.password && touched.password}>
-              <FormLabel htmlFor="password">Пароль</FormLabel>
-              <Field
-                as={Input}
-                id="password"
-                name="password"
-                type="password"
-                variant="filled"
-                validate={(value: string) => {
-                  let error;
+                return error;
+              }}
+            />
+            <FormErrorMessage>{errors.email}</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!!errors.password && touched.password}>
+            <FormLabel htmlFor="password">Пароль</FormLabel>
+            <Field
+              as={Input}
+              id="password"
+              name="password"
+              type="password"
+              variant="filled"
+              validate={(value: string) => {
+                let error;
 
-                  if (value.length < 6) {
-                    error = "Пароль должен быть больше 6 символов";
-                  }
+                if (value.length < 6) {
+                  error = "Пароль должен быть больше 6 символов";
+                }
 
                   return error;
                 }}
