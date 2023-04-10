@@ -25,7 +25,7 @@ export const PAGES: RouteObject[] = [
     element: <Characters />
   },
   {
-    path: 'spells',
+    path: 'spells/:charID',
     element: <Spells />
   },
 ];
