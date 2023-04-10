@@ -22,7 +22,7 @@ const Characters: FC= () => {
     <Flex as="main" direction="column" gap="2">
       <Heading>Characters Page</Heading>
       {characters.map(({id, name}) =>
-      <CharacterLink id={id} name={name} />
+      <CharacterLink key={id} id={id} name={name} />
       )}
     </Flex>
   );
