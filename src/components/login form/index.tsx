@@ -1,8 +1,11 @@
 import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Button } from "@chakra-ui/react";
 import { Formik, Field } from "formik";
 import { FC } from "react"
+import { useNavigate } from "react-router-dom";
 
 const LoginForm: FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Formik 
       initialValues={{
@@ -10,7 +13,9 @@ const LoginForm: FC = () => {
         password: "",
       }}
       onSubmit={(values) => {
-        alert(JSON.stringify(values, null, 2));
+        if (values.email === "test@test.test" && values.password === "q2w3e4r") {
+          navigate("/characters");
+        }
       }}
     >
       {({ handleSubmit, errors, touched }) => (
