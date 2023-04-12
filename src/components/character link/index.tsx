@@ -7,7 +7,7 @@ const CharacterLink: FC<ICharacterLink> = ({id, name}) => {
   return (
     <LinkBox as={Link} to={`/spells/${id}`} display="block"  w='sm' p='2' borderWidth='1px' rounded='md'>
       <Heading size='md' my='2'>
-          {name}
+        {name}
       </Heading>
     </LinkBox>
   );
