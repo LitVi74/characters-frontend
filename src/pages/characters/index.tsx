@@ -1,5 +1,5 @@
-import { Flex, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import {FC} from 'react';
+import {ListGroup, Stack} from 'react-bootstrap';
 import CharacterLink from "../../components/character link";
 
 const characters = [
@@ -19,12 +19,15 @@ const characters = [
 
 const Characters: FC= () => {
   return (
-    <Flex as="main" direction="column" gap="2">
-      <Heading>Characters Page</Heading>
-      {characters.map(({id, name}) =>
-      <CharacterLink key={id} id={id} name={name} />
-      )}
-    </Flex>
+    <Stack as="main" className="gap-2 align-self-center">
+      <h1>Characters Page</h1>
+      <ListGroup>
+        {characters.map(({id, name}) =>
+          <CharacterLink key={id} id={id} name={name} />
+        )}
+      </ListGroup>
+
+    </Stack>
   );
 };
 

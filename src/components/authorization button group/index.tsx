@@ -1,5 +1,5 @@
-import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
+import {Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const AuthorizationButtonGroup = () => {
@@ -18,16 +18,16 @@ const AuthorizationButtonGroup = () => {
 
   return (
     <ButtonGroup
-      isAttached
+      className="w-100"
     >
       <Button
-        colorScheme={currentPage === "login" ? "blue" : "gray" }
+        variant={currentPage === "login" ? "primary" : "outline-secondary" }
         onClick={handleSelectLoginPage}
       >
         Войти в аккаунт
       </Button>
       <Button
-        colorScheme={currentPage === "signup" ? "blue" : "gray"}
+        variant={currentPage === "signup" ? "primary" : "outline-secondary"}
         onClick={handleSelectSignupPage}
       >
         Создать аккаунт

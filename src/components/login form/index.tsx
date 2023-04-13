@@ -1,6 +1,6 @@
-import { VStack, FormControl, FormLabel, Input, FormErrorMessage, Button } from "@chakra-ui/react";
 import { Formik, Field } from "formik";
 import { FC } from "react"
+import {Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm: FC = () => {
@@ -19,19 +19,17 @@ const LoginForm: FC = () => {
       }}
     >
       {({ handleSubmit, errors, touched }) => (
-        <form onSubmit={handleSubmit} style={{width: "100%"}}>
-          <VStack spacing={4} align="flex-start">
-            <FormControl isInvalid={!!errors.email && touched.email}>
-              <FormLabel htmlFor="email">Адрес почты</FormLabel>
-              <Field
-                as={Input}
-                id="email"
-                name="email"
-                type="email"
-                variant="filled"
-                validate={(value: string) => {
-                  const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
-                  let error;
+        <Form onSubmit={handleSubmit} className="w-100 d-flex flex-column gap-3">
+          <Form.Group controlId="email">
+            <Form.Label>Адрес почты</Form.Label>
+            <Field
+              as={Form.Control}
+              name="email"
+              type="email"
+              isInvalid={!!errors.email && touched.email}
+              validate={(value: string) => {
+                const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+                let error;
 
                 if (!reg.test(value)) {
                   error = "Некорректный адрес почты";
@@ -40,16 +38,15 @@ const LoginForm: FC = () => {
                 return error;
               }}
             />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={!!errors.password && touched.password}>
-            <FormLabel htmlFor="password">Пароль</FormLabel>
+            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="password">
+            <Form.Label>Пароль</Form.Label>
             <Field
-              as={Input}
-              id="password"
+              as={Form.Control}
               name="password"
               type="password"
-              variant="filled"
+              isInvalid={!!errors.password && touched.password}
               validate={(value: string) => {
                 let error;
 
@@ -58,15 +55,14 @@ const LoginForm: FC = () => {
                 }
 
                   return error;
-                }}
+              }}
               />
-              <FormErrorMessage>{errors.password}</FormErrorMessage>
-            </FormControl>
-            <Button type="submit" colorScheme='blue' width="full">
-              Войти
-            </Button>
-          </VStack>
-        </form>
+              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          </Form.Group>
+          <Button type="submit" variant="primary" className="w-100">
+            Войти
+          </Button>
+        </Form>
       )}
     </Formik>
   );
