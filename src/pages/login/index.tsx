@@ -3,10 +3,10 @@ import LoginForm from "../../components/login form";
 
 const LogIn: FC = () => {
   return (
-   <>
+   <main>
     <h1>Вход</h1>
     <LoginForm />
-   </>
+   </main>
   );
 };
 

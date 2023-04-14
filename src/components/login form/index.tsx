@@ -2,6 +2,7 @@ import { Formik, Field } from "formik";
 import { FC } from "react"
 import {Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {PATHS} from "../../pages";
 
 const LoginForm: FC = () => {
   const navigate = useNavigate();
@@ -14,12 +15,12 @@ const LoginForm: FC = () => {
       }}
       onSubmit={(values) => {
         if (values.email === "test@test.test" && values.password === "q2w3e4r") {
-          navigate("/characters");
+          navigate(PATHS.characters);
         }
       }}
     >
       {({ handleSubmit, errors, touched }) => (
-        <Form onSubmit={handleSubmit} className="w-100 d-flex flex-column gap-3">
+        <Form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
           <Form.Group controlId="email">
             <Form.Label>Адрес почты</Form.Label>
             <Field

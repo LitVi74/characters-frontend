@@ -2,30 +2,30 @@ import {RouteObject} from "react-router-dom"
 import LogIn from "./login";
 import Characters from "./characters";
 import Spells from "./spells";
-import Authorization from "./authorization";
 import SignUp from "./signup";
+
+export const PATHS = {
+  login: "/login",
+  signup: "/signup",
+  characters: "/characters",
+  spells: "/spells"
+}
 
 export const PAGES: RouteObject[] = [
   {
-    path: 'authorization',
-    element: <Authorization />,
-    children: [
-      {
-        path: 'login',
-        element: <LogIn />,
-      },
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-    ]
+    path: PATHS.login,
+    element: <LogIn />,
   },
   {
-    path: 'characters',
+    path: PATHS.signup,
+    element: <SignUp />,
+  },
+  {
+    path: PATHS.characters,
     element: <Characters />
   },
   {
-    path: 'spells/:charID',
+    path: PATHS.spells + '/:charID',
     element: <Spells />
   },
 ];

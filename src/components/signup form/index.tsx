@@ -2,6 +2,7 @@ import {Field, Formik} from 'formik';
 import React, { FC } from 'react';
 import {Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import {PATHS} from "../../pages";
 
 const SignupForm: FC = () => {
   const navigate = useNavigate();
@@ -13,16 +14,15 @@ const SignupForm: FC = () => {
         passwordRepeat: "",
       }}
       onSubmit={(values) => {
-        navigate("/characters");
+        navigate(PATHS.characters);
       }}
     >
       {({handleSubmit, errors, touched, values }) => (
-        <Form onSubmit={handleSubmit} className="w-100 d-flex flex-column gap-3">
+        <Form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
           <Form.Group controlId="email">
             <Form.Label>Адрес почты</Form.Label>
             <Field
               as={Form.Control}
-              id="email"
               name="email"
               type="email"
               variant="filled"
@@ -44,7 +44,6 @@ const SignupForm: FC = () => {
             <Form.Label>Пароль</Form.Label>
             <Field
               as={Form.Control}
-              id="password"
               name="password"
               type="password"
               variant="filled"
@@ -65,7 +64,6 @@ const SignupForm: FC = () => {
             <Form.Label>Повторите пароль</Form.Label>
             <Field
               as={Form.Control}
-              id="passwordRepeat"
               name="passwordRepeat"
               type="password"
               variant="filled"
