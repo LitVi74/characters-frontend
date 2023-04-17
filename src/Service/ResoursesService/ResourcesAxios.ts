@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-import { AuthResponse } from './Service/MainResponse';
+import { AuthResponse } from '../AuthService/AuthResponse';
 
 const API_URL = 'http://localhost:3000';
 
 const api = axios.create({
   withCredentials: true,
-  baseURL: 'http://localhost:3000'
+  baseURL: API_URL
 });
 
 api.interceptors.request.use(config => {
@@ -25,7 +25,7 @@ api.interceptors.response.use(config => {
       localStorage.setItem('token', response.data.accessToken);
       return api.request(originalRequest);
     } catch (e) {
-      console.log('Не авторизован')ж
+      console.log('Не авторизован');
     }
   }
   throw error;
