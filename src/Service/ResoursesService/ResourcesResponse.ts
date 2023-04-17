@@ -1,4 +1,5 @@
 export interface SpellResponse {
+  _id: String;
   name: String;
   desc: String;
   higher_level?: String;
@@ -12,4 +13,11 @@ export interface SpellResponse {
   level: Number;
   school: String;
   classes: String[];
+}
+
+export interface CharactersResponse {
+  _id: String;
+  name: String;
+  spells?: SpellResponse[];
+  owner?: String;
 }
