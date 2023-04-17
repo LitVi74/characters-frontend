@@ -1,7 +1,9 @@
-import $api from '../Axios';
+import axios from 'axios';
 
-import { AxiosResponse } from 'axios';
-import { LoginResponse, RegistrationResponse } from './MainResponse';
+import api from '../Axios';
+import { AuthResponse } from './MainResponse';
+
+const API_URL = 'http://localhost:3000';
 
 export default class MainApi {
   _checkResponse(res) {
@@ -11,8 +13,8 @@ export default class MainApi {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  static async registration(email: string, password: string): Promise<AxiosResponse<RegistrationResponse>> {
-    return $api.post<RegistrationResponse>('/signup', {email, password});
+  static async registration(email: string, password: string): Promise<axios.AxiosResponse<AuthResponse>> {
+    return api.post<AuthResponse>('/signup', {email, password});
 
     // return fetch(`${this._URL}signup`, {
     //   method: 'POST',
@@ -25,8 +27,8 @@ export default class MainApi {
     // .then(this._checkResponse)
   }
 
-  static async login(email: string, password: string): Promise<AxiosResponse<LoginResponse>> {
-    return $api.post<LoginResponse>('/signin', {email, password});
+  static async login(email: string, password: string): Promise<axios.AxiosResponse<AuthResponse>> {
+    return api.post<AuthResponse>('/signin', {email, password});
     
     // fetch(`${this._URL}signin`, {
     //   method: 'POST',
@@ -37,6 +39,14 @@ export default class MainApi {
     //   body: JSON.stringify({password, email})
     // })
     // .then(this._checkResponse)
+  }
+
+  static async logout(): Promise<void> {
+    return api.post('/signout')
+  }
+
+  static async checkAuth(): Promise<axios.AxiosResponse<AuthResponse>> {
+    return axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true })
   }
 
   getContent(token) {

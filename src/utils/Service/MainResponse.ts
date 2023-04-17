@@ -1,10 +1,6 @@
-export interface LoginResponse {
+export interface AuthResponse {
   email: string;
   role: string;
   isActivated: boolean;
-  accessToken: string;
-};
-
-export interface RegistrationResponse {
   accessToken: string;
 };
