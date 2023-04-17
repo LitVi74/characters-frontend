@@ -1,64 +1,22 @@
+import { AxiosResponse } from 'axios';
+
+import api from './ResourcesAxios';
+import { SpellResponse } from './ResourcesResponse'
+
 export default class ResoursesService {
-  getContent(token) {
-    return fetch(`${this._URL}users/me`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }
-    })
-    .then(this._checkResponse)
+  static async getSpells(): Promise<AxiosResponse<SpellResponse>> {
+    return api.get<SpellResponse>('/spells')
   }
 
-  getUserCards() {
-    return fetch(`${this._URL}spells`, {
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(this._checkResponse);
+  static async createSpell(data): Promise<AxiosResponse<SpellResponse>> {
+    return api.post<SpellResponse>('/spells', {...data})
   }
 
-  deleteCard(id) {
-    return fetch(`${this._URL}movies/${id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(this._checkResponse);
+  static async deleteSpell(spellId: String): Promise<AxiosResponse<SpellResponse>> {
+    return api.delete<SpellResponse>(`/spells/${spellId}`)
   }
 
-  createCard(card) {
-    return fetch(`${this._URL}movies`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(card)
-    })
-    .then(this._checkResponse);
-  }
-
-  setUserInfo({name, about}) {
-    return fetch(`${this._URL}users/me`, {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        about: about
-      })
-    })
-    .then(this._checkResponse);
+  static async updateSpell(spellId: String): Promise<AxiosResponse<SpellResponse>> {
+    return api.update<SpellResponse>(`/spells/${spellId}`)
   }
 }
