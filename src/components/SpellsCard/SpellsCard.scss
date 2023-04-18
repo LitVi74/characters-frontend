@@ -1,0 +1,40 @@
+.spell {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10%;
+
+  &__nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  &__title {
+    font-family: 'Inter', Arial, sans-serif;;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 27px;
+
+    margin: 0;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__text {
+    font-family: 'Inter', Arial, sans-serif;;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+
+    margin: 10px 0 0;
+  }
+}
