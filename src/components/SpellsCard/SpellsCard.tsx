@@ -2,7 +2,7 @@ import './SpellsCard.scss';
 
 import { FC } from 'react';
 
-const SpellCard: FC = ({card}) => {
+const SpellCard: FC = ({card}: any) => {
   return (
     <li className='spell'>
       <button className='spell__nav'>Меню</button>
