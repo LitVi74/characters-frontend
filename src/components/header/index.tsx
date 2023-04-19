@@ -1,4 +1,4 @@
-import logo from "./../../assets/ligo.svg";
+import logo from "./../../assets/logo.svg";
 import AuthorizedNavbar from "./authorized navbar";
 import UnauthorizedNavbar from "./unauthorized navbar";
 import {FC} from "react";

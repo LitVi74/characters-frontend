@@ -11,6 +11,11 @@
     position: absolute;
     top: 0;
     right: 0;
+
+    width: 20px;
+    height: 10px;
+    
+    background-image: url('../../assets/three-dots.svg');
   }
 
   &__title {
