@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import api from './ResourcesAxios';
 import { SpellResponse, CharactersResponse } from './ResourcesResponse'
 
-export default class ResoursesService {
+export default class ResourcesService {
   static async getSpells(): Promise<AxiosResponse<SpellResponse[]>> {
     return api.get<SpellResponse[]>('/spells')
   }

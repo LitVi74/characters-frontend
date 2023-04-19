@@ -1,23 +1,23 @@
 export interface SpellResponse {
-  _id: String;
-  name: String;
-  desc: String;
-  higher_level?: String;
-  range: Number;
-  components: [ String, String?, String? ];
-  material: String;
-  ritual: Boolean;
-  duration: String;
-  concentration: Boolean;
-  casting_time: String;
-  level: Number;
-  school: String;
-  classes: String[];
+  _id: string;
+  name: string;
+  desc: string;
+  higher_level?: string;
+  range: number;
+  components: [ string, string?, string? ];
+  material: string;
+  ritual: boolean;
+  duration: string;
+  concentration: boolean;
+  casting_time: string;
+  level: number;
+  school: string;
+  classes: string[];
 }
 
 export interface CharactersResponse {
-  _id: String;
-  name: String;
+  _id: string;
+  name: string;
   spells?: SpellResponse[];
-  owner?: String;
+  owner?: string;
 }
