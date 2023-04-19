@@ -1,0 +1,14 @@
+.masonry__card {
+  background-color: red;
+  padding: 8px;
+
+  &-calculation {
+    position: absolute;
+  }
+
+  &-ready {
+    position: static;
+    height: auto;
+    width: auto;
+  }
+}
