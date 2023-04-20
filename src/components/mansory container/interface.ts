@@ -1,7 +1,7 @@
-import {ISpell} from "../../const/spalls_const";
+import {SpellResponse} from "../../Service/ResoursesService/ResourcesResponse";
 
 interface IMasonryContainerProps {
-  spells: ISpell[];
+  spells: SpellResponse[];
 }
 
 export type { IMasonryContainerProps }

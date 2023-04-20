@@ -2,6 +2,7 @@ import {FC, useLayoutEffect, useRef} from "react";
 import {IMasonryCardProps} from "./interface";
 import constants from '../_constants.scss';
 import "./masonry-card.scss"
+import SpellCard from "../../SpellsCard/SpellsCard";
 
 const MasonryCard: FC<IMasonryCardProps> = ({spell, cardWidth}) => {
   const card = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ const MasonryCard: FC<IMasonryCardProps> = ({spell, cardWidth}) => {
 
   return (
     <div className="masonry__card masonry__card-ready" ref={card}>
-      {spell.desc}
+      <SpellCard spell={spell}/>
     </div>
   );
 };
