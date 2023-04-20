@@ -1,7 +1,9 @@
 import './SpellsCard.scss';
 
 import { FC } from 'react';
+
 import {SpellResponse} from "../../Service/ResoursesService/ResourcesResponse";
+import CardMenu from '../CardMenu/CardMenu';
 
 const SpellCard: FC<{spell: SpellResponse}> = ({spell}) => {
   const {
@@ -21,8 +23,10 @@ const SpellCard: FC<{spell: SpellResponse}> = ({spell}) => {
 
   return (
     <li className='spell'>
-      <button className='spell__nav'>Меню</button>
-      <h3 className='spell__title'>{name}</h3>
+      <div className='spell__container'>
+        <h3 className='spell__title'>{name}</h3>
+        <CardMenu />
+      </div>
       <div className='spell__container'>
         <p className='spell__text'>{school}</p>
         <p className='spell__text'>{`${level} уровень`}</p>
