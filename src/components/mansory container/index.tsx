@@ -11,7 +11,7 @@ const MasonryContainer: FC<IMasonryContainerProps> = ({spells}) => {
   return (
     <section className="masonry__container" ref={ref}>
       {spells.map((spell) =>
-      <MasonryCard key={spell.id} spell={spell} cardWidth={cardWidth} />
+      <MasonryCard key={spell._id} spell={spell} cardWidth={cardWidth} />
       )}
     </section>
   );

@@ -1,23 +1,39 @@
 import './SpellsCard.scss';
 
 import { FC } from 'react';
+import {SpellResponse} from "../../Service/ResoursesService/ResourcesResponse";
 
-const SpellCard: FC = ({card}: any) => {
+const SpellCard: FC<{spell: SpellResponse}> = ({spell}) => {
+  const {
+    name,
+    school,
+    level,
+    casting_time,
+    range,
+    components,
+    material,
+    concentration,
+    duration,
+    classes,
+    desc,
+    higher_level
+  } = spell
+
   return (
     <li className='spell'>
       <button className='spell__nav'>Меню</button>
-      <h3 className='spell__title'>{card.name}</h3>
+      <h3 className='spell__title'>{name}</h3>
       <div className='spell__container'>
-        <p className='spell__text'>{card.school}</p>
-        <p className='spell__text'>{`${card.level} уровень`}</p>
+        <p className='spell__text'>{school}</p>
+        <p className='spell__text'>{`${level} уровень`}</p>
       </div>
-      <p className='spell__text'>{`Время накладывания: ${card.casting_time}`}</p>
-      <p className='spell__text'>{`Дистанция: ${card.range}`}</p>
-      <p className='spell__text'>{`Компоненты: ${card.components.join(', ')}${card.materials ? '(' + card.materials + ')' : ''}`}</p>
-      <p className='spell__text'>{`Длительность: ${card.concentration ? 'Концентрация, вплоть до ' : ''}${card.duration}`}</p>
-      <p className='spell__text'>{`Классы: ${card.classes.join(', ')}`}</p>
-      <p className='spell__text'>{card.desc}</p>
-      <p className='spell__text'>{`На больших уровнях: ${card.higher_level}`}</p>
+      <p className='spell__text'>{`Время накладывания: ${casting_time}`}</p>
+      <p className='spell__text'>{`Дистанция: ${range}`}</p>
+      <p className='spell__text'>{`Компоненты: ${components.join(', ')}${material ? '(' + material + ')' : ''}`}</p>
+      <p className='spell__text'>{`Длительность: ${concentration ? 'Концентрация, вплоть до ' : ''}${duration}`}</p>
+      <p className='spell__text'>{`Классы: ${classes.join(', ')}`}</p>
+      <p className='spell__text'>{desc}</p>
+      <p className='spell__text'>{`На больших уровнях: ${higher_level}`}</p>
     </li>
   )
 }

@@ -1,7 +1,7 @@
-import {ISpell} from "../../../const/spalls_const";
+import {SpellResponse} from "../../../Service/ResoursesService/ResourcesResponse";
 
 interface IMasonryCardProps {
-  spell: ISpell;
+  spell: SpellResponse;
   cardWidth: number;
 }
 
