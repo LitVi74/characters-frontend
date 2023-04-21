@@ -30,6 +30,7 @@ const SpellForm: FC<ISpellFormProps> = ({spell}) => {
           name="name"
           type="text"
           onChange={formik.handleChange}
+          defaultValue={formik.initialValues.name}
         />
       </Form.Group>
       <Form.Group controlId="spell-level">
@@ -113,6 +114,7 @@ const SpellForm: FC<ISpellFormProps> = ({spell}) => {
           as="textarea"
           name="material"
           onChange={formik.handleChange}
+          defaultValue={formik.initialValues.material}
         />
       </Form.Group>
       <Form.Check
@@ -120,12 +122,14 @@ const SpellForm: FC<ISpellFormProps> = ({spell}) => {
         name="concentration"
         label="Концентрация"
         onChange={formik.handleChange}
+        defaultChecked={formik.initialValues.concentration}
       />
       <Form.Group controlId="spell-duration">
         <Form.Label>Длительность</Form.Label>
         <Form.Control
           name="duration"
           onChange={formik.handleChange}
+          defaultValue={formik.initialValues.duration}
         />
       </Form.Group>
       <Form.Group >
@@ -133,63 +137,63 @@ const SpellForm: FC<ISpellFormProps> = ({spell}) => {
         <Container className="d-flex m-0 p-0 gap-2 flex-wrap">
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Бард")}
+            defaultChecked={formik.initialValues.classes.includes("Бард")}
             label={"Бард"}
             value={"Бард"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Волшебник")}
+            defaultChecked={formik.initialValues.classes.includes("Волшебник")}
             label={"Волшебник"}
             value={"Волшебник"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Друид")}
+            defaultChecked={formik.initialValues.classes.includes("Друид")}
             label={"Друид"}
             value={"Друид"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Жрец")}
+            defaultChecked={formik.initialValues.classes.includes("Жрец")}
             label={"Жрец"}
             value={"Жрец"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Колдун")}
+            defaultChecked={formik.initialValues.classes.includes("Колдун")}
             label={"Колдун"}
             value={"Колдун"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Паладин")}
+            defaultChecked={formik.initialValues.classes.includes("Паладин")}
             label={"Паладин"}
             value={"Паладин"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Следопыт")}
+            defaultChecked={formik.initialValues.classes.includes("Следопыт")}
             label={"Следопыт"}
             value={"Следопыт"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Чародей")}
+            defaultChecked={formik.initialValues.classes.includes("Чародей")}
             label={"Чародей"}
             value={"Чародей"}
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.components.includes("Изобретатель")}
+            defaultChecked={formik.initialValues.classes.includes("Изобретатель")}
             label={"Изобретатель"}
             value={"Изобретатель"}
             onChange={formik.handleChange}
@@ -202,6 +206,7 @@ const SpellForm: FC<ISpellFormProps> = ({spell}) => {
           as="textarea"
           name="desc"
           onChange={formik.handleChange}
+          defaultValue={formik.initialValues.desc}
         />
       </Form.Group>
       <Form.Group controlId="spell-higher-level">
@@ -210,6 +215,7 @@ const SpellForm: FC<ISpellFormProps> = ({spell}) => {
           as="textarea"
           name="higher_level"
           onChange={formik.handleChange}
+          defaultValue={formik.initialValues.higher_level}
         />
       </Form.Group>
     </Form>

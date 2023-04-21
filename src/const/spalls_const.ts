@@ -9,7 +9,7 @@ const spells: SpellResponse[] = [
     range: 60,
     components: [
       "В",
-      "C"
+      "С"
     ],
     material: "",
     ritual: false,
@@ -28,7 +28,7 @@ const spells: SpellResponse[] = [
     range: 60,
     components: [
       "В",
-      "C"
+      "С"
     ],
     material: "",
     ritual: false,
@@ -47,7 +47,7 @@ const spells: SpellResponse[] = [
     range: 60,
     components: [
       "В",
-      "C"
+      "С"
     ],
     material: "",
     ritual: false,
@@ -66,7 +66,7 @@ const spells: SpellResponse[] = [
     range: 60,
     components: [
       "В",
-      "C"
+      "С"
     ],
     material: "",
     ritual: false,
@@ -85,7 +85,7 @@ const spells: SpellResponse[] = [
     range: 60,
     components: [
       "В",
-      "C"
+      "С"
     ],
     material: "",
     ritual: false,
@@ -104,7 +104,7 @@ const spells: SpellResponse[] = [
     range: 60,
     components: [
       "В",
-      "C"
+      "С"
     ],
     material: "",
     ritual: false,
