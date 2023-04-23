@@ -7,8 +7,17 @@ export default function Spells() {
   const [isShowForm, setIsShowForm] = useState(false);
   const [spellForm, setSpellForm] = useState({});
 
-  const cbShowForm = () => {
-    setIsShowForm(!isShowForm);
+  const cbShowForm = (spell = {}) => {
+    console.log(isShowForm);
+    if(isShowForm) {
+      console.log(isShowForm);
+      setIsShowForm(false);
+    } else {
+      setIsShowForm(() => {
+        setSpellForm(spell);
+        return true;
+      });
+    }
   };
 
   return (
@@ -16,7 +25,7 @@ export default function Spells() {
       <h1 className="text-center">
         Spells Page
       </h1>
-      <MasonryContainer spells={spells} />
+      <MasonryContainer cbShow={cbShowForm} spells={spells} />
       <SpellModalForm isShow={isShowForm} cbShow={cbShowForm} spell={spellForm} />
     </main>
   );

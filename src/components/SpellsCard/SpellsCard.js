@@ -2,7 +2,7 @@ import './SpellsCard.scss';
 
 import CardMenu from '../CardMenu/CardMenu';
 
-export default function SpellCard({spell}) {
+export default function SpellCard({cbShow, spell}) {
   const {
     name,
     school,
@@ -22,7 +22,7 @@ export default function SpellCard({spell}) {
     <li className='spell'>
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
-        <CardMenu />
+        <CardMenu cbShow={cbShow} spell={spell} />
       </div>
       <div className='spell__container'>
         <p className='spell__text'>{school}</p>

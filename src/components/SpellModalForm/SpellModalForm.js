@@ -16,7 +16,7 @@ export default function SpellModalForm({isShow, cdShow, spell}) {
           Отменить
         </Button>
         <Button variant="primary" type="submit" form={`spell-${spell ? spell._id : "add"}-form`}>
-          Созранить
+          Сохранить
         </Button>
       </Modal.Footer>
     </Modal>
