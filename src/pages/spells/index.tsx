@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {spells} from "../../const/spalls_const";
-import MasonryContainer from "../../components/mansory container";
+import MasonryContainer from "../../components/MasonryContainer";
 
 const Spells: FC= () => {
   return (

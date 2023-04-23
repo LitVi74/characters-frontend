@@ -2,7 +2,7 @@ import { useRoutes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {PAGES} from "./pages";
-import Header from "./components/header";
+import Header from "./components/Header";
 import {IUser, UserContext} from "./hooks/useUsetContext";
 import {useState} from "react";
 

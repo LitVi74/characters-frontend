@@ -3,7 +3,7 @@ import './SpellsCard.scss';
 import { FC } from 'react';
 
 import {SpellResponse} from "../../Service/ResoursesService/ResourcesResponse";
-import CardMenu from '../CardMenu/CardMenu';
+import CardMenu from '../CardMenu';
 
 const SpellCard: FC<{spell: SpellResponse}> = ({spell}) => {
   const {

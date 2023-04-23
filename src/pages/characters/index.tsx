@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {ListGroup, Stack} from 'react-bootstrap';
-import CharacterLink from "../../components/character link";
+import CharacterLink from "../../components/CharacterLink";
 
 const characters = [
   {
