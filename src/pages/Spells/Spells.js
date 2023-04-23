@@ -8,7 +8,6 @@ export default function Spells() {
   const [spellForm, setSpellForm] = useState({});
 
   const cbShowForm = (spell = {}) => {
-    console.log(isShowForm);
     if(isShowForm) {
       console.log(isShowForm);
       setIsShowForm(false);
