@@ -3,7 +3,7 @@ import {spells} from "../../const/spalls_const";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 
-export default function Spells() {
+export default function Spells({charList}) {
   const [isShowForm, setIsShowForm] = useState(false);
   const [spellForm, setSpellForm] = useState({});
 
@@ -24,7 +24,7 @@ export default function Spells() {
       <h1 className="text-center">
         Spells Page
       </h1>
-      <MasonryContainer cbShow={cbShowForm} spells={spells} />
+      <MasonryContainer cbShow={cbShowForm} spells={spells} charList={charList} />
       <SpellModalForm isShow={isShowForm} cbShow={cbShowForm} spell={spellForm} />
     </main>
   );

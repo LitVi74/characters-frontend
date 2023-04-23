@@ -8,7 +8,7 @@ import { useState } from "react";
 import { CurrentUserContext } from './contexts/currentUserContext';
 
 export default function App() {
-  const [ currentUser, setCurrentUser ] = useState({ name: '', role: 'User', isActivated: false, email: '' });
+  const [ currentUser, setCurrentUser ] = useState({ name: '', role: 'Admin', isActivated: true, email: '' });
   const routers = useRoutes(PAGES);
 
   return (

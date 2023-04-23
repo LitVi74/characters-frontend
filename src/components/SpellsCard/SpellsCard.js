@@ -1,8 +1,14 @@
 import './SpellsCard.scss';
 
+import { useContext } from 'react';
+import CloseButton from 'react-bootstrap/CloseButton';
+
 import CardMenu from '../CardMenu/CardMenu';
 
-export default function SpellCard({cbShow, spell}) {
+import { CurrentUserContext } from '../../contexts/currentUserContext';
+
+export default function SpellCard({cbShow, spell, charList}) {
+  const { role, isActivated, } = useContext(CurrentUserContext);
   const {
     name,
     school,
@@ -22,7 +28,10 @@ export default function SpellCard({cbShow, spell}) {
     <li className='spell'>
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
-        <CardMenu cbShow={cbShow} spell={spell} />
+        {charList
+          ? isActivated && <CloseButton />
+          : role === 'Admin' && <CardMenu cbShow={cbShow} spell={spell} />
+        }
       </div>
       <div className='spell__container'>
         <p className='spell__text'>{school}</p>

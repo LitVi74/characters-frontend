@@ -25,6 +25,10 @@ export const PAGES = [
   },
   {
     path: PATHS.spells + '/:charID',
-    element: <Spells />
+    element: <Spells charList={true} />
   },
+  {
+    path: PATHS.spells,
+    element: <Spells charList={false} />
+  }
 ];
