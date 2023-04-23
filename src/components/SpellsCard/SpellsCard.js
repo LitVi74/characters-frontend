@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import CloseButton from 'react-bootstrap/CloseButton';
 
 import CardMenu from '../CardMenu/CardMenu';
+import PlusButton from '../PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
@@ -29,7 +30,7 @@ export default function SpellCard({cbShow, spell, charList}) {
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
         {charList
-          ? isActivated && <CloseButton />
+          ? isActivated && <PlusButton />
           : role === 'Admin' && <CardMenu cbShow={cbShow} spell={spell} />
         }
       </div>
