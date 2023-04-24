@@ -4,6 +4,7 @@ import {useFormik} from "formik";
 export default function SpellForm({cbSubmit, spell, update}) {
   const formik = useFormik({
     initialValues: {
+      _id: spell?._id ?? "",
       name: spell?.name ?? "",
       level: spell?.level ?? 0,
       school: spell?.school ?? "",

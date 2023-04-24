@@ -1,8 +1,12 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 
-export default function CardMenu({cbShow, spell}) {
+export default function CardMenu({cbForm, spell}) {
   const handlerUpdate = () => {
-    cbShow(spell)
+    cbForm({
+      isShow: true,
+      spell: spell,
+      update: true
+    })
   };
 
   return (

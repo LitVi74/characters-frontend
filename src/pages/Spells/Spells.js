@@ -34,20 +34,20 @@ let charSpells = [
 export default function Spells({charList}) {
   const { role } = useContext(CurrentUserContext);
 
-  const [isShowForm, setIsShowForm] = useState(false);
-  const [spellForm, setSpellForm] = useState({});
+  const [isForm, setIsForm] = useState({
+    isShow: false,
+    spell: {},
+    update: false
+  });
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false);
 
-  const cbShowForm = (spell = {}) => {
-    if(isShowForm) {
-      setIsShowForm(false);
-    } else {
-      setIsShowForm(() => {
-        setSpellForm(spell);
-        return true;
-      });
-    }
+  const handleAddInAllSpells = () => {
+    setIsForm({
+      isShow: true,
+      spell: {},
+      update: false
+    })
   };
 
   const cbSubmit = (spell, update) => {
@@ -62,6 +62,10 @@ export default function Spells({charList}) {
     
     sessionStorage.setItem('spellsData', JSON.stringify(newSpells));
     setSpells(newSpells);
+    setIsForm({
+      ...isForm,
+      isShow: false
+    });
   };
 
   const getAllSpells = () => {
@@ -123,7 +127,7 @@ export default function Spells({charList}) {
     } else {
       renderCharSpells();
     }
-  }, [charList, renderAllSpells])
+  }, [charList, renderAllSpells]);
 
   return (
     <main className="w-100 flex-grow-1">
@@ -131,10 +135,10 @@ export default function Spells({charList}) {
         ? isAddLiseElements 
           ? <CloseButton onClick={handleCloseButton} />
           : <Button onClick={handlePlusButton} />
-        : role === 'Admin' && <Button onClick={cbShowForm} />
+        : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
       }
-      <MasonryContainer cbShow={cbShowForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
-      <SpellModalForm isShow={isShowForm} cbShow={cbShowForm} cbSubmit={cbSubmit} spell={spellForm} />
+      <MasonryContainer cbForm={setIsForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
   );
 }
