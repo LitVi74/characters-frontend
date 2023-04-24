@@ -1,4 +1,4 @@
-const spells = [
+const spellsData = [
   {
     _id: "1",
     name: "Священное пламя",
@@ -115,4 +115,4 @@ const spells = [
   },
 ]
 
-export { spells };
+export { spellsData };

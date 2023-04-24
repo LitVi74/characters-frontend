@@ -1,4 +1,4 @@
-import constants from '../../const/_constants.scss';
+import constants from '../../constants/constants.scss';
 import "./MasonryCard.scss";
 
 import { useLayoutEffect, useRef } from "react";
