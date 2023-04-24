@@ -1,7 +1,7 @@
 import './SpellsCard.scss';
 
-import { useContext } from 'react';
-import CloseButton from 'react-bootstrap/CloseButton';
+import { useContext, useState } from 'react';
+import {Button, CloseButton} from 'react-bootstrap';
 
 import CardMenu from '../CardMenu/CardMenu';
 import PlusButton from '../PlusButton/PlusButton';
@@ -9,9 +9,9 @@ import PlusButton from '../PlusButton/PlusButton';
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
 export default function SpellCard({cbShow, cbClose, cbPlus, spell, charList}) {
-  const { role, isActivated, } = useContext(CurrentUserContext);
-  let { inList } = spell;
+  const { role } = useContext(CurrentUserContext);
   const {
+    inList,
     name,
     school,
     level,
@@ -25,15 +25,16 @@ export default function SpellCard({cbShow, cbClose, cbPlus, spell, charList}) {
     desc,
     higher_level
   } = spell;
+  const [isСlosure, setIsСlosure] = useState(inList);
 
   const handlePlusButton = () => {
     cbPlus(spell);
-    inList = false;
+    setIsСlosure(true);
   };
 
   const handleCloseButton = () => {
     cbClose(spell);
-    inList = true;
+    setIsСlosure(false);
   }
 
   return (
@@ -41,9 +42,9 @@ export default function SpellCard({cbShow, cbClose, cbPlus, spell, charList}) {
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
         {charList
-          ? isActivated && inList
-            ? <CloseButton onClick={handleCloseButton} />
-            : <PlusButton onClick={handlePlusButton} />
+          ? isСlosure
+              ? <CloseButton onClick={handleCloseButton} />
+              : <Button onClick={handlePlusButton} />
           : role === 'Admin' && <CardMenu cbShow={cbShow} spell={spell} />
         }
       </div>

@@ -1,5 +1,5 @@
-import {useState, useContext, useEffect} from 'react';
-import CloseButton from 'react-bootstrap/CloseButton';
+import {useState, useContext, useEffect, useCallback} from 'react';
+import {CloseButton, Button} from 'react-bootstrap';
 
 import {spellsData} from "../../constants/constants";
 
@@ -41,7 +41,6 @@ export default function Spells({charList}) {
 
   const cbShowForm = (spell = {}) => {
     if(isShowForm) {
-      console.log(isShowForm);
       setIsShowForm(false);
     } else {
       setIsShowForm(() => {
@@ -52,7 +51,7 @@ export default function Spells({charList}) {
   };
 
   const cbSubmit = (spell, update) => {
-    const spells = update
+    const newSpells = update
       ? spells.map(s => {
           if(spell._id === s._id) {
             return spell
@@ -61,8 +60,8 @@ export default function Spells({charList}) {
         })
       : [...spells, spell];
     
-    sessionStorage.setItem('spellsData', JSON.stringify(spells));
-    setSpells(spells);
+    sessionStorage.setItem('spellsData', JSON.stringify(newSpells));
+    setSpells(newSpells);
   };
 
   const getAllSpells = () => {
@@ -74,7 +73,7 @@ export default function Spells({charList}) {
     return spells
   }
 
-  const renderAllSpells = () => {
+  const renderAllSpells = useCallback(() => {
     let spells = getAllSpells();
 
     spells = spells.map(spell => {
@@ -82,7 +81,7 @@ export default function Spells({charList}) {
       return spell;
     });
     setSpells(spells);
-  }
+  }, []);
 
   const renderCharSpells = () => {
     const spells = charSpells.map(spell => {
@@ -104,12 +103,13 @@ export default function Spells({charList}) {
 
   const cbClose = (spell) => {
     charSpells = charSpells.filter(s => s._id !== spell._id);
-    setSpells(charSpells);
+    if(!isAddLiseElements) {
+      setSpells(charSpells);
+    }
   };
 
   const cbPlus = (spell) => {
     charSpells.push(spell);
-    setSpells(charSpells);
   };
 
   useEffect(() => {
@@ -118,19 +118,20 @@ export default function Spells({charList}) {
       
       setSpells(spells);
     } else if(!charSpells.length) {
+      setIsAddLiseElements(true);
       renderAllSpells();
     } else {
       renderCharSpells();
     }
-  }, [])
+  }, [charList, renderAllSpells])
 
   return (
     <main className="w-100 flex-grow-1">
       {charList 
         ? isAddLiseElements 
           ? <CloseButton onClick={handleCloseButton} />
-          : <PlusButton onClick={handlePlusButton} />
-        : role === 'Admin' && <PlusButton onClick={cbShowForm} />
+          : <Button onClick={handlePlusButton} />
+        : role === 'Admin' && <Button onClick={cbShowForm} />
       }
       <MasonryContainer cbShow={cbShowForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
       <SpellModalForm isShow={isShowForm} cbShow={cbShowForm} cbSubmit={cbSubmit} spell={spellForm} />
