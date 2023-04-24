@@ -1,7 +1,7 @@
 import {Container, Form} from 'react-bootstrap';
 import {useFormik} from "formik";
 
-export default function SpellForm({spell}) {
+export default function SpellForm({cbSubmit, spell, update}) {
   const formik = useFormik({
     initialValues: {
       name: spell?.name ?? "",
@@ -17,7 +17,9 @@ export default function SpellForm({spell}) {
       desc: spell?.desc ?? "",
       higher_level: spell?.higher_level ?? ""
     },
-    onSubmit: (values) => { console.log(values)},
+    onSubmit: (values) => {
+      cbSubmit(values, update);
+    },
   })
 
   return (

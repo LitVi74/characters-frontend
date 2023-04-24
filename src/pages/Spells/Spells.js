@@ -51,6 +51,20 @@ export default function Spells({charList}) {
     }
   };
 
+  const cbSubmit = (spell, update) => {
+    const spells = update
+      ? spells.map(s => {
+          if(spell._id === s._id) {
+            return spell
+          }
+          return s
+        })
+      : [...spells, spell];
+    
+    sessionStorage.setItem('spellsData', JSON.stringify(spells));
+    setSpells(spells);
+  };
+
   const getAllSpells = () => {
     const spells = JSON.parse(sessionStorage.getItem('spellsData'));
 
@@ -119,7 +133,7 @@ export default function Spells({charList}) {
         : role === 'Admin' && <PlusButton onClick={cbShowForm} />
       }
       <MasonryContainer cbShow={cbShowForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
-      <SpellModalForm isShow={isShowForm} cbShow={cbShowForm} spell={spellForm} />
+      <SpellModalForm isShow={isShowForm} cbShow={cbShowForm} cbSubmit={cbSubmit} spell={spellForm} />
     </main>
   );
 }

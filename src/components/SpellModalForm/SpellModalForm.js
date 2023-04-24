@@ -2,14 +2,14 @@ import {Button, Modal} from "react-bootstrap";
 
 import SpellForm from "../SpellForm/SpellForm";
 
-export default function SpellModalForm({isShow, cbShow, spell}) {
+export default function SpellModalForm({isShow, cbShow, cbSubmit, spell}) {
   return (
     <Modal show={isShow} onHide={cbShow}>
       <Modal.Header closeButton>
-        <Modal.Title>{spell ? "Изменить" :"Добавить"} заклинание</Modal.Title>
+        <Modal.Title>{spell ? "Изменить" : "Добавить"} заклинание</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <SpellForm spell={spell} />
+        <SpellForm spell={spell} cbSubmit={cbSubmit} update={spell ? true : false} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={cbShow}>
