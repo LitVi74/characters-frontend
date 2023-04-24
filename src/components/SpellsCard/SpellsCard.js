@@ -8,10 +8,10 @@ import PlusButton from '../PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
-export default function SpellCard({cbShow, spell, charList}) {
+export default function SpellCard({cbShow, cbClose, cbPlus, spell, charList}) {
   const { role, isActivated, } = useContext(CurrentUserContext);
+  let { inList } = spell;
   const {
-    inList,
     name,
     school,
     level,
@@ -26,14 +26,24 @@ export default function SpellCard({cbShow, spell, charList}) {
     higher_level
   } = spell;
 
+  const handlePlusButton = () => {
+    cbPlus(spell);
+    inList = false;
+  };
+
+  const handleCloseButton = () => {
+    cbClose(spell);
+    inList = true;
+  }
+
   return (
     <li className='spell'>
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
         {charList
           ? isActivated && inList
-            ? <CloseButton />
-            : <PlusButton />
+            ? <CloseButton onClick={handleCloseButton} />
+            : <PlusButton onClick={handlePlusButton} />
           : role === 'Admin' && <CardMenu cbShow={cbShow} spell={spell} />
         }
       </div>

@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 
 import SpellCard from "../SpellsCard/SpellsCard";
 
-export default function MasonryCard({cbShow, spell, charList, cardWidth}) {
+export default function MasonryCard({cbShow, cbClose, cbPlus, spell, charList, cardWidth}) {
   const card = useRef(null);
 
   useLayoutEffect(() => {
@@ -31,7 +31,7 @@ export default function MasonryCard({cbShow, spell, charList, cardWidth}) {
 
   return (
     <div className="masonry__card masonry__card-ready" ref={card}>
-      <SpellCard cbShow={cbShow} spell={spell} charList={charList} />
+      <SpellCard cbShow={cbShow} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
     </div>
   );
 }
