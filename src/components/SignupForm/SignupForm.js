@@ -1,11 +1,7 @@
 import { Field, Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 
-import { PATHS } from "../../constants/constants";
-
-export default function SignupForm() {
-  const navigate = useNavigate();
+export default function SignupForm({cbRegister}) {
   return (
     <Formik
       initialValues={{
@@ -13,8 +9,12 @@ export default function SignupForm() {
         password: "",
         passwordRepeat: "",
       }}
-      onSubmit={(values) => {
-        navigate(PATHS.characters);
+      onSubmit={async (values) => {
+        const {email, password, passwordRepeat} = values;
+
+        if (password === passwordRepeat) {
+          await cbRegister(email, password);
+        }
       }}
     >
       {({handleSubmit, errors, touched, values }) => (

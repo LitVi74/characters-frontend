@@ -3,10 +3,10 @@ import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../constants/constants";
 
-export default function AuthorizedNavbar() {
+export default function AuthorizedNavbar({cbLogout}) {
   const handleExitButtonClick = useCallback(() => {
-    console.log("exit click")
-  }, []);
+    cbLogout()
+  }, [cbLogout]);
 
   return (
     <Navbar className="w-100 p-0">

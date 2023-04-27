@@ -122,6 +122,6 @@ const PATHS = {
   spells: "/spells"
 }
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'http://localhost:3000';
 
 export { spellsData, PATHS, API_URL };

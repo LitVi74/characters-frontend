@@ -1,10 +1,10 @@
 import LoginForm from "../../components/LoginForm/LoginForm";
 
-export default function LogIn() {
+export default function LogIn({cbLogin}) {
   return (
    <main>
     <h1>Вход</h1>
-    <LoginForm />
+    <LoginForm cbLogin={cbLogin} />
    </main>
   );
 }

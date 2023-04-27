@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { PATHS } from "../../constants/constants";
 
-export default function LoginForm() {
+export default function LoginForm({cbLogin}) {
   const navigate = useNavigate();
 
   return (
@@ -13,10 +13,9 @@ export default function LoginForm() {
         email: "",
         password: "",
       }}
-      onSubmit={(values) => {
-        if (values.email === "test@test.test" && values.password === "q2w3e4r") {
-          navigate(PATHS.characters);
-        }
+      onSubmit={async (values) => {
+        await cbLogin(values)
+        navigate(PATHS.characters);
       }}
     >
       {({ handleSubmit, errors, touched }) => (
