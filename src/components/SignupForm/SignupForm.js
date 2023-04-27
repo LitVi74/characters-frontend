@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import { PATHS } from "../../pages/pages";
+import { PATHS } from "../../constants/constants";
 
 export default function SignupForm() {
   const navigate = useNavigate();

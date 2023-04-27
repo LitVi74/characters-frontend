@@ -113,6 +113,13 @@ const spellsData = [
     school: "Воплощение",
     classes: ["Колдун"],
   },
-]
+];
 
-export { spellsData };
+const PATHS = {
+  login: "/login",
+  signup: "/signup",
+  characters: "/characters",
+  spells: "/spells"
+}
+
+export { spellsData, PATHS };

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { PATHS } from "../../pages/pages";
+import { PATHS } from "../../constants/constants";
 
 export default function AuthorizedNavbar() {
   const handleExitButtonClick = useCallback(() => {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ListGroupItem } from "react-bootstrap";
-import { PATHS } from "../../pages/pages";
+import { PATHS } from "../../constants/constants";
 
 export default function CharacterLink({id, name}) {
   return (
