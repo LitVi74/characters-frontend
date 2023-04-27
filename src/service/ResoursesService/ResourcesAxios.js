@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import AuthService from '../AuthService/AuthService';
 
-const API_URL = 'http://localhost:3000';
+import API_URL from '../../constants/constants';
 
 const api = axios.create({
   withCredentials: true,

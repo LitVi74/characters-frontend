@@ -122,4 +122,6 @@ const PATHS = {
   spells: "/spells"
 }
 
-export { spellsData, PATHS };
+const API_URL = 'http://localhost:5000';
+
+export { spellsData, PATHS, API_URL };
