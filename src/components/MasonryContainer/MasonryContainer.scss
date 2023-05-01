@@ -1,0 +1,12 @@
+@use "../../constants/constants.scss";
+
+.masonry__container {
+  position: relative;
+
+  margin: 0 10vw;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(constants.$min-card-width, 1fr));
+  grid-auto-rows: constants.$row-height;
+  grid-gap: constants.$gap;
+}
