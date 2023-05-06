@@ -2,6 +2,7 @@ $min-card-width: 250px;
 $row-height: 10px;
 $gap: 8px;
 
+// Экспорт для динамического расчета в MasonryContainer
 :export {
   minCardWidth: $min-card-width;
   rowHeight: $row-height;
