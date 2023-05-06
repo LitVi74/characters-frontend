@@ -69,10 +69,11 @@ export default function Spells({charList}) {
   };
 
   const getAllSpells = () => {
-    const spells = JSON.parse(sessionStorage.getItem('spellsData'));
+    let spells = JSON.parse(sessionStorage.getItem('spellsData'));
 
     if(!spells) {
       sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
+      spells = spellsData;
     }
     return spells
   }
