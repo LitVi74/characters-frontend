@@ -1,9 +1,11 @@
-import constants from '../../constants/constants.scss';
+// Не переносить!!! MasonryCard должен использоваться исключительно в MasonryContainer!!!
+
+import constants from '../../../constants/constants.scss';
 import "./MasonryCard.scss";
 
 import { useLayoutEffect, useRef } from "react";
 
-import SpellCard from "../SpellsCard/SpellsCard";
+import SpellCard from "../../SpellsCard/SpellsCard";
 
 export default function MasonryCard({cbForm, cbClose, cbPlus, spell, charList, cardWidth}) {
   const card = useRef(null);

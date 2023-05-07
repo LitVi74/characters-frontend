@@ -2,7 +2,7 @@ import './MasonryContainer.scss'
 
 import { useRef } from "react";
 import { useGetCardWidth } from "./hooks/useGetCardWidth";
-import MasonryCard from "../MasonryCard/MasonryCard";
+import MasonryCard from "./MasonryCard/MasonryCard";
 
 export default function MasonryContainer({cbForm, cbClose, cbPlus, spells, charList}) {
   const ref = useRef(null);
