@@ -5,9 +5,9 @@ import {spellsData} from "../../constants/constants";
 
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
-import PlusButton from '../../components/PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
+import SpellFilters from "../../components/SpellFilters/SpellFilters";
 
 let charSpells = [
   {
@@ -130,13 +130,14 @@ export default function Spells({charList}) {
   }, [charList, renderAllSpells]);
 
   return (
-    <main className="w-100 flex-grow-1">
-      {charList 
-        ? isAddLiseElements 
-          ? <CloseButton onClick={handleCloseButton} />
-          : <Button onClick={handlePlusButton} />
-        : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
-      }
+    <main>
+        <SpellFilters />
+        {charList
+          ? isAddLiseElements
+            ? <CloseButton onClick={handleCloseButton} />
+            : <Button onClick={handlePlusButton} />
+          : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
+        }
       <MasonryContainer cbForm={setIsForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
