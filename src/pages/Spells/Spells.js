@@ -32,22 +32,29 @@ export default function Spells({charList}) {
     })
   };
 
-  const cbSubmit = (spell, update) => {
-    const newSpells = update
-      ? spells.map(s => {
-          if(spell._id === s._id) {
-            return spell
-          }
-          return s
-        })
-      : [...spells, spell];
-    
-    sessionStorage.setItem('spellsData', JSON.stringify(newSpells));
-    setSpells(newSpells);
-    setIsForm({
-      ...isForm,
-      isShow: false
-    });
+  const cbSubmit = async (data, update) => {
+    try {
+      const spell = update
+        ? await ResourcesService.updateSpell(data._id, data)
+        : await ResourcesService.createSpell(data);
+      const newSpells = update
+        ? spells.map(s => {
+            if(spell._id === s._id) {
+              return spell
+            }
+            return s
+          })
+        : [...spells, spell];
+      
+      sessionStorage.setItem('spellsData', JSON.stringify(newSpells));
+      setSpells(newSpells);
+      setIsForm({
+        ...isForm,
+        isShow: false
+      });
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   const getAllSpells = async () => {
@@ -68,19 +75,12 @@ export default function Spells({charList}) {
   const getCharSpells = async () => {
     try {    
       charSpells = await ResourcesService.getCharacter(charID).spells;
-
-      if(!charSpells.length) {
-        setIsAddLiseElements(true);
-        renderAllSpells();
-      } else {
-        renderCharSpells();
-      }
     } catch(err) {
       console.log(err);
     }
   };
 
-  const renderAllSpells = useCallback(() => {
+  const renderAllSpells = () => {
     let spells = getAllSpells();
 
     spells = spells.map(spell => {
@@ -88,7 +88,7 @@ export default function Spells({charList}) {
       return spell;
     });
     setSpells(spells);
-  }, []);
+  };
 
   const renderCharSpells = () => {
     const spells = charSpells.map(spell => {
@@ -137,8 +137,15 @@ export default function Spells({charList}) {
       setSpells(spells);
     } else {
       getCharSpells();
+
+      if(!charSpells.length) {
+        setIsAddLiseElements(true);
+        renderAllSpells();
+      } else {
+        renderCharSpells();
+      }
     }
-  }, [charList, renderAllSpells]);
+  }, [charList]);
 
   return (
     <main className="w-100 flex-grow-1">
