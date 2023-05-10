@@ -37,17 +37,19 @@ export default function Spells({charList}) {
       const spell = update
         ? await ResourcesService.updateSpell(data._id, data)
         : await ResourcesService.createSpell(data);
-      const newSpells = update
-        ? spells.map(s => {
+
+      let spellsData = JSON.parse(sessionStorage.getItem('spellsData'));
+      spellsData = update
+        ? spellsData.map(s => {
             if(spell._id === s._id) {
               return spell
             }
             return s
           })
         : [...spells, spell];
+      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
       
-      sessionStorage.setItem('spellsData', JSON.stringify(newSpells));
-      setSpells(newSpells);
+      setSpells(spellsData);
       setIsForm({
         ...isForm,
         isShow: false
@@ -110,11 +112,13 @@ export default function Spells({charList}) {
 
   const cbClose = async (data) => {
     try {
-      const spellsData = charSpells.filter(s => s._id !== data._id);
+      const { _id: spellID } = data;
+      const spellsData = charSpells.filter(s => s._id !== spellID);
       charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
 
       if(!isAddLiseElements) {
-        setSpells(charSpells);
+        const newSpells = spells.filter(s => s._id !== spellID);
+        setSpells(newSpells);
       }
     } catch(err) {
       console.log(err);
@@ -129,6 +133,22 @@ export default function Spells({charList}) {
       console.log(err);
     }
   };
+
+  const cbDell = async (data) => {
+    try {
+      const { _id: spellID } = data;
+      await ResourcesService.deleteSpell(spellID);
+  
+      let spellsData = JSON.parse(sessionStorage.getItem('spellsData'));
+      spellsData = spellsData.filter(s => s._id !== spellID);
+      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
+  
+      const newSpells = spells.filter(s => s._id !== spellID);
+      setSpells(newSpells);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     if(!charList) {
@@ -155,7 +175,7 @@ export default function Spells({charList}) {
           : <Button onClick={handlePlusButton} />
         : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
       }
-      <MasonryContainer cbForm={setIsForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+      <MasonryContainer cbForm={setIsForm} cbDell={cbDell} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
   );
