@@ -7,7 +7,7 @@ function useGetCardWidth (containerRef) {
   const [cardWidth, setCardWidth] = useState(0);
 
   const handleResize = useCallback(() => {
-    setContainerWidth(containerRef.current?.clientWidth ?? 0);
+    setTimeout(setContainerWidth.bind(null,containerRef.current?.clientWidth ?? 0), 50)
   }, [containerRef])
 
   useEffect(() => {
