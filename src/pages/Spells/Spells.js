@@ -8,6 +8,7 @@ import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
+import SpellCard from "../../components/SpellsCard/SpellsCard";
 
 let charSpells = [
   {
@@ -139,7 +140,11 @@ export default function Spells({charList}) {
             : <Button onClick={handlePlusButton} />
           : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
         }
-      <MasonryContainer cbForm={setIsForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+      <MasonryContainer >
+        {spells.map((spell) =>
+          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+        )}
+      </MasonryContainer>
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
   );
