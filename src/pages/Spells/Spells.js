@@ -14,7 +14,7 @@ let charSpells = [];
 export default function Spells({charList}) {
   const { role } = useContext(CurrentUserContext);
 
-  const params = useParams();
+  const { charID } = useParams();
 
   const [isForm, setIsForm] = useState({
     isShow: false,
@@ -22,7 +22,7 @@ export default function Spells({charList}) {
     update: false
   });
   const [spells, setSpells] = useState([]);
-  const [isAddLiseElements, setIsAddLiseElements] = useState(false);
+  const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -63,7 +63,22 @@ export default function Spells({charList}) {
       console.log(err);
       return []
     }
-  }
+  };
+
+  const getCharSpells = async () => {
+    try {    
+      charSpells = await ResourcesService.getCharacter(charID).spells;
+
+      if(!charSpells.length) {
+        setIsAddLiseElements(true);
+        renderAllSpells();
+      } else {
+        renderCharSpells();
+      }
+    } catch(err) {
+      console.log(err);
+    }
+  };
 
   const renderAllSpells = useCallback(() => {
     let spells = getAllSpells();
@@ -93,15 +108,26 @@ export default function Spells({charList}) {
     setIsAddLiseElements(true);
   }
 
-  const cbClose = (spell) => {
-    charSpells = charSpells.filter(s => s._id !== spell._id);
-    if(!isAddLiseElements) {
-      setSpells(charSpells);
+  const cbClose = async (data) => {
+    try {
+      const spellsData = charSpells.filter(s => s._id !== data._id);
+      charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
+
+      if(!isAddLiseElements) {
+        setSpells(charSpells);
+      }
+    } catch(err) {
+      console.log(err);
     }
   };
 
-  const cbPlus = (spell) => {
-    charSpells.push(spell);
+  const cbPlus = async (data) => {
+    try {
+      const spellsData = charSpells.push(data);
+      charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -110,21 +136,8 @@ export default function Spells({charList}) {
       
       setSpells(spells);
     } else {
-      ResourcesService.getCharacter(params.charID)
-        .then((res) => {
-          charSpells = res.spells;
-
-          if(!charSpells.length) {
-            setIsAddLiseElements(true);
-            renderAllSpells();
-          } else {
-            renderCharSpells();
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-      }
+      getCharSpells();
+    }
   }, [charList, renderAllSpells]);
 
   return (

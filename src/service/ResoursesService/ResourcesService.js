@@ -33,7 +33,7 @@ export default class ResourcesService {
     return api.delete(`/characters/${charId}`)
   }
 
-  static async updateCharacter(charId) {
-    return api.patch(`/characters/${charId}`)
+  static async updateCharacter(charId, spells) {
+    return api.patch(`/characters/${charId}`, {spells})
   }
 }
