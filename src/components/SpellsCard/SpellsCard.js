@@ -37,6 +37,18 @@ export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charL
     setIsСlosure(false);
   }
 
+  const handleUpdate = () => {
+    cbForm({
+      isShow: true,
+      spell: spell,
+      update: true
+    })
+  };
+
+  const handleDelete = () => {
+    cbDell(spell)
+  };
+
   return (
     <li className='spell'>
       <div className='spell__container'>
@@ -45,7 +57,7 @@ export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charL
           ? isСlosure
               ? <CloseButton onClick={handleCloseButton} />
               : <Button onClick={handlePlusButton} />
-          : role === 'Admin' && <CardMenu cbForm={cbForm} cbDell={cbDell} spell={spell} />
+          : role === 'Admin' && <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell={true} />
         }
       </div>
       <div className='spell__container'>

@@ -74,15 +74,15 @@ export default function Spells({charList}) {
     }
   };
 
-  const getCharSpells = async () => {
+  const getCharSpells = useCallback( async () => {
     try {    
       charSpells = await ResourcesService.getCharacter(charID).spells;
     } catch(err) {
       console.log(err);
     }
-  };
+  }, [charID]);
 
-  const renderAllSpells = () => {
+  const renderAllSpells = useCallback( () => {
     let spells = getAllSpells();
 
     spells = spells.map(spell => {
@@ -90,7 +90,7 @@ export default function Spells({charList}) {
       return spell;
     });
     setSpells(spells);
-  };
+  }, []);
 
   const renderCharSpells = () => {
     const spells = charSpells.map(spell => {
@@ -165,7 +165,7 @@ export default function Spells({charList}) {
         renderCharSpells();
       }
     }
-  }, [charList]);
+  }, [charList, getCharSpells, renderAllSpells]);
 
   return (
     <main className="w-100 flex-grow-1">
