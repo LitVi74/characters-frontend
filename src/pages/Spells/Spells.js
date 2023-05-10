@@ -1,38 +1,20 @@
-import {useState, useContext, useEffect, useCallback} from 'react';
-import {CloseButton, Button} from 'react-bootstrap';
+import { useState, useContext, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { CloseButton, Button } from 'react-bootstrap';
 
-import {spellsData} from "../../constants/constants";
-
+import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 import PlusButton from '../../components/PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
-let charSpells = [
-  {
-    _id: "1",
-    name: "Священное пламя",
-    desc: `На существо, которое вы видите в пределах дистанции, нисходит сияние, похожее на огонь. Цель должна преуспеть в спасброске Ловкости, иначе получит 1к8 урона излучением. Для этого спасброска цель не получает преимуществ от укрытия.`,
-    higher_level: "Урон этого заклинания увеличивается на 1к8, когда вы достигаете 5-го уровня (2к8), 11-го уровня (3к8) и 17-го уровня (4к8).",
-    range: 60,
-    components: [
-      "В",
-      "С"
-    ],
-    material: "",
-    ritual: false,
-    duration: "Мгновенная",
-    concentration: false,
-    casting_time: "1 действие",
-    level: 0,
-    school: "Воплощение",
-    classes: ["Жрец"],
-  }
-];
+let charSpells = [];
 
 export default function Spells({charList}) {
   const { role } = useContext(CurrentUserContext);
+
+  const params = useParams();
 
   const [isForm, setIsForm] = useState({
     isShow: false,
@@ -68,14 +50,19 @@ export default function Spells({charList}) {
     });
   };
 
-  const getAllSpells = () => {
-    let spells = JSON.parse(sessionStorage.getItem('spellsData'));
+  const getAllSpells = async () => {
+    try {
+      let spells = JSON.parse(sessionStorage.getItem('spellsData'));
 
-    if(!spells) {
-      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
-      spells = spellsData;
+      if(!spells) {
+        spells = await ResourcesService.getSpells();
+        sessionStorage.setItem('spellsData', JSON.stringify(spells));
+      }
+      return spells
+    } catch(err) {
+      console.log(err);
+      return []
     }
-    return spells
   }
 
   const renderAllSpells = useCallback(() => {
@@ -122,12 +109,22 @@ export default function Spells({charList}) {
       const spells = getAllSpells();
       
       setSpells(spells);
-    } else if(!charSpells.length) {
-      setIsAddLiseElements(true);
-      renderAllSpells();
     } else {
-      renderCharSpells();
-    }
+      ResourcesService.getCharacter(params.charID)
+        .then((res) => {
+          charSpells = res.spells;
+
+          if(!charSpells.length) {
+            setIsAddLiseElements(true);
+            renderAllSpells();
+          } else {
+            renderCharSpells();
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+      }
   }, [charList, renderAllSpells]);
 
   return (

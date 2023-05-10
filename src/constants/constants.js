@@ -122,6 +122,6 @@ const PATHS = {
   spells: "/spells"
 }
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://dnd-characters/api';
 
 export { spellsData, PATHS, API_URL };
