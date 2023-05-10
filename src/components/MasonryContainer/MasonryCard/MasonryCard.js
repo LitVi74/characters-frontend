@@ -5,7 +5,6 @@ import "./MasonryCard.scss";
 
 import { useLayoutEffect, useRef } from "react";
 
-import SpellCard from "../../SpellsCard/SpellsCard";
 
 export default function MasonryCard({cardWidth, children}) {
   const card = useRef(null);

@@ -7,7 +7,7 @@ const IconButton = ({
   ...props
 }) => {
   return (
-    <Button {...props}>
+    <Button {...props} className={`d-flex align-items-center gap-2 ${props.className ?? ""}`}>
       {iconPosition === "left" &&
         icon
       }

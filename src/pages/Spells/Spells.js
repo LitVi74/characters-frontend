@@ -42,6 +42,7 @@ export default function Spells({charList}) {
   });
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false);
+  const [filterActionList, setFilterActionList] = useState([])
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -118,6 +119,16 @@ export default function Spells({charList}) {
     charSpells.push(spell);
   };
 
+  const filterSpells = useCallback((spells) => {
+    let filteredSpells = [...spells];
+
+    filterActionList.forEach((filterAction) => {
+      filteredSpells = filterAction(filteredSpells);
+    })
+
+    return filteredSpells;
+  }, [filterActionList]);
+
   useEffect(() => {
     if(!charList) {
       const spells = getAllSpells();
@@ -133,7 +144,7 @@ export default function Spells({charList}) {
 
   return (
     <main>
-        <SpellFilters />
+        <SpellFilters filterActionList={filterActionList} setFilterActionList={setFilterActionList}/>
         {charList
           ? isAddLiseElements
             ? <CloseButton onClick={handleCloseButton} />
@@ -141,7 +152,7 @@ export default function Spells({charList}) {
           : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
         }
       <MasonryContainer >
-        {spells.map((spell) =>
+        {filterSpells(spells).map((spell) =>
           <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
         )}
       </MasonryContainer>
