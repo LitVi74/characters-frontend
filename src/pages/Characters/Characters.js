@@ -36,7 +36,7 @@ export default function Characters() {
           })
         : [...spells, spell];
       
-      setSpells(newChars);
+      setChars(newChars);
       setIsForm({
         ...isForm,
         isShow: false
