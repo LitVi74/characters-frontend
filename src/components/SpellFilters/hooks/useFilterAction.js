@@ -2,6 +2,7 @@ import {useCallback, useState} from "react";
 
 const useFilterAction = (filterActionList, setFilterActionList) => {
   const [selectedLevels, setSelectedLevels] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
 
   const deleteFilterFunctionByName = useCallback((name) => {
     setFilterActionList(filterActionList.filter(func => func.name !== name));
@@ -36,12 +37,33 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
 
     const searchSpellsByLevel = (spells) => {
       return spells.filter(spell => event.includes(spell.level));
-    }
+    };
 
     addFilterFunctionToList(searchSpellsByLevel);
   }, []);
 
-  return {handleSearchInputBlur, handleLevelsChange, selectedLevels};
+  const handleClassesChange = useCallback((event) => {
+    setSelectedClasses(event);
+
+    if (!event.length) {
+      deleteFilterFunctionByName("searchSpellsByClass");
+      return;
+    }
+
+    const searchSpellsByClass = (spell) => {
+      return spell.filter(spell => spell.classes.some(spellClass => event.includes(spellClass)));
+    }
+
+    addFilterFunctionToList(searchSpellsByClass);
+  }, []);
+
+  return {
+    handleSearchInputBlur,
+    selectedLevels,
+    handleLevelsChange,
+    selectedClasses,
+    handleClassesChange,
+  };
 }
 
 export default useFilterAction;

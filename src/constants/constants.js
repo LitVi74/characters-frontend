@@ -122,6 +122,22 @@ const PATHS = {
   spells: "/spells"
 }
 
+const SPELL = {
+  levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  classes: [
+    "Бард",
+    "Волшебник",
+    "Друид",
+    "Изобретатель",
+    "Жрец",
+    "Колдун",
+    "Паладин",
+    "Следопыт",
+    "Чародей",
+  ],
+
+}
+
 const API_URL = 'http://localhost:3000';
 
-export { spellsData, PATHS, API_URL };
+export { spellsData, PATHS, API_URL, SPELL };

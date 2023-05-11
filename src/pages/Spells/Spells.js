@@ -42,7 +42,7 @@ export default function Spells({charList}) {
   });
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false);
-  const [filterActionList, setFilterActionList] = useState([])
+  const [filterActionList, setFilterActionList] = useState([]);
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -151,7 +151,7 @@ export default function Spells({charList}) {
             : <Button onClick={handlePlusButton} />
           : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
         }
-      <MasonryContainer >
+      <MasonryContainer>
         {filterSpells(spells).map((spell) =>
           <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
         )}

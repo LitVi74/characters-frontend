@@ -1,14 +1,10 @@
-import {useState} from "react";
 import {Accordion, Modal, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import useFilterAction from "../hooks/useFilterAction";
+import {SPELL} from "../../../constants/constants";
 
-const SpellFiltersModal = ({filterActionList, setFilterActionList, show, handleModalClose}) => {
-  const levels = useState([0, 1, 2 ,3, 4, 5, 6, 7, 8, 9])[0];
-
-  const {handleLevelsChange, selectedLevels} = useFilterAction(filterActionList, setFilterActionList);
+const SpellFiltersModal = ({filterAction, show, handleModalClose}) => {
 
   return (
-    <Modal className="" show={show}  onHide={handleModalClose}>
+    <Modal as="aside" show={show}  onHide={handleModalClose}>
       <Modal.Header closeButton>
         <Modal.Title>
           Фильтр
@@ -19,10 +15,44 @@ const SpellFiltersModal = ({filterActionList, setFilterActionList, show, handleM
           <Accordion.Item eventKey="0">
             <Accordion.Header>Уровень</Accordion.Header>
             <Accordion.Body>
-              <ToggleButtonGroup value={selectedLevels} type="checkbox" onChange={(handleLevelsChange)}>
-                {levels.map((level) =>
-                  <ToggleButton key={level} id={`level-${level}`} value={level} variant="outline-primary">
+              <ToggleButtonGroup
+                className="flex-wrap"
+                type="checkbox"
+                value={filterAction.selectedLevels}
+                onChange={(filterAction.handleLevelsChange)}
+              >
+                {SPELL.levels.map((level) =>
+                  <ToggleButton
+                    className="m-1 rounded flex-grow-0"
+                    key={level}
+                    id={`level-${level}`}
+                    value={level}
+                    variant="outline-primary"
+                  >
                     {level || "Заговор"}
+                  </ToggleButton>
+                )}
+              </ToggleButtonGroup>
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="1">
+            <Accordion.Header>Классы</Accordion.Header>
+            <Accordion.Body>
+              <ToggleButtonGroup
+                className="flex-wrap"
+                type="checkbox"
+                value={filterAction.selectedClasses}
+                onChange={(filterAction.handleClassesChange)}
+              >
+                {SPELL.classes.map((spellClass, index) =>
+                  <ToggleButton
+                    className="m-1 rounded flex-grow-0"
+                    key={spellClass}
+                    id={`class-${index}`}
+                    value={spellClass}
+                    variant="outline-primary"
+                  >
+                    {spellClass}
                   </ToggleButton>
                 )}
               </ToggleButtonGroup>
