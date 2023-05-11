@@ -117,8 +117,7 @@ export default function Spells({charList}) {
       charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
 
       if(!isAddLiseElements) {
-        const newSpells = spells.filter(s => s._id !== spellID);
-        setSpells(newSpells);
+        setSpells(charSpells);
       }
     } catch(err) {
       console.log(err);
@@ -143,8 +142,7 @@ export default function Spells({charList}) {
       spellsData = spellsData.filter(s => s._id !== spellID);
       sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
   
-      const newSpells = spells.filter(s => s._id !== spellID);
-      setSpells(newSpells);
+      setSpells(spellsData);
     } catch(err) {
       console.log(err);
     }
