@@ -9,11 +9,11 @@ export default function SignupForm({cbRegister}) {
         password: "",
         passwordRepeat: "",
       }}
-      onSubmit={async (values) => {
-        const {email, password, passwordRepeat} = values;
+      onSubmit={(values) => {
+        const { email, password, passwordRepeat } = values;
 
         if (password === passwordRepeat) {
-          await cbRegister(email, password);
+          cbRegister(email, password);
         }
       }}
     >

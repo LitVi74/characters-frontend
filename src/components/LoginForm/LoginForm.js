@@ -14,7 +14,9 @@ export default function LoginForm({cbLogin}) {
         password: "",
       }}
       onSubmit={async (values) => {
-        await cbLogin(values)
+        const { email, password } = values;
+
+        await cbLogin(email, password)
         navigate(PATHS.characters);
       }}
     >

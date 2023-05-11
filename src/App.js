@@ -16,7 +16,7 @@ import { PATHS } from './constants/constants';
 import { CurrentUserContext } from './contexts/currentUserContext';
 
 export default function App() {
-  const [ currentUser, setCurrentUser ] = useState({ email: '', role: 'Admin', isActivated: false});
+  const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false });
 
   const cbRegister = async (email, password) => {
     try {
