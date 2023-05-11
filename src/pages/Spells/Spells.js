@@ -18,7 +18,7 @@ export default function Spells({charList}) {
 
   const [isForm, setIsForm] = useState({
     isShow: false,
-    spell: {},
+    data: {},
     update: false
   });
   const [spells, setSpells] = useState([]);
@@ -27,7 +27,7 @@ export default function Spells({charList}) {
   const handleAddInAllSpells = () => {
     setIsForm({
       isShow: true,
-      spell: {},
+      data: {},
       update: false
     })
   };

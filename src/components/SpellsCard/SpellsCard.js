@@ -40,7 +40,7 @@ export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charL
   const handleUpdate = () => {
     cbForm({
       isShow: true,
-      spell: spell,
+      data: spell,
       update: true
     })
   };

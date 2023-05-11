@@ -21,7 +21,7 @@ export default class ResourcesService {
     return api.get('/characters')
   }
 
-  static async createCharacters(name) {
+  static async createCharacter(name) {
     return api.post('/characters', {name})
   }
 
@@ -33,7 +33,7 @@ export default class ResourcesService {
     return api.delete(`/characters/${charId}`)
   }
 
-  static async updateCharacter(charId, spells) {
-    return api.patch(`/characters/${charId}`, {spells})
+  static async updateCharacter(charId, name) {
+    return api.patch(`/characters/${charId}`, {name})
   }
 }

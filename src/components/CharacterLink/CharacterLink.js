@@ -11,7 +11,7 @@ export default function CharacterLink({char, cbForm, cbClose}) {
   const handleUpdate = () => {
     cbForm({
       isForm: true,
-      char: char,
+      data: char,
       update: true
     })
   };
