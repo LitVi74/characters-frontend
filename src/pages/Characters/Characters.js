@@ -4,8 +4,7 @@ import { ListGroup, Stack, Button } from 'react-bootstrap';
 import ResourcesService from '../../service/ResoursesService/ResourcesService';
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
 
-export default function Characters() {
-  const [ chars, setChars ] = useState([]);
+export default function Characters({ chars, setChars }) {
   const [ isForm, setIsForm ] = useState({
     isShow: false,
     data: {},

@@ -11,18 +11,19 @@ import { CurrentUserContext } from '../../contexts/currentUserContext';
 
 let charSpells = [];
 
-export default function Spells({charList}) {
+export default function Spells({charList, chars}) {
   const { role } = useContext(CurrentUserContext);
 
   const { charID } = useParams();
 
-  const [isForm, setIsForm] = useState({
+  const [ isCreator, setIsCreator ] = useState(false);
+  const [ isForm, setIsForm ] = useState({
     isShow: false,
     data: {},
     update: false
   });
-  const [spells, setSpells] = useState([]);
-  const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
+  const [ spells, setSpells ] = useState([]);
+  const [ isAddLiseElements, setIsAddLiseElements ] = useState(false); // переключатель добавления карточек в чарлист
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -74,7 +75,7 @@ export default function Spells({charList}) {
     }
   };
 
-  const getCharSpells = useCallback( async () => {
+  const getCharSpells = useCallback(async () => {
     try {    
       charSpells = await ResourcesService.getCharacter(charID).spells;
     } catch(err) {
@@ -148,12 +149,20 @@ export default function Spells({charList}) {
     }
   }
 
+  const checkCreatorRights = () => {
+    if(chars.length) {
+      const rights = chars.some(c => c._id === charID);
+      setIsCreator(rights);
+    }
+  }
+
   useEffect(() => {
     if(!charList) {
       const spells = getAllSpells();
       
       setSpells(spells);
     } else {
+      checkCreatorRights();
       getCharSpells();
 
       if(!charSpells.length) {
@@ -168,12 +177,12 @@ export default function Spells({charList}) {
   return (
     <main className="w-100 flex-grow-1">
       {charList 
-        ? isAddLiseElements 
+        ? isCreator && isAddLiseElements 
           ? <CloseButton onClick={handleCloseButton} />
           : <Button onClick={handlePlusButton} />
         : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
       }
-      <MasonryContainer cbForm={setIsForm} cbDell={cbDell} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+      <MasonryContainer cbForm={setIsForm} cbDell={cbDell} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
   );

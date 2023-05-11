@@ -8,7 +8,7 @@ import PlusButton from '../PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
-export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charList}) {
+export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charList, isCreator}) {
   const { role } = useContext(CurrentUserContext);
   const {
     inList,
@@ -54,7 +54,7 @@ export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charL
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
         {charList
-          ? isСlosure
+          ? isCreator && isСlosure
               ? <CloseButton onClick={handleCloseButton} />
               : <Button onClick={handlePlusButton} />
           : role === 'Admin' && <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell={true} />

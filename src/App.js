@@ -17,6 +17,7 @@ import { CurrentUserContext } from './contexts/currentUserContext';
 
 export default function App() {
   const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false });
+  const [ chars, setChars ] = useState([]);
 
   const cbRegister = async (email, password) => {
     try {
@@ -80,6 +81,8 @@ export default function App() {
       element:
         <ProtectedRoute
           component={Characters}
+          chars={chars}
+          setChars={setChars}
         />
     },
     {
@@ -92,6 +95,7 @@ export default function App() {
         <ProtectedRoute 
           component={Spells}
           charList={false}
+          chars={chars}
         />
     },
     {
