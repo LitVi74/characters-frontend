@@ -5,9 +5,10 @@ import {spellsData} from "../../constants/constants";
 
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
-import PlusButton from '../../components/PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
+import SpellFilters from "../../components/SpellFilters/SpellFilters";
+import SpellCard from "../../components/SpellsCard/SpellsCard";
 
 let charSpells = [
   {
@@ -41,6 +42,7 @@ export default function Spells({charList}) {
   });
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false);
+  const [filterActionList, setFilterActionList] = useState([]);
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -117,6 +119,16 @@ export default function Spells({charList}) {
     charSpells.push(spell);
   };
 
+  const filterSpells = useCallback((spells) => {
+    let filteredSpells = [...spells];
+
+    filterActionList.forEach((filterAction) => {
+      filteredSpells = filterAction(filteredSpells);
+    })
+
+    return filteredSpells;
+  }, [filterActionList]);
+
   useEffect(() => {
     if(!charList) {
       const spells = getAllSpells();
@@ -131,14 +143,19 @@ export default function Spells({charList}) {
   }, [charList, renderAllSpells]);
 
   return (
-    <main className="w-100 flex-grow-1">
-      {charList 
-        ? isAddLiseElements 
-          ? <CloseButton onClick={handleCloseButton} />
-          : <Button onClick={handlePlusButton} />
-        : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
-      }
-      <MasonryContainer cbForm={setIsForm} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+    <main>
+        <SpellFilters filterActionList={filterActionList} setFilterActionList={setFilterActionList}/>
+        {charList
+          ? isAddLiseElements
+            ? <CloseButton onClick={handleCloseButton} />
+            : <Button onClick={handlePlusButton} />
+          : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
+        }
+      <MasonryContainer>
+        {filterSpells(spells).map((spell) =>
+          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+        )}
+      </MasonryContainer>
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
   );
