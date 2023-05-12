@@ -31,7 +31,7 @@ export default function App() {
   const cbLogin = async (email, password) => {
     try {
       const response = await AuthService.login(email, password);
-      const { email, role, isActivated, accessToken } = response.data;
+      const { role, isActivated, accessToken } = response.data;
       localStorage.setItem('token', accessToken);
       setCurrentUser({email, role, isActivated});
     } catch(err) {
