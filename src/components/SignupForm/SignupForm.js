@@ -81,7 +81,7 @@ export default function SignupForm({cbRegister}) {
             <Form.Control.Feedback type="invalid">{errors.passwordRepeat}</Form.Control.Feedback>
           </Form.Group>
           <Button type="submit" variant="primary" className="w-100">
-            Войти
+            Зарегестрироваться
           </Button>
         </Form>
       )}
