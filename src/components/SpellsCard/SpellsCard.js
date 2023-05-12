@@ -4,7 +4,6 @@ import { useContext, useState } from 'react';
 import {Button, CloseButton} from 'react-bootstrap';
 
 import CardMenu from '../CardMenu/CardMenu';
-import PlusButton from '../PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
