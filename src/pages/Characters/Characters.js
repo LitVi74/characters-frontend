@@ -3,6 +3,7 @@ import { ListGroup, Stack, Button } from 'react-bootstrap';
 
 import ResourcesService from '../../service/ResoursesService/ResourcesService';
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
+import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 
 export default function Characters({ chars, setChars }) {
   const [ isForm, setIsForm ] = useState({
@@ -33,7 +34,7 @@ export default function Characters({ chars, setChars }) {
             }
             return s
           })
-        : [...spells, spell];
+        : [...chars, char];
       
       setChars(newChars);
       setIsForm({
