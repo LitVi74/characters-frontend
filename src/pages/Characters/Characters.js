@@ -58,9 +58,13 @@ export default function Characters({ chars, setChars }) {
   };
 
   const renderInitialCharacters = useCallback(async () => {
-    const charData = await ResourcesService.getUserCharacters();
+    try {
+      const { data } = await ResourcesService.getUserCharacters();
 
-    setChars(charData);
+      setChars(data);
+    } catch(err) {
+      console.log(err);
+    }
   }, [setChars]);
 
   useEffect(() => {
@@ -76,7 +80,7 @@ export default function Characters({ chars, setChars }) {
           <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
         )}
       </ListGroup>
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={false} />
     </Stack>
   );
 }

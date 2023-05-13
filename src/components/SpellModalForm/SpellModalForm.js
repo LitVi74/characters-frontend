@@ -3,7 +3,7 @@ import {Button, Modal} from "react-bootstrap";
 import SpellForm from "../SpellForm/SpellForm";
 import CharForm from "../CharForm/CharForm";
 
-export default function SpellModalForm({isForm, cbForm, cbSubmit}) {
+export default function SpellModalForm({isForm, cbForm, cbSubmit, isSpellForm}) {
   const { isShow, data, update } = isForm;
 
   const handleCloseForm = () => {
@@ -16,12 +16,12 @@ export default function SpellModalForm({isForm, cbForm, cbSubmit}) {
   return (
     <Modal show={isShow} onHide={handleCloseForm}>
       <Modal.Header closeButton>
-        <Modal.Title>{update ? "Изменить " : "Добавить "}{data.spells ? "название" : "заклинание"}</Modal.Title>
+        <Modal.Title>{update ? "Изменить " : "Добавить "}{isSpellForm ? "заклинание" : "название"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {data.spells
-          ? <CharForm char={data} cbSubmit={cbSubmit} update={update} />
-          : <SpellForm spell={data} cbSubmit={cbSubmit} update={update} />}
+        {isSpellForm
+          ? <SpellForm spell={data} cbSubmit={cbSubmit} update={update} />
+          : <CharForm char={data} cbSubmit={cbSubmit} update={update} />}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseForm}>

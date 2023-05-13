@@ -5,7 +5,6 @@ import { CloseButton, Button } from 'react-bootstrap';
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
-import PlusButton from '../../components/PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 
@@ -149,12 +148,12 @@ export default function Spells({charList, chars}) {
     }
   }
 
-  const checkCreatorRights = () => {
+  const checkCreatorRights = useCallback(() => {
     if(chars.length) {
       const rights = chars.some(c => c._id === charID);
       setIsCreator(rights);
     }
-  }
+  }, [chars, charID]);
 
   useEffect(() => {
     if(!charList) {
@@ -172,7 +171,7 @@ export default function Spells({charList, chars}) {
         renderCharSpells();
       }
     }
-  }, [charList, getCharSpells, renderAllSpells]);
+  }, [charList, getCharSpells, renderAllSpells, checkCreatorRights]);
 
   return (
     <main className="w-100 flex-grow-1">
@@ -183,7 +182,7 @@ export default function Spells({charList, chars}) {
         : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
       }
       <MasonryContainer cbForm={setIsForm} cbDell={cbDell} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={true} />
     </main>
   );
 }
