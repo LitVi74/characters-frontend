@@ -67,6 +67,7 @@ export default function Spells({charList, chars}) {
         spells = await ResourcesService.getSpells();
         sessionStorage.setItem('spellsData', JSON.stringify(spells));
       }
+
       return spells
     } catch(err) {
       console.log(err);
@@ -82,8 +83,8 @@ export default function Spells({charList, chars}) {
     }
   }, [charID]);
 
-  const renderAllSpells = useCallback( () => {
-    let spells = getAllSpells();
+  const renderAllSpells = useCallback( async () => {
+    let spells = await getAllSpells();
 
     spells = spells.map(spell => {
       spell.inList = charSpells.some(s => s._id === spell._id);

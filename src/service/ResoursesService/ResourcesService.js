@@ -2,7 +2,8 @@ import api from './ResourcesAxios';
 
 export default class ResourcesService {
   static async getSpells() {
-    return api.get('/spells')
+    const response = await api.get('/spells');
+    return response.data;
   }
 
   static async createSpell(data) {

@@ -87,7 +87,7 @@ export default function App() {
     },
     {
       path: PATHS.spells + '/:charID',
-      element: <Spells charList={true} />
+      element: <Spells charList={true} chars={chars} />
     },
     {
       path: PATHS.spells,
