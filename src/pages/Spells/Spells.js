@@ -83,14 +83,16 @@ export default function Spells({charList, chars}) {
     }
   }, [charID]);
 
-  const renderAllSpells = useCallback( async () => {
-    let spells = await getAllSpells();
-
-    spells = spells.map(spell => {
-      spell.inList = charSpells.some(s => s._id === spell._id);
-      return spell;
-    });
-    setSpells(spells);
+  const renderAllSpells = useCallback(() => {
+    getAllSpells()
+      .then(res => {
+        res = res.map(spell => {
+          spell.inList = charSpells.some(s => s._id === spell._id);
+          return spell;
+        });
+        setSpells(res);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   const renderCharSpells = () => {
@@ -158,9 +160,9 @@ export default function Spells({charList, chars}) {
 
   useEffect(() => {
     if(!charList) {
-      const spells = getAllSpells();
-      
-      setSpells(spells);
+      getAllSpells()
+        .then(res => setSpells(res))
+        .catch(err => console.log(err));
     } else {
       checkCreatorRights();
       getCharSpells();
