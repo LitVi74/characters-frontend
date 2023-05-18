@@ -10,12 +10,12 @@ export default function AuthorizedNavbar({cbLogout}) {
 
   return (
     <Navbar className="w-100 p-0">
-      <Nav className="flex-grow-1">
+      <Nav className="flex-grow-1 justify-content-end">
+        <Nav.Link as={Link} to={PATHS.spells}>Заклинания</Nav.Link>
         <Nav.Link as={Link} to={PATHS.characters}>Чарники</Nav.Link>
         <Nav.Link
           as={Button}
           variant="link"
-          className="ms-auto"
           onClick={handleExitButtonClick}
         >
           Выход
