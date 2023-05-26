@@ -1,93 +1,103 @@
-import {useState, useContext, useEffect, useCallback} from 'react';
-import {CloseButton, Button} from 'react-bootstrap';
+import { useState, useContext, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { CloseButton } from 'react-bootstrap';
 
-import {spellsData} from "../../constants/constants";
-
+import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
+import IconButton from "../../components/IconButton/IconButton";
+import {Plus} from "react-bootstrap-icons";
 
-let charSpells = [
-  {
-    _id: "1",
-    name: "Священное пламя",
-    desc: `На существо, которое вы видите в пределах дистанции, нисходит сияние, похожее на огонь. Цель должна преуспеть в спасброске Ловкости, иначе получит 1к8 урона излучением. Для этого спасброска цель не получает преимуществ от укрытия.`,
-    higher_level: "Урон этого заклинания увеличивается на 1к8, когда вы достигаете 5-го уровня (2к8), 11-го уровня (3к8) и 17-го уровня (4к8).",
-    range: 60,
-    components: [
-      "В",
-      "С"
-    ],
-    material: "",
-    ritual: false,
-    duration: "Мгновенная",
-    concentration: false,
-    casting_time: "1 действие",
-    level: 0,
-    school: "Воплощение",
-    classes: ["Жрец"],
-  }
-];
+let charSpells = [];
 
-export default function Spells({charList}) {
+export default function Spells({charList, chars}) {
   const { role } = useContext(CurrentUserContext);
 
-  const [isForm, setIsForm] = useState({
+  const { charID } = useParams();
+
+  const [ isCreator, setIsCreator ] = useState(false);
+  const [ isForm, setIsForm ] = useState({
     isShow: false,
-    spell: {},
+    data: {},
     update: false
   });
-  const [spells, setSpells] = useState([]);
-  const [isAddLiseElements, setIsAddLiseElements] = useState(false);
+  const [ spells, setSpells ] = useState([]);
+  const [ isAddLiseElements, setIsAddLiseElements ] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
 
   const handleAddInAllSpells = () => {
     setIsForm({
       isShow: true,
-      spell: {},
+      data: {},
       update: false
     })
   };
 
-  const cbSubmit = (spell, update) => {
-    const newSpells = update
-      ? spells.map(s => {
-          if(spell._id === s._id) {
-            return spell
-          }
-          return s
-        })
-      : [...spells, spell];
-    
-    sessionStorage.setItem('spellsData', JSON.stringify(newSpells));
-    setSpells(newSpells);
-    setIsForm({
-      ...isForm,
-      isShow: false
-    });
+  const cbSubmit = async (data, update) => {
+    try {
+      const spell = update
+        ? await ResourcesService.updateSpell(data._id, data)
+        : await ResourcesService.createSpell(data);
+
+      let spellsData = JSON.parse(sessionStorage.getItem('spellsData'));
+      spellsData = update
+        ? spellsData.map(s => {
+            if(spell._id === s._id) {
+              return spell
+            }
+            return s
+          })
+        : [...spells, spell];
+      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
+      
+      setSpells(spellsData);
+      setIsForm({
+        ...isForm,
+        isShow: false
+      });
+    } catch(err) {
+      console.log(err);
+    }
   };
 
-  const getAllSpells = () => {
-    let spells = JSON.parse(sessionStorage.getItem('spellsData'));
+  const getAllSpells = async () => {
+    try {
+      let spells = JSON.parse(sessionStorage.getItem('spellsData'));
 
-    if(!spells) {
-      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
-      spells = spellsData;
+      if(!spells) {
+        spells = await ResourcesService.getSpells();
+        sessionStorage.setItem('spellsData', JSON.stringify(spells));
+      }
+
+      return spells
+    } catch(err) {
+      console.log(err);
+      return []
     }
-    return spells
-  }
+  };
+
+  const getCharSpells = useCallback(async () => {
+    try {    
+      charSpells = (await ResourcesService.getCharacter(charID)).data.spells;
+    } catch(err) {
+      console.log(err);
+    }
+  }, [charID]);
 
   const renderAllSpells = useCallback(() => {
-    let spells = getAllSpells();
-
-    spells = spells.map(spell => {
-      spell.inList = charSpells.some(s => s._id === spell._id);
-      return spell;
-    });
-    setSpells(spells);
+    getAllSpells()
+      .then(res => {
+        res = res.map(spell => {
+          spell.inList = charSpells.some(s => s._id === spell._id);
+          return spell;
+        });
+        setSpells(res);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   const renderCharSpells = () => {
@@ -108,16 +118,50 @@ export default function Spells({charList}) {
     setIsAddLiseElements(true);
   }
 
-  const cbClose = (spell) => {
-    charSpells = charSpells.filter(s => s._id !== spell._id);
-    if(!isAddLiseElements) {
-      setSpells(charSpells);
+  const cbClose = async (data) => {
+    try {
+      const { _id: spellID } = data;
+      const spellsData = charSpells.filter(s => s._id !== spellID);
+      charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
+
+      if(!isAddLiseElements) {
+        setSpells(charSpells);
+      }
+    } catch(err) {
+      console.log(err);
     }
   };
 
-  const cbPlus = (spell) => {
-    charSpells.push(spell);
+  const cbPlus = async (data) => {
+    try {
+      const spellsData = charSpells.push(data);
+      charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
+    } catch(err) {
+      console.log(err);
+    }
   };
+
+  const cbDell = async (data) => {
+    try {
+      const { _id: spellID } = data;
+      await ResourcesService.deleteSpell(spellID);
+  
+      let spellsData = JSON.parse(sessionStorage.getItem('spellsData'));
+      spellsData = spellsData.filter(s => s._id !== spellID);
+      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
+  
+      setSpells(spellsData);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+  const checkCreatorRights = useCallback(() => {
+    if(chars.length) {
+      const rights = chars.some(c => c._id === charID);
+      setIsCreator(rights);
+    }
+  }, [chars, charID]);
 
   const filterSpells = useCallback((spells) => {
     let filteredSpells = [...spells];
@@ -131,16 +175,21 @@ export default function Spells({charList}) {
 
   useEffect(() => {
     if(!charList) {
-      const spells = getAllSpells();
-      
-      setSpells(spells);
-    } else if(!charSpells.length) {
-      setIsAddLiseElements(true);
-      renderAllSpells();
+      getAllSpells()
+        .then(res => setSpells(res))
+        .catch(err => console.log(err));
     } else {
-      renderCharSpells();
+      checkCreatorRights();
+      getCharSpells();
+
+      if(!charSpells.length) {
+        setIsAddLiseElements(true);
+        renderAllSpells();
+      } else {
+        renderCharSpells();
+      }
     }
-  }, [charList, renderAllSpells]);
+  }, [charList, getCharSpells, renderAllSpells, checkCreatorRights]);
 
   return (
     <main>
@@ -148,15 +197,15 @@ export default function Spells({charList}) {
         {charList
           ? isAddLiseElements
             ? <CloseButton onClick={handleCloseButton} />
-            : <Button onClick={handlePlusButton} />
-          : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
+            : <IconButton icon={<Plus size={24}/>} onClick={handlePlusButton} />
+          : role === 'Admin' && <IconButton icon={<Plus size={24}/>} onClick={handleAddInAllSpells} />
         }
       <MasonryContainer>
         {filterSpells(spells).map((spell) =>
-          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} />
+          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
         )}
       </MasonryContainer>
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={true} />
     </main>
   );
 }

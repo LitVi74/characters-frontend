@@ -1,31 +1,88 @@
+import { useState, useCallback, useEffect } from 'react';
 import { ListGroup, Stack } from 'react-bootstrap';
+
+import ResourcesService from '../../service/ResoursesService/ResourcesService';
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
+import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
+import IconButton from "../../components/IconButton/IconButton";
+import {Plus} from "react-bootstrap-icons";
 
-const characters = [
-  {
-    id: "1",
-    name: "Character 1",
-  },
-  {
-    id: "2",
-    name: "Character 2",
-  },
-  {
-    id: "3",
-    name: "Character 3",
-  },
-]
+export default function Characters({ chars, setChars }) {
+  const [ isForm, setIsForm ] = useState({
+    isShow: false,
+    data: {},
+    update: false
+  });
 
-export default function Characters() {
+  const handleAddUserChar = () => {
+    setIsForm({
+      isShow: true,
+      data: {},
+      update: false
+    });
+  };
+
+  const cbSubmit = async (data, update) => {
+    try {
+      const { _id, name } = data;
+      const char = update
+        ? await ResourcesService.updateCharacter(_id, name)
+        : await ResourcesService.createCharacter(name)
+
+      const newChars = update
+        ? chars.map(s => {
+            if(char._id === s._id) {
+              return char
+            }
+            return s
+          })
+        : [...chars, char];
+      
+      setChars(newChars);
+      setIsForm({
+        ...isForm,
+        isShow: false
+      });
+    } catch(err) {
+      console.log(err);
+    }
+  };
+
+  const cbClose = async (char) => {
+    try {
+      const { _id: charID } = char;
+      const charData = await ResourcesService.deleteCharacter(charID);
+      const newChars = chars.filter(c => c._id !== charData._id);
+      setChars(newChars)
+    } catch(err) {
+      console.log(err);
+    }
+  };
+
+  const renderInitialCharacters = useCallback(async () => {
+    try {
+      const { data } = await ResourcesService.getUserCharacters();
+
+      setChars(data);
+    } catch(err) {
+      console.log(err);
+    }
+  }, [setChars]);
+
+  useEffect(() => {
+    renderInitialCharacters();
+  }, [renderInitialCharacters]);
+
   return (
-    <Stack as="main" className="gap-2 align-self-center">
+    <Stack as="main" className="gap-2 align-self-center px-5">
       <h1>Characters Page</h1>
-      <ListGroup>
-        {characters.map(({id, name}) =>
-          <CharacterLink key={id} id={id} name={name} />
+      <IconButton icon={<Plus size={24}/>} onClick={handleAddUserChar} className="my-0 mx-auto" />
+      <ListGroup as={"ul"}>
+        {chars.map((char) =>
+          <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
         )}
       </ListGroup>
-
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={false} />
     </Stack>
   );
 }

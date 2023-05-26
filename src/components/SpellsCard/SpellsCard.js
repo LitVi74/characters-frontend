@@ -1,14 +1,15 @@
 import './SpellsCard.scss';
 
 import { useContext, useState } from 'react';
-import {Button, CloseButton} from 'react-bootstrap';
+import {CloseButton} from 'react-bootstrap';
 
 import CardMenu from '../CardMenu/CardMenu';
-import PlusButton from '../PlusButton/PlusButton';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
+import IconButton from "../IconButton/IconButton";
+import {Plus} from "react-bootstrap-icons";
 
-export default function SpellCard({cbForm, cbClose, cbPlus, spell, charList}) {
+export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charList, isCreator}) {
   const { role } = useContext(CurrentUserContext);
   const {
     inList,
@@ -37,15 +38,27 @@ export default function SpellCard({cbForm, cbClose, cbPlus, spell, charList}) {
     setIsСlosure(false);
   }
 
+  const handleUpdate = () => {
+    cbForm({
+      isShow: true,
+      data: spell,
+      update: true
+    })
+  };
+
+  const handleDelete = () => {
+    cbDell(spell)
+  };
+
   return (
     <li className='spell'>
       <div className='spell__container'>
         <h3 className='spell__title'>{name}</h3>
         {charList
-          ? isСlosure
+          ? isCreator && isСlosure
               ? <CloseButton onClick={handleCloseButton} />
-              : <Button onClick={handlePlusButton} />
-          : role === 'Admin' && <CardMenu cbForm={cbForm} spell={spell} />
+              : <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
+          : role === 'Admin' && <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell={true} />
         }
       </div>
       <div className='spell__container'>

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useGetCardWidth } from "./hooks/useGetCardWidth";
 import MasonryCard from "./MasonryCard/MasonryCard";
 
+
 export default function MasonryContainer({children}) {
   const ref = useRef(null);
   const cardWidth = useGetCardWidth(ref);

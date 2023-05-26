@@ -35,7 +35,7 @@ export default function SpellForm({cbSubmit, spell, update}) {
         />
       </Form.Group>
       <Form.Group controlId="spell-level">
-        <Form.Label>Название</Form.Label>
+        <Form.Label>Уровень</Form.Label>
         <Form.Select name="level" onChange={formik.handleChange} defaultValue={formik.initialValues.level}>
           <option value={0}>Заговор</option>
           <option value={1}>1 уровень</option>

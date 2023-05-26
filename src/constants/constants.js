@@ -155,6 +155,6 @@ const SPELL = {
   ],
 }
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://dnd-characters.ru/api';
 
 export { spellsData, PATHS, API_URL, SPELL };

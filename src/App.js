@@ -20,6 +20,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [ currentUser, setCurrentUser ] = useState({ email: '', role: 'Admin', isActivated: true});
+  const [ chars, setChars ] = useState([]);
 
   const cbRegister = async (email, password) => {
     try {
@@ -33,7 +34,7 @@ export default function App() {
   const cbLogin = async (email, password) => {
     try {
       const response = await AuthService.login(email, password);
-      const { email, role, isActivated, accessToken } = response.data;
+      const { role, isActivated, accessToken } = response.data;
       localStorage.setItem('token', accessToken);
       setCurrentUser({email, role, isActivated});
     } catch(err) {
@@ -80,7 +81,7 @@ export default function App() {
     },
     {
       path: PATHS.spells + '/:charID',
-      element: <Spells charList={true} />
+      element: <Spells charList={true} chars={chars} />
     },
     {
       path: '/',
@@ -88,7 +89,7 @@ export default function App() {
       children: [
         {
           path: PATHS.characters,
-          element: <Characters />
+          element: <Characters chars={chars} setChars={setChars}/>
         },
         {
           path: PATHS.spells,

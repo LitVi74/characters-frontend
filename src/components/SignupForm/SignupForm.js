@@ -9,11 +9,11 @@ export default function SignupForm({cbRegister}) {
         password: "",
         passwordRepeat: "",
       }}
-      onSubmit={async (values) => {
-        const {email, password, passwordRepeat} = values;
+      onSubmit={(values) => {
+        const { email, password, passwordRepeat } = values;
 
         if (password === passwordRepeat) {
-          await cbRegister(email, password);
+          cbRegister(email, password);
         }
       }}
     >
@@ -81,7 +81,7 @@ export default function SignupForm({cbRegister}) {
             <Form.Control.Feedback type="invalid">{errors.passwordRepeat}</Form.Control.Feedback>
           </Form.Group>
           <Button type="submit" variant="primary" className="w-100">
-            Войти
+            Зарегестрироваться
           </Button>
         </Form>
       )}

@@ -2,7 +2,8 @@ import api from './ResourcesAxios';
 
 export default class ResourcesService {
   static async getSpells() {
-    return api.get('/spells')
+    const response = await api.get('/spells');
+    return response.data;
   }
 
   static async createSpell(data) {
@@ -21,7 +22,7 @@ export default class ResourcesService {
     return api.get('/characters')
   }
 
-  static async createCharacters(name) {
+  static async createCharacter(name) {
     return api.post('/characters', {name})
   }
 
@@ -33,7 +34,7 @@ export default class ResourcesService {
     return api.delete(`/characters/${charId}`)
   }
 
-  static async updateCharacter(charId) {
-    return api.patch(`/characters/${charId}`)
+  static async updateCharacter(charId, name) {
+    return api.patch(`/characters/${charId}`, {name})
   }
 }
