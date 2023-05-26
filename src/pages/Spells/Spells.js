@@ -7,6 +7,8 @@ import MasonryContainer from "../../components/MasonryContainer/MasonryContainer
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
+import SpellFilters from "../../components/SpellFilters/SpellFilters";
+import SpellCard from "../../components/SpellsCard/SpellsCard";
 
 let charSpells = [];
 
@@ -23,6 +25,7 @@ export default function Spells({charList, chars}) {
   });
   const [ spells, setSpells ] = useState([]);
   const [ isAddLiseElements, setIsAddLiseElements ] = useState(false); // переключатель добавления карточек в чарлист
+  const [filterActionList, setFilterActionList] = useState([]);
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -158,6 +161,16 @@ export default function Spells({charList, chars}) {
     }
   }, [chars, charID]);
 
+  const filterSpells = useCallback((spells) => {
+    let filteredSpells = [...spells];
+
+    filterActionList.forEach((filterAction) => {
+      filteredSpells = filterAction(filteredSpells);
+    })
+
+    return filteredSpells;
+  }, [filterActionList]);
+
   useEffect(() => {
     if(!charList) {
       getAllSpells()
@@ -177,15 +190,20 @@ export default function Spells({charList, chars}) {
   }, [charList, getCharSpells, renderAllSpells, checkCreatorRights]);
 
   return (
-    <main className="w-100 flex-grow-1">
-      {charList 
-        ? isCreator && isAddLiseElements 
-          ? <CloseButton onClick={handleCloseButton} />
-          : <Button onClick={handlePlusButton} />
-        : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
-      }
-      <MasonryContainer cbForm={setIsForm} cbDell={cbDell} spells={spells} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={true} />
+    <main>
+        <SpellFilters filterActionList={filterActionList} setFilterActionList={setFilterActionList}/>
+        {charList
+          ? isAddLiseElements
+            ? <CloseButton onClick={handleCloseButton} />
+            : <Button onClick={handlePlusButton} />
+          : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
+        }
+      <MasonryContainer>
+        {filterSpells(spells).map((spell) =>
+          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
+        )}
+      </MasonryContainer>
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </main>
   );
 }

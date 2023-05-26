@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRoutes } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Header from "./components/Header/Header";
@@ -14,9 +14,12 @@ import AuthService from "./service/AuthService/AuthService";
 import { PATHS } from './constants/constants';
 
 import { CurrentUserContext } from './contexts/currentUserContext';
+import Error404 from "./pages/Error404/Error404";
 
 export default function App() {
-  const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [ currentUser, setCurrentUser ] = useState({ email: '', role: 'Admin', isActivated: true});
   const [ chars, setChars ] = useState([]);
 
   const cbRegister = async (email, password) => {
@@ -77,35 +80,38 @@ export default function App() {
       element: <SignUp cbRegister={cbRegister} />,
     },
     {
-      path: PATHS.characters,
-      element:
-        <ProtectedRoute
-          component={Characters}
-          chars={chars}
-          setChars={setChars}
-        />
-    },
-    {
       path: PATHS.spells + '/:charID',
       element: <Spells charList={true} chars={chars} />
     },
     {
-      path: PATHS.spells,
-      element: 
-        <ProtectedRoute 
-          component={Spells}
-          charList={false}
-          chars={chars}
-        />
+      path: '/',
+      element:<ProtectedRoute />,
+      children: [
+        {
+          path: PATHS.characters,
+          element: <Characters chars={chars} setChars={setChars}/>
+        },
+        {
+          path: PATHS.spells,
+          element: <Spells charList={false} />
+        },
+        {
+          path: '*',
+          element: <Navigate to={PATHS.page404} />
+        }
+      ]
     },
     {
-      path: '*',
-      element:         
-        <ProtectedRoute 
-          component={Characters}
-        />
+      path: PATHS.page404,
+      element: <Error404 />
     }
   ]);
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate(PATHS.characters);
+    }
+  }, [location])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

@@ -4,14 +4,17 @@ import { useRef } from "react";
 import { useGetCardWidth } from "./hooks/useGetCardWidth";
 import MasonryCard from "./MasonryCard/MasonryCard";
 
-export default function MasonryContainer({cbForm, cbDell, cbClose, cbPlus, spells, charList, isCreator }) {
+
+export default function MasonryContainer({children}) {
   const ref = useRef(null);
   const cardWidth = useGetCardWidth(ref);
 
   return (
     <section className="masonry__container" ref={ref}>
-      {spells.map((spell) =>
-      <MasonryCard key={spell._id} cbForm={cbForm} cbDell={cbDell} spell={spell} charList={charList} cardWidth={cardWidth} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
+      {children.map((element) =>
+        <MasonryCard key={`m-card-${element.key}`} cardWidth={cardWidth}>
+          {element}
+        </MasonryCard>
       )}
     </section>
   );
