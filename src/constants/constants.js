@@ -119,7 +119,8 @@ const PATHS = {
   login: "/login",
   signup: "/signup",
   characters: "/characters",
-  spells: "/spells"
+  spells: "/spells",
+  page404: "/404",
 }
 
 const SPELL = {
