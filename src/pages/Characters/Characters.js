@@ -1,9 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
-import { ListGroup, Stack, Button } from 'react-bootstrap';
+import { ListGroup, Stack } from 'react-bootstrap';
 
 import ResourcesService from '../../service/ResoursesService/ResourcesService';
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
+import IconButton from "../../components/IconButton/IconButton";
+import {Plus} from "react-bootstrap-icons";
 
 export default function Characters({ chars, setChars }) {
   const [ isForm, setIsForm ] = useState({
@@ -72,10 +74,10 @@ export default function Characters({ chars, setChars }) {
   }, [renderInitialCharacters]);
 
   return (
-    <Stack as="main" className="gap-2 align-self-center">
+    <Stack as="main" className="gap-2 align-self-center px-5">
       <h1>Characters Page</h1>
-      <Button onClick={handleAddUserChar} />
-      <ListGroup>
+      <IconButton icon={<Plus size={24}/>} onClick={handleAddUserChar} className="my-0 mx-auto" />
+      <ListGroup as={"ul"}>
         {chars.map((char) =>
           <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
         )}

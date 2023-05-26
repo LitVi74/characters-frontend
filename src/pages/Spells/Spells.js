@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { CloseButton, Button } from 'react-bootstrap';
+import { CloseButton } from 'react-bootstrap';
 
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
@@ -9,6 +9,8 @@ import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 import { CurrentUserContext } from '../../contexts/currentUserContext';
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
+import IconButton from "../../components/IconButton/IconButton";
+import {Plus} from "react-bootstrap-icons";
 
 let charSpells = [];
 
@@ -195,15 +197,15 @@ export default function Spells({charList, chars}) {
         {charList
           ? isAddLiseElements
             ? <CloseButton onClick={handleCloseButton} />
-            : <Button onClick={handlePlusButton} />
-          : role === 'Admin' && <Button onClick={handleAddInAllSpells} />
+            : <IconButton icon={<Plus size={24}/>} onClick={handlePlusButton} />
+          : role === 'Admin' && <IconButton icon={<Plus size={24}/>} onClick={handleAddInAllSpells} />
         }
       <MasonryContainer>
         {filterSpells(spells).map((spell) =>
           <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
         )}
       </MasonryContainer>
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
+      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={true} />
     </main>
   );
 }

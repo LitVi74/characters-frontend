@@ -1,11 +1,13 @@
 import './SpellsCard.scss';
 
 import { useContext, useState } from 'react';
-import {Button, CloseButton} from 'react-bootstrap';
+import {CloseButton} from 'react-bootstrap';
 
 import CardMenu from '../CardMenu/CardMenu';
 
 import { CurrentUserContext } from '../../contexts/currentUserContext';
+import IconButton from "../IconButton/IconButton";
+import {Plus} from "react-bootstrap-icons";
 
 export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charList, isCreator}) {
   const { role } = useContext(CurrentUserContext);
@@ -55,7 +57,7 @@ export default function SpellCard({cbForm, cbDell, cbClose, cbPlus, spell, charL
         {charList
           ? isCreator && isСlosure
               ? <CloseButton onClick={handleCloseButton} />
-              : <Button onClick={handlePlusButton} />
+              : <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
           : role === 'Admin' && <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell={true} />
         }
       </div>
