@@ -22,15 +22,6 @@ export default function App() {
   const [ currentUser, setCurrentUser ] = useState({ email: '', role: 'Admin', isActivated: true});
   const [ chars, setChars ] = useState([]);
 
-  const cbRegister = async (email, password) => {
-    try {
-      const response = await AuthService.registration(email, password);
-      localStorage.setItem('token', response.data.accessToken);
-    } catch(err) {
-      console.log(err);
-    }
-  };
-
   const cbLogin = async (email, password) => {
     try {
       const response = await AuthService.login(email, password);
@@ -77,7 +68,7 @@ export default function App() {
     },
     {
       path: PATHS.signup,
-      element: <SignUp cbRegister={cbRegister} />,
+      element: <SignUp />,
     },
     {
       path: PATHS.spells + '/:charID',
@@ -114,7 +105,7 @@ export default function App() {
   }, [location])
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
       <Header cbLogout={cbLogout} />
       {routes}
     </CurrentUserContext.Provider>
