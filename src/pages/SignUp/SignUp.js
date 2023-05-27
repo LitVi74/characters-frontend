@@ -4,7 +4,7 @@ import {useState} from "react";
 import InfoToast from "../../components/InfoToast/InfoToast";
 
 export default function SignUp() {
-  const [showToast, setSowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [signupResult, setSignupResult] = useState({
     hasError: false,
     errorMessage: '',
@@ -13,7 +13,7 @@ export default function SignUp() {
   const cbRegister = async (email, password) => {
     const {hasError, errorMessage} = await AuthService.registration(email, password);
     setSignupResult({ hasError, errorMessage });
-    setSowToast(true);
+    setShowToast(true);
   };
 
   return (
@@ -22,7 +22,7 @@ export default function SignUp() {
      <SignupForm cbRegister={cbRegister} />
      <InfoToast
        show={showToast}
-       setShow={setSowToast}
+       setShow={setShowToast}
        variant={signupResult.hasError ? 'danger' : 'success'}
        title={signupResult.hasError ? 'Что-то пошло не так' : 'Почти готово'}
        message={signupResult.hasError

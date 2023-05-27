@@ -13,13 +13,32 @@ export default class AuthService {
     } catch(err) {
       result.hasError = true;
       result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
-      console.log(err.message)
+      console.log(err)
     }
     return result;
   }
 
   static async login(email, password) {
-    return api.post('/signin', {email, password})
+    let result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    }
+
+    try {
+      const response = await api.post('/signin', {email, password})
+
+      const { role, isActivated, accessToken } = response.data;
+      localStorage.setItem('token', accessToken);
+      result.data = { email, role, isActivated };
+    } catch(err) {
+      result.data = {}
+      result.hasError = true;
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      console.log(err)
+    }
+
+    return result;
   }
 
   static async logout() {

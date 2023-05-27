@@ -19,19 +19,8 @@ import Error404 from "./pages/Error404/Error404";
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [ currentUser, setCurrentUser ] = useState({ email: '', role: 'Admin', isActivated: true});
+  const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false});
   const [ chars, setChars ] = useState([]);
-
-  const cbLogin = async (email, password) => {
-    try {
-      const response = await AuthService.login(email, password);
-      const { role, isActivated, accessToken } = response.data;
-      localStorage.setItem('token', accessToken);
-      setCurrentUser({email, role, isActivated});
-    } catch(err) {
-      console.log(err);
-    }
-  };
 
   const cbLogout = async () => {
     try {
@@ -57,14 +46,15 @@ export default function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      getUserData();
+      getUserData()
+        .then(() => navigate(PATHS.characters));
     }
   }, [])
 
   const routes = useRoutes([
     {
       path: PATHS.login,
-      element: <LogIn cbLogin={cbLogin} />,
+      element: <LogIn />,
     },
     {
       path: PATHS.signup,
@@ -99,10 +89,10 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' && currentUser.isActivated) {
       navigate(PATHS.characters);
     }
-  }, [location])
+  }, [location, currentUser])
 
   return (
     <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>

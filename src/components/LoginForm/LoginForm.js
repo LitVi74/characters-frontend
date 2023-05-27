@@ -1,23 +1,17 @@
 import { Formik, Field } from "formik";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-
-import { PATHS } from "../../constants/constants";
 
 export default function LoginForm({cbLogin}) {
-  const navigate = useNavigate();
-
   return (
     <Formik 
       initialValues={{
         email: "",
         password: "",
       }}
-      onSubmit={async (values) => {
+      onSubmit={(values) => {
         const { email, password } = values;
 
-        await cbLogin(email, password)
-        navigate(PATHS.characters);
+        cbLogin(email, password);
       }}
     >
       {({ handleSubmit, errors, touched }) => (
