@@ -61,9 +61,9 @@ export default function Characters({ chars, setChars }) {
 
   const renderInitialCharacters = useCallback(async () => {
     try {
-      const { data } = await ResourcesService.getUserCharacters();
+      const initialChars = await ResourcesService.getUserCharacters();
 
-      setChars(data);
+      setChars(initialChars);
     } catch(err) {
       console.log(err);
     }

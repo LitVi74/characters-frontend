@@ -1,40 +1,52 @@
 import api from './ResourcesAxios';
 
 export default class ResourcesService {
+  static _extractData(res) {
+    return res.data;
+  }
+
   static async getSpells() {
-    const response = await api.get('/spells');
-    return response.data;
+    const res = await api.get('/spells');
+    return this._extractData(res);
   }
 
   static async createSpell(data) {
-    return api.post('/spells', data)
+    const res = await api.post('/spells', data);
+    return this._extractData(res);
   }
 
   static async deleteSpell(spellId) {
-    return api.delete(`/spells/${spellId}`)
+    const res = await api.delete(`/spells/${spellId}`);
+    return this._extractData(res);
   }
 
   static async updateSpell(spellId, data) {
-    return api.patch(`/spells/${spellId}`, data)
+    const res = await api.patch(`/spells/${spellId}`, data);
+    return this._extractData(res);
   }
 
   static async getUserCharacters() {
-    return api.get('/characters')
+    const res = await api.get('/characters');
+    return this._extractData(res);
   }
 
   static async createCharacter(name) {
-    return api.post('/characters', {name})
+    const res = await api.post('/characters', {name});
+    return this._extractData(res);
   }
 
   static async getCharacter(charId) {
-    return api.get(`/characters/${charId}`)
+    const res = await api.get(`/characters/${charId}`);
+    return this._extractData(res);
   }
 
   static async deleteCharacter(charId) {
-    return api.delete(`/characters/${charId}`)
+    const res = await api.delete(`/characters/${charId}`);
+    return this._extractData(res);
   }
 
   static async updateCharacter(charId, name) {
-    return api.patch(`/characters/${charId}`, {name})
+    const res = await api.patch(`/characters/${charId}`, {name});
+    return this._extractData(res);
   }
 }
