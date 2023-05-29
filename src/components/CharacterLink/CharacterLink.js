@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { ListGroupItem } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom';
 
 import { PATHS } from "../../constants/constants";
 
 import CardMenu from "../CardMenu/CardMenu";
 
 export default function CharacterLink({char, cbForm, cbClose}) {
+  const navigate = useNavigate();
   const {_id, name} = char;
 
   const handleUpdate = () => {
@@ -20,10 +20,16 @@ export default function CharacterLink({char, cbForm, cbClose}) {
     cbClose(char)
   };
 
+  const handleNavLink = (e) => {
+    if(e.target === e.currentTarget) {
+      navigate(PATHS.spells + `/${_id}`);
+    }
+  };
+
   return (
-    <ListGroupItem as={Link} to={PATHS.spells + `/${_id}`} action >
+    <li className='list-group-item' onClick={handleNavLink}>
       {name}
       <CardMenu cbForm={handleUpdate} cbDell={handleDelete} />
-    </ListGroupItem>
+    </li>
   );
 }

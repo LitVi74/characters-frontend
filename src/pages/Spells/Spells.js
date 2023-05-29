@@ -82,7 +82,7 @@ export default function Spells({charList, chars}) {
 
   const getCharSpells = useCallback(async () => {
     try {    
-      charSpells = (await ResourcesService.getCharacter(charID)).data.spells;
+      charSpells = (await ResourcesService.getCharacter(charID)).spells;
     } catch(err) {
       console.log(err);
     }
