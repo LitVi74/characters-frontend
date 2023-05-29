@@ -19,28 +19,8 @@ import Error404 from "./pages/Error404/Error404";
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [ currentUser, setCurrentUser ] = useState({ email: '', role: 'Admin', isActivated: true});
+  const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false});
   const [ chars, setChars ] = useState([]);
-
-  const cbRegister = async (email, password) => {
-    try {
-      const response = await AuthService.registration(email, password);
-      localStorage.setItem('token', response.data.accessToken);
-    } catch(err) {
-      console.log(err);
-    }
-  };
-
-  const cbLogin = async (email, password) => {
-    try {
-      const response = await AuthService.login(email, password);
-      const { role, isActivated, accessToken } = response.data;
-      localStorage.setItem('token', accessToken);
-      setCurrentUser({email, role, isActivated});
-    } catch(err) {
-      console.log(err);
-    }
-  };
 
   const cbLogout = async () => {
     try {
@@ -66,18 +46,19 @@ export default function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      getUserData();
+      getUserData()
+        .then(() => navigate(PATHS.characters));
     }
   }, [])
 
   const routes = useRoutes([
     {
       path: PATHS.login,
-      element: <LogIn cbLogin={cbLogin} />,
+      element: <LogIn />,
     },
     {
       path: PATHS.signup,
-      element: <SignUp cbRegister={cbRegister} />,
+      element: <SignUp />,
     },
     {
       path: PATHS.spells + '/:charID',
@@ -108,13 +89,13 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' && currentUser.isActivated) {
       navigate(PATHS.characters);
     }
-  }, [location])
+  }, [location, currentUser])
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
       <Header cbLogout={cbLogout} />
       {routes}
     </CurrentUserContext.Provider>
