@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import { useCallback, useState } from "react";
 
 const useFilterAction = (filterActionList, setFilterActionList) => {
   const [selectedLevels, setSelectedLevels] = useState([]);
@@ -8,14 +8,24 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
   const [selectedConcentration, setsSlectedConcentration] = useState([]);
   const [selectedCastingTime, setSelectedCastingTime] = useState([]);
 
-  const deleteFilterFunctionByName = useCallback((name) => {
-    setFilterActionList(filterActionList.filter(func => func.name !== name));
-  }, [filterActionList]);
+  const deleteFilterFunctionByName = useCallback(
+    (name) => {
+      setFilterActionList(
+        filterActionList.filter((func) => func.name !== name)
+      );
+    },
+    [filterActionList]
+  );
 
-  const addFilterFunctionToList = useCallback((filterFunc) => {
-    const functionList = filterActionList.filter(func => func.name !== filterFunc.name)
-    setFilterActionList([...functionList, filterFunc]);
-  }, [filterActionList])
+  const addFilterFunctionToList = useCallback(
+    (filterFunc) => {
+      const functionList = filterActionList.filter(
+        (func) => func.name !== filterFunc.name
+      );
+      setFilterActionList([...functionList, filterFunc]);
+    },
+    [filterActionList]
+  );
 
   const handleSearchInputBlur = useCallback((event) => {
     if (!event.currentTarget.value) {
@@ -23,10 +33,9 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const regExp = new RegExp(event.currentTarget.value, 'i');
-    const searchSpellsByName = (spells) => {
-      return spells.filter(spell => regExp.test(spell.name));
-    };
+    const regExp = new RegExp(event.currentTarget.value, "i");
+    const searchSpellsByName = (spells) =>
+      spells.filter((spell) => regExp.test(spell.name));
 
     addFilterFunctionToList(searchSpellsByName);
   }, []);
@@ -39,9 +48,8 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const searchSpellsByLevel = (spells) => {
-      return spells.filter(spell => event.includes(spell.level));
-    };
+    const searchSpellsByLevel = (spells) =>
+      spells.filter((spell) => event.includes(spell.level));
 
     addFilterFunctionToList(searchSpellsByLevel);
   }, []);
@@ -54,9 +62,10 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const searchSpellsByClass = (spell) => {
-      return spell.filter(spell => spell.classes.some(spellClass => event.includes(spellClass)));
-    }
+    const searchSpellsByClass = (spell) =>
+      spell.filter((spell) =>
+        spell.classes.some((spellClass) => event.includes(spellClass))
+      );
 
     addFilterFunctionToList(searchSpellsByClass);
   }, []);
@@ -69,9 +78,8 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const searchSpellsBySchool = (spell) => {
-      return spell.filter(spell => event.includes(spell.school));
-    }
+    const searchSpellsBySchool = (spell) =>
+      spell.filter((spell) => event.includes(spell.school));
 
     addFilterFunctionToList(searchSpellsBySchool);
   }, []);
@@ -84,9 +92,8 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const searchSpellsByRitual = (spell) => {
-      return spell.filter(spell => event.includes(spell.ritual));
-    }
+    const searchSpellsByRitual = (spell) =>
+      spell.filter((spell) => event.includes(spell.ritual));
 
     addFilterFunctionToList(searchSpellsByRitual);
   }, []);
@@ -99,9 +106,8 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const searchSpellsByConcentration = (spell) => {
-      return spell.filter(spell => event.includes(spell.ritual));
-    }
+    const searchSpellsByConcentration = (spell) =>
+      spell.filter((spell) => event.includes(spell.ritual));
 
     addFilterFunctionToList(searchSpellsByConcentration);
   }, []);
@@ -114,10 +120,9 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       return;
     }
 
-    const regExp = new RegExp(event.join('|'), 'i');
-    const searchSpellsByCastingTime = (spell) => {
-      return spell.filter(spell => regExp.test(spell.casting_time));
-    }
+    const regExp = new RegExp(event.join("|"), "i");
+    const searchSpellsByCastingTime = (spell) =>
+      spell.filter((spell) => regExp.test(spell.casting_time));
 
     addFilterFunctionToList(searchSpellsByCastingTime);
   }, []);
@@ -137,6 +142,6 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     selectedCastingTime,
     handleCastingTimeChange,
   };
-}
+};
 
 export default useFilterAction;

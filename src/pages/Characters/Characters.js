@@ -1,24 +1,24 @@
-import { useState, useCallback, useEffect } from 'react';
-import { ListGroup, Stack } from 'react-bootstrap';
+import { ListGroup, Stack } from "react-bootstrap";
+import { useState, useCallback, useEffect } from "react";
+import { Plus } from "react-bootstrap-icons";
 
-import ResourcesService from '../../service/ResoursesService/ResourcesService';
-import CharacterLink from "../../components/CharacterLink/CharacterLink";
-import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 import IconButton from "../../components/IconButton/IconButton";
-import {Plus} from "react-bootstrap-icons";
+import CharacterLink from "../../components/CharacterLink/CharacterLink";
+import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
+import ResourcesService from "../../service/ResoursesService/ResourcesService";
 
 export default function Characters({ chars, setChars }) {
-  const [ isForm, setIsForm ] = useState({
+  const [isForm, setIsForm] = useState({
     isShow: false,
     data: {},
-    update: false
+    update: false,
   });
 
   const handleAddUserChar = () => {
     setIsForm({
       isShow: true,
       data: {},
-      update: false
+      update: false,
     });
   };
 
@@ -27,23 +27,23 @@ export default function Characters({ chars, setChars }) {
       const { _id, name } = data;
       const char = update
         ? await ResourcesService.updateCharacter(_id, name)
-        : await ResourcesService.createCharacter(name)
+        : await ResourcesService.createCharacter(name);
 
       const newChars = update
-        ? chars.map(s => {
-            if(char._id === s._id) {
-              return char
+        ? chars.map((s) => {
+            if (char._id === s._id) {
+              return char;
             }
-            return s
+            return s;
           })
         : [...chars, char];
-      
+
       setChars(newChars);
       setIsForm({
         ...isForm,
-        isShow: false
+        isShow: false,
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -52,9 +52,9 @@ export default function Characters({ chars, setChars }) {
     try {
       const { _id: charID } = char;
       const charData = await ResourcesService.deleteCharacter(charID);
-      const newChars = chars.filter(c => c._id !== charData._id);
-      setChars(newChars)
-    } catch(err) {
+      const newChars = chars.filter((c) => c._id !== charData._id);
+      setChars(newChars);
+    } catch (err) {
       console.log(err);
     }
   };
@@ -64,7 +64,7 @@ export default function Characters({ chars, setChars }) {
       const initialChars = await ResourcesService.getUserCharacters();
 
       setChars(initialChars);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }, [setChars]);
@@ -76,13 +76,27 @@ export default function Characters({ chars, setChars }) {
   return (
     <Stack as="main" className="gap-2 align-self-center px-5">
       <h1>Characters Page</h1>
-      <IconButton icon={<Plus size={24}/>} onClick={handleAddUserChar} className="my-0 mx-auto" />
-      <ListGroup as={"ul"}>
-        {chars.map((char) =>
-          <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
-        )}
+      <IconButton
+        icon={<Plus size={24} />}
+        onClick={handleAddUserChar}
+        className="my-0 mx-auto"
+      />
+      <ListGroup as="ul">
+        {chars.map((char) => (
+          <CharacterLink
+            key={char._id}
+            char={char}
+            cbClose={cbClose}
+            cbForm={setIsForm}
+          />
+        ))}
       </ListGroup>
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={false} />
+      <SpellModalForm
+        isForm={isForm}
+        cbForm={setIsForm}
+        cbSubmit={cbSubmit}
+        isSpellForm={false}
+      />
     </Stack>
   );
 }

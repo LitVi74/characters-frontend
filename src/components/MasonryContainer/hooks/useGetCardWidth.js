@@ -1,14 +1,16 @@
-import constants from '../../../constants/constants.scss';
+import { useCallback, useEffect, useState } from "react";
+import constants from "../../../constants/constants.scss";
 
-import {useCallback, useEffect, useState} from "react";
-
-function useGetCardWidth (containerRef) {
+function useGetCardWidth(containerRef) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
 
   const handleResize = useCallback(() => {
-    setTimeout(setContainerWidth.bind(null,containerRef.current?.clientWidth ?? 0), 50)
-  }, [containerRef])
+    setTimeout(
+      setContainerWidth.bind(null, containerRef.current?.clientWidth ?? 0),
+      50
+    );
+  }, [containerRef]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);

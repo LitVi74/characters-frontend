@@ -1,6 +1,6 @@
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from "react-bootstrap/Dropdown";
 
-export default function CardMenu({cbForm, cbDell}) {
+export default function CardMenu({ cbForm, cbDell }) {
   return (
     <Dropdown>
       <Dropdown.Toggle variant="success" id="dropdown-basic" size="sm" />

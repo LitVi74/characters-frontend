@@ -1,8 +1,8 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-import { CurrentUserContext } from '../contexts/currentUserContext';
-import {PATHS} from "../constants/constants";
+import { CurrentUserContext } from "../contexts/currentUserContext";
+import { PATHS } from "../constants/constants";
 
 export default function ProtectedRoute() {
   const { currentUser } = useContext(CurrentUserContext);
@@ -15,5 +15,5 @@ export default function ProtectedRoute() {
         <Navigate to={PATHS.login} replace />
       )}
     </>
-  )
+  );
 }

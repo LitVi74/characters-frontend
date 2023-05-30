@@ -1,4 +1,4 @@
-import api from './ResourcesAxios';
+import api from "./ResourcesAxios";
 
 export default class ResourcesService {
   static _extractData(res) {
@@ -6,12 +6,12 @@ export default class ResourcesService {
   }
 
   static async getSpells() {
-    const res = await api.get('/spells');
+    const res = await api.get("/spells");
     return this._extractData(res);
   }
 
   static async createSpell(data) {
-    const res = await api.post('/spells', data);
+    const res = await api.post("/spells", data);
     return this._extractData(res);
   }
 
@@ -26,12 +26,12 @@ export default class ResourcesService {
   }
 
   static async getUserCharacters() {
-    const res = await api.get('/characters');
+    const res = await api.get("/characters");
     return this._extractData(res);
   }
 
   static async createCharacter(name) {
-    const res = await api.post('/characters', {name});
+    const res = await api.post("/characters", { name });
     return this._extractData(res);
   }
 
@@ -46,7 +46,7 @@ export default class ResourcesService {
   }
 
   static async updateCharacter(charId, name) {
-    const res = await api.patch(`/characters/${charId}`, {name});
+    const res = await api.patch(`/characters/${charId}`, { name });
     return this._extractData(res);
   }
 }

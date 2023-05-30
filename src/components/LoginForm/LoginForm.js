@@ -1,9 +1,9 @@
 import { Formik, Field } from "formik";
 import { Button, Form } from "react-bootstrap";
 
-export default function LoginForm({cbLogin}) {
+export default function LoginForm({ cbLogin }) {
   return (
-    <Formik 
+    <Formik
       initialValues={{
         email: "",
         password: "",
@@ -24,7 +24,8 @@ export default function LoginForm({cbLogin}) {
               type="email"
               isInvalid={!!errors.email && touched.email}
               validate={(value) => {
-                const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+                const reg =
+                  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                 let error;
 
                 if (!reg.test(value)) {
@@ -34,7 +35,9 @@ export default function LoginForm({cbLogin}) {
                 return error;
               }}
             />
-            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="password">
             <Form.Label>Пароль</Form.Label>
@@ -50,10 +53,12 @@ export default function LoginForm({cbLogin}) {
                   error = "Пароль должен быть больше 6 символов";
                 }
 
-                  return error;
+                return error;
               }}
-              />
-              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
           <Button type="submit" variant="primary" className="w-100">
             Войти

@@ -1,12 +1,14 @@
-import {FormControl, InputGroup} from "react-bootstrap";
-import {Funnel} from "react-bootstrap-icons";
-import IconButton from "../IconButton/IconButton";
-import useFilterAction from "./hooks/useFilterAction";
-import FiltersModal from "../FiltersModal/FiltersModal";
-import {useState} from "react";
-import {SPELL} from "../../constants/constants";
+import { useState } from "react";
+import { Funnel } from "react-bootstrap-icons";
+import { FormControl, InputGroup } from "react-bootstrap";
 
-const SpellFilters = ({filterActionList, setFilterActionList}) => {
+import IconButton from "../IconButton/IconButton";
+import FiltersModal from "../FiltersModal/FiltersModal";
+import useFilterAction from "./hooks/useFilterAction";
+
+import { SPELL } from "../../constants/constants";
+
+function SpellFilters({ filterActionList, setFilterActionList }) {
   const [show, setShow] = useState(false);
 
   const filterAction = useFilterAction(filterActionList, setFilterActionList);
@@ -16,7 +18,7 @@ const SpellFilters = ({filterActionList, setFilterActionList}) => {
       selectedValue: filterAction.selectedLevels,
       onChange: filterAction.handleLevelsChange,
       values: SPELL.levels,
-      valuesName: ['Заговор'],
+      valuesName: ["Заговор"],
     },
     {
       name: "Класс",
@@ -35,14 +37,14 @@ const SpellFilters = ({filterActionList, setFilterActionList}) => {
       selectedValue: filterAction.selectedRitual,
       onChange: filterAction.handleRitualChange,
       values: [true, false],
-      valuesName: ['Ритуал', 'Не ритуал'],
+      valuesName: ["Ритуал", "Не ритуал"],
     },
     {
       name: "Концентрация",
       selectedValue: filterAction.selectedConcentration,
       onChange: filterAction.handleConcentrationChange,
       values: [true, false],
-      valuesName: ['Требует концентрации', 'Не требует концентрации'],
+      valuesName: ["Требует концентрации", "Не требует концентрации"],
     },
     {
       name: "Время наложения",
@@ -53,18 +55,31 @@ const SpellFilters = ({filterActionList, setFilterActionList}) => {
   ];
 
   const handleModalClose = () => {
-    setShow(false)
-  }
+    setShow(false);
+  };
 
   return (
     <div className="d-flex align-items-center justify-content-center gap-3 p-lg-5">
       <InputGroup>
-        <FormControl onBlur={filterAction.handleSearchInputBlur} onKeyDown={(event) => event.keyCode === 13 && event.currentTarget.blur()}/>
-        <IconButton variant="outline-primary" icon={<Funnel size={20} />} onClick={() => setShow(true)} />
+        <FormControl
+          onBlur={filterAction.handleSearchInputBlur}
+          onKeyDown={(event) =>
+            event.keyCode === 13 && event.currentTarget.blur()
+          }
+        />
+        <IconButton
+          variant="outline-primary"
+          icon={<Funnel size={20} />}
+          onClick={() => setShow(true)}
+        />
       </InputGroup>
-      <FiltersModal filters={filters} show={show} handleModalClose={handleModalClose} />
+      <FiltersModal
+        filters={filters}
+        show={show}
+        handleModalClose={handleModalClose}
+      />
     </div>
   );
-};
+}
 
 export default SpellFilters;

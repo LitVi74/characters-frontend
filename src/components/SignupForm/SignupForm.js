@@ -1,7 +1,7 @@
-import { Field, Formik } from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import { Field, Formik } from "formik";
+import { Button, Form } from "react-bootstrap";
 
-export default function SignupForm({cbRegister}) {
+export default function SignupForm({ cbRegister }) {
   return (
     <Formik
       initialValues={{
@@ -17,7 +17,7 @@ export default function SignupForm({cbRegister}) {
         }
       }}
     >
-      {({handleSubmit, errors, touched, values }) => (
+      {({ handleSubmit, errors, touched, values }) => (
         <Form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
           <Form.Group controlId="email">
             <Form.Label>Адрес почты</Form.Label>
@@ -28,7 +28,8 @@ export default function SignupForm({cbRegister}) {
               variant="filled"
               isInvalid={!!errors.email && touched.email}
               validate={(value) => {
-                const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+                const reg =
+                  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                 let error;
 
                 if (!reg.test(value)) {
@@ -38,9 +39,11 @@ export default function SignupForm({cbRegister}) {
                 return error;
               }}
             />
-            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group  controlId="password">
+          <Form.Group controlId="password">
             <Form.Label>Пароль</Form.Label>
             <Field
               as={Form.Control}
@@ -58,7 +61,9 @@ export default function SignupForm({cbRegister}) {
                 return error;
               }}
             />
-            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="passwordRepeat">
             <Form.Label>Повторите пароль</Form.Label>
@@ -78,7 +83,9 @@ export default function SignupForm({cbRegister}) {
                 return error;
               }}
             />
-            <Form.Control.Feedback type="invalid">{errors.passwordRepeat}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.passwordRepeat}
+            </Form.Control.Feedback>
           </Form.Group>
           <Button type="submit" variant="primary" className="w-100">
             Зарегестрироваться
