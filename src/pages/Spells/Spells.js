@@ -15,7 +15,7 @@ import {Plus} from "react-bootstrap-icons";
 let charSpells = [];
 
 export default function Spells({charList, chars}) {
-  const { role } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
 
   const { charID } = useParams();
 
@@ -198,7 +198,7 @@ export default function Spells({charList, chars}) {
           ? isAddLiseElements
             ? <CloseButton onClick={handleCloseButton} />
             : <IconButton icon={<Plus size={24}/>} onClick={handlePlusButton} />
-          : role === 'Admin' && <IconButton icon={<Plus size={24}/>} onClick={handleAddInAllSpells} />
+          : currentUser.role === 'Admin' && <IconButton icon={<Plus size={24}/>} onClick={handleAddInAllSpells} />
         }
       <MasonryContainer>
         {filterSpells(spells).map((spell) =>

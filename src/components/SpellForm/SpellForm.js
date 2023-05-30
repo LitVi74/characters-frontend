@@ -4,22 +4,41 @@ import {useFormik} from "formik";
 export default function SpellForm({cbSubmit, spell, update}) {
   const formik = useFormik({
     initialValues: {
-      _id: spell?._id ?? "",
+      id: spell?._id ?? "",
       name: spell?.name ?? "",
       level: spell?.level ?? 0,
       school: spell?.school ?? "",
-      casting_time: spell?.casting_time ?? "",
-      range: spell?.range ?? 0,
+      castingTime: spell?.casting_time?.split(', ')?.[0] ?? "",
+      castingTimeAdditional: spell?.casting_time?.split(', ')?.[1] ?? "",
+      range: spell?.range ?? -1,
       components: spell?.components ?? [],
       material: spell?.material ?? "",
+      ritual: spell?.ritual ?? false,
       concentration: spell?.concentration ?? false,
       duration: spell?.duration ?? "",
       classes: spell?.classes ?? [],
       desc: spell?.desc ?? "",
-      higher_level: spell?.higher_level ?? ""
+      higherLevel: spell?.higher_level ?? ""
     },
     onSubmit: (values) => {
-      cbSubmit(values, update);
+      const data = {
+        _id: values.id,
+        name: values.name.trim(),
+        level: +values.level,
+        school: values.school,
+        casting_time: [values.castingTime, values.castingTimeAdditional].join(', '),
+        range: +values.range,
+        components: values.components,
+        material: values.material.trim(),
+        ritual: values.ritual,
+        concentration: values.concentration,
+        duration: values.duration.trim(),
+        classes: values.classes,
+        desc: values.desc.trim(),
+        higher_level: values.higherLevel.trim(),
+      }
+
+      cbSubmit(data, update);
     },
   })
 
@@ -49,6 +68,26 @@ export default function SpellForm({cbSubmit, spell, update}) {
           <option value={8}>9 уровень</option>
         </Form.Select>
       </Form.Group>
+      <Form.Group controlId="spell-range">
+        <Form.Label>Дистанция</Form.Label>
+        <Form.Select name="range" onChange={formik.handleChange} defaultValue={formik.initialValues.range}>
+          <option hidden value={-1}>На себя</option>
+          <option value={0}>Касание</option>
+          <option value={5}>5 футов</option>
+          <option value={10}>10 футов</option>
+          <option value={25}>25 футов</option>
+          <option value={30}>30 футов</option>
+          <option value={40}>40 футов</option>
+          <option value={50}>50 футов</option>
+          <option value={60}>60 футов</option>
+          <option value={90}>90 футов</option>
+          <option value={100}>100 футов</option>
+          <option value={150}>150 футов</option>
+          <option value={300}>300 футов</option>
+          <option value={400}>400 футов</option>
+          <option value={1000}>1000 футов</option>
+        </Form.Select>
+      </Form.Group>
       <Form.Group controlId="spell-school">
         <Form.Label>Школа</Form.Label>
         <Form.Select name="school" onChange={formik.handleChange} defaultValue={formik.initialValues.school}>
@@ -66,9 +105,9 @@ export default function SpellForm({cbSubmit, spell, update}) {
       <Form.Group controlId="spell-cast-time">
         <Form.Label>Время накладывания</Form.Label>
         <Form.Select
-          name="casting_time"
+          name="castingTime"
           onChange={formik.handleChange}
-          defaultValue={formik.initialValues.casting_time}
+          defaultValue={formik.initialValues.castingTime}
         >
           <option hidden value=""> </option>
           <option value="1 бонусное действие">бонусное действие</option>
@@ -82,6 +121,17 @@ export default function SpellForm({cbSubmit, spell, update}) {
           <option value="12 часов">12 часов</option>
           <option value="24 часов">24 часов</option>
         </Form.Select>
+      </Form.Group>
+      <Form.Group controlId="spell-cast-time-additional-condition">
+        <Form.Label>Дополнительное условие накладывания заклинания</Form.Label>
+        <Form.Control
+          as="textarea"
+          name="castingTimeAdditional"
+          type="text"
+          onChange={formik.handleChange}
+          defaultValue={formik.initialValues.castingTimeAdditional}
+          placeholder="Например: при получении урона кислотой, холодом, огнем, электричеством или звуком"
+        />
       </Form.Group>
       <Form.Group >
         <Form.Label>Компоненты</Form.Label>
@@ -118,6 +168,13 @@ export default function SpellForm({cbSubmit, spell, update}) {
           defaultValue={formik.initialValues.material}
         />
       </Form.Group>
+      <Form.Check
+        type="switch"
+        name="ritual"
+        label="Ритуал"
+        onChange={formik.handleChange}
+        defaultChecked={formik.initialValues.ritual}
+      />
       <Form.Check
         type="switch"
         name="concentration"
@@ -214,9 +271,9 @@ export default function SpellForm({cbSubmit, spell, update}) {
         <Form.Label>Описание для больших уровней</Form.Label>
         <Form.Control
           as="textarea"
-          name="higher_level"
+          name="higherLevel"
           onChange={formik.handleChange}
-          defaultValue={formik.initialValues.higher_level}
+          defaultValue={formik.initialValues.higherLevel}
         />
       </Form.Group>
     </Form>
