@@ -1,109 +1,109 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { CloseButton } from 'react-bootstrap';
+import { useState, useContext, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { CloseButton } from "react-bootstrap";
 
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
-import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
+import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
 
-import { CurrentUserContext } from '../../contexts/currentUserContext';
+import { CurrentUserContext } from "../../contexts/currentUserContext";
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
-import {Plus} from "react-bootstrap-icons";
+import { Plus } from "react-bootstrap-icons";
 
 let charSpells = [];
 
-export default function Spells({charList, chars}) {
+export default function Spells({ charList, chars }) {
   const { currentUser } = useContext(CurrentUserContext);
 
   const { charID } = useParams();
 
-  const [ isCreator, setIsCreator ] = useState(false);
-  const [ isForm, setIsForm ] = useState({
+  const [isCreator, setIsCreator] = useState(false);
+  const [isForm, setIsForm] = useState({
     isShow: false,
     data: {},
-    update: false
+    update: false,
   });
-  const [ spells, setSpells ] = useState([]);
-  const [ isAddLiseElements, setIsAddLiseElements ] = useState(false); // переключатель добавления карточек в чарлист
+  const [spells, setSpells] = useState([]);
+  const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
 
   const handleAddInAllSpells = () => {
     setIsForm({
       isShow: true,
       data: {},
-      update: false
-    })
+      update: false,
+    });
   };
 
-  const cbSubmit = async (data, update) => {
+  const cbSubmit = async (data, spellID, update) => {
     try {
       const spell = update
-        ? await ResourcesService.updateSpell(data._id, data)
+        ? await ResourcesService.updateSpell(spellID, data)
         : await ResourcesService.createSpell(data);
 
-      let spellsData = JSON.parse(sessionStorage.getItem('spellsData'));
+      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
       spellsData = update
-        ? spellsData.map(s => {
-            if(spell._id === s._id) {
-              return spell
+        ? spellsData.map((s) => {
+            if (spell._id === s._id) {
+              return spell;
             }
-            return s
+            return s;
           })
         : [...spells, spell];
-      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
-      
+      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
+
       setSpells(spellsData);
       setIsForm({
         ...isForm,
-        isShow: false
+        isShow: false,
       });
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   };
 
   const getAllSpells = async () => {
     try {
-      let spells = JSON.parse(sessionStorage.getItem('spellsData'));
+      let spells = JSON.parse(sessionStorage.getItem("spellsData"));
 
-      if(!spells) {
+      if (!spells) {
         spells = await ResourcesService.getSpells();
-        sessionStorage.setItem('spellsData', JSON.stringify(spells));
+        sessionStorage.setItem("spellsData", JSON.stringify(spells));
       }
 
-      return spells
-    } catch(err) {
+      return spells;
+    } catch (err) {
       console.log(err);
-      return []
+      return [];
     }
   };
 
   const getCharSpells = useCallback(async () => {
-    try {    
+    try {
       charSpells = (await ResourcesService.getCharacter(charID)).spells;
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }, [charID]);
 
   const renderAllSpells = useCallback(() => {
     getAllSpells()
-      .then(res => {
-        res = res.map(spell => {
-          spell.inList = charSpells.some(s => s._id === spell._id);
+      .then((res) => {
+        res = res.map((spell) => {
+          spell.inList = charSpells.some((s) => s._id === spell._id);
           return spell;
         });
         setSpells(res);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   const renderCharSpells = () => {
-    const spells = charSpells.map(spell => {
+    const spells = charSpells.map((spell) => {
       spell.inList = true;
-      return spell
+      return spell;
     });
     setSpells(spells);
   };
@@ -116,18 +116,19 @@ export default function Spells({charList, chars}) {
   const handlePlusButton = () => {
     renderAllSpells();
     setIsAddLiseElements(true);
-  }
+  };
 
   const cbClose = async (data) => {
     try {
       const { _id: spellID } = data;
-      const spellsData = charSpells.filter(s => s._id !== spellID);
-      charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
+      const spellsData = charSpells.filter((s) => s._id !== spellID);
+      charSpells = await ResourcesService.updateCharacter(charID, spellsData)
+        .spells;
 
-      if(!isAddLiseElements) {
+      if (!isAddLiseElements) {
         setSpells(charSpells);
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -135,8 +136,9 @@ export default function Spells({charList, chars}) {
   const cbPlus = async (data) => {
     try {
       const spellsData = charSpells.push(data);
-      charSpells = await ResourcesService.updateCharacter(charID, spellsData).spells;
-    } catch(err) {
+      charSpells = await ResourcesService.updateCharacter(charID, spellsData)
+        .spells;
+    } catch (err) {
       console.log(err);
     }
   };
@@ -145,44 +147,47 @@ export default function Spells({charList, chars}) {
     try {
       const { _id: spellID } = data;
       await ResourcesService.deleteSpell(spellID);
-  
-      let spellsData = JSON.parse(sessionStorage.getItem('spellsData'));
-      spellsData = spellsData.filter(s => s._id !== spellID);
-      sessionStorage.setItem('spellsData', JSON.stringify(spellsData));
-  
+
+      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
+      spellsData = spellsData.filter((s) => s._id !== spellID);
+      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
+
       setSpells(spellsData);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const checkCreatorRights = useCallback(() => {
-    if(chars.length) {
-      const rights = chars.some(c => c._id === charID);
+    if (chars.length) {
+      const rights = chars.some((c) => c._id === charID);
       setIsCreator(rights);
     }
   }, [chars, charID]);
 
-  const filterSpells = useCallback((spells) => {
-    let filteredSpells = [...spells];
+  const filterSpells = useCallback(
+    (spells) => {
+      let filteredSpells = [...spells];
 
-    filterActionList.forEach((filterAction) => {
-      filteredSpells = filterAction(filteredSpells);
-    })
+      filterActionList.forEach((filterAction) => {
+        filteredSpells = filterAction(filteredSpells);
+      });
 
-    return filteredSpells;
-  }, [filterActionList]);
+      return filteredSpells;
+    },
+    [filterActionList]
+  );
 
   useEffect(() => {
-    if(!charList) {
+    if (!charList) {
       getAllSpells()
-        .then(res => setSpells(res))
-        .catch(err => console.log(err));
+        .then((res) => setSpells(res))
+        .catch((err) => console.log(err));
     } else {
       checkCreatorRights();
       getCharSpells();
 
-      if(!charSpells.length) {
+      if (!charSpells.length) {
         setIsAddLiseElements(true);
         renderAllSpells();
       } else {
@@ -193,19 +198,43 @@ export default function Spells({charList, chars}) {
 
   return (
     <main>
-        <SpellFilters filterActionList={filterActionList} setFilterActionList={setFilterActionList}/>
-        {charList
-          ? isAddLiseElements
-            ? <CloseButton onClick={handleCloseButton} />
-            : <IconButton icon={<Plus size={24}/>} onClick={handlePlusButton} />
-          : currentUser.role === 'Admin' && <IconButton icon={<Plus size={24}/>} onClick={handleAddInAllSpells} />
-        }
+      <SpellFilters
+        filterActionList={filterActionList}
+        setFilterActionList={setFilterActionList}
+      />
+      {charList ? (
+        isAddLiseElements ? (
+          <CloseButton onClick={handleCloseButton} />
+        ) : (
+          <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
+        )
+      ) : (
+        currentUser.role === "Admin" && (
+          <IconButton
+            icon={<Plus size={24} />}
+            onClick={handleAddInAllSpells}
+          />
+        )
+      )}
       <MasonryContainer>
-        {filterSpells(spells).map((spell) =>
-          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
-        )}
+        {filterSpells(spells).map((spell) => (
+          <SpellCard
+            key={spell._id}
+            cbForm={setIsForm}
+            spell={spell}
+            charList={charList}
+            cbClose={cbClose}
+            cbPlus={cbPlus}
+            isCreator={isCreator}
+          />
+        ))}
       </MasonryContainer>
-      <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={true} />
+      <SpellModalForm
+        isForm={isForm}
+        cbForm={setIsForm}
+        cbSubmit={cbSubmit}
+        isSpellForm={true}
+      />
     </main>
   );
 }
