@@ -122,8 +122,9 @@ export default function Spells({ charList, chars }) {
     try {
       const { _id: spellID } = data;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
-      charSpells = await ResourcesService.updateCharacter(charID, spellsData)
-        .spells;
+      charSpells = await ResourcesService.updateCharacter(charID, {
+        spells: spellsData,
+      }).spells;
 
       if (!isAddLiseElements) {
         setSpells(charSpells);
@@ -136,8 +137,9 @@ export default function Spells({ charList, chars }) {
   const cbPlus = async (data) => {
     try {
       const spellsData = charSpells.push(data);
-      charSpells = await ResourcesService.updateCharacter(charID, spellsData)
-        .spells;
+      charSpells = await ResourcesService.updateCharacter(charID, {
+        spells: spellsData,
+      }).spells;
     } catch (err) {
       console.log(err);
     }
