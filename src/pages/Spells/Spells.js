@@ -202,7 +202,7 @@ export default function Spells({charList, chars}) {
         }
       <MasonryContainer>
         {filterSpells(spells).map((spell) =>
-          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} isCreator={isCreator} />
+          <SpellCard key={spell._id} cbForm={setIsForm} spell={spell} charList={charList} cbClose={cbClose} cbPlus={cbPlus} cbDell={cbDell} isCreator={isCreator} />
         )}
       </MasonryContainer>
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={true} />
