@@ -32,12 +32,14 @@ export default function App() {
     if (!hasError) {
       setCurrentUser(data);
     }
+
+    return hasError;
   };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      getUserData().then(() => navigate(PATHS.characters));
+      getUserData().then((hasError) => !hasError && navigate(PATHS.characters));
     }
 
     // особенности работы navigate
@@ -61,7 +63,7 @@ export default function App() {
     },
     {
       path: `${PATHS.spells}/:charID`,
-      element: <Spells chars={chars} />,
+      element: <Spells />,
     },
     {
       path: "/",

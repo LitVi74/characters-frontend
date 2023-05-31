@@ -12,7 +12,7 @@ import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 
-export default function Spells({ chars }) {
+export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
   const { charID = "" } = useParams();
 
@@ -170,11 +170,8 @@ export default function Spells({ chars }) {
   };
 
   const checkCreatorRights = useCallback(() => {
-    if (chars.length) {
-      const rights = chars.some((c) => c._id === charID);
-      setIsCreator(rights);
-    }
-  }, [chars, charID]);
+    setIsCreator(!!currentUser.id && char.owner === currentUser.id);
+  }, [char.owner, currentUser.id]);
 
   const filterSpells = useCallback(
     (spells) => {
