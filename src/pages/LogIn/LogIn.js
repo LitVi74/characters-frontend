@@ -1,12 +1,13 @@
-import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCallback, useContext, useState } from "react";
 
-import LoginForm from "../../components/LoginForm/LoginForm";
-import AuthService from "../../service/AuthService/AuthService";
 import InfoToast from "../../components/InfoToast/InfoToast";
+import LoginForm from "./components/LoginForm/LoginForm";
 
-import { CurrentUserContext } from "../../contexts/currentUserContext";
+import AuthService from "../../service/AuthService/AuthService";
+
 import { PATHS } from "../../constants/constants";
+import { CurrentUserContext } from "../../contexts/currentUserContext";
 
 export default function LogIn() {
   const navigate = useNavigate();

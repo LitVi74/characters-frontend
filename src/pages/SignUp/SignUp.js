@@ -1,7 +1,9 @@
 import { useCallback, useState } from "react";
-import SignupForm from "../../components/SignupForm/SignupForm";
-import AuthService from "../../service/AuthService/AuthService";
+
 import InfoToast from "../../components/InfoToast/InfoToast";
+import SignupForm from "./components/SignupForm/SignupForm";
+
+import AuthService from "../../service/AuthService/AuthService";
 
 export default function SignUp() {
   const [showToast, setShowToast] = useState(false);

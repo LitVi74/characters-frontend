@@ -1,14 +1,7 @@
-import { Toast, ToastContainer } from "react-bootstrap";
 import { useEffect } from "react";
+import { Toast, ToastContainer } from "react-bootstrap";
 
-function InfoToast({
-  show,
-  setShow,
-  delay = 5000,
-  variant = "light",
-  title,
-  message,
-}) {
+function InfoToast({ show, setShow, delay = 5000, variant = "light", title, message }) {
   useEffect(() => {
     if (show) {
       setTimeout(() => {
@@ -29,9 +22,7 @@ function InfoToast({
           <strong className="me-auto">{title}</strong>
         </Toast.Header>
         <Toast.Body
-          className={
-            ["dark", "success", "primary"].includes(variant) && "text-white"
-          }
+          className={["dark", "success", "primary"].includes(variant) && "text-white"}
         >
           {message}
         </Toast.Body>

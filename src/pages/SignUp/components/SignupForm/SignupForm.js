@@ -28,8 +28,7 @@ export default function SignupForm({ cbRegister }) {
               variant="filled"
               isInvalid={!!errors.email && touched.email}
               validate={(value) => {
-                const reg =
-                  /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+                const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                 let error;
 
                 if (!reg.test(value)) {
@@ -39,9 +38,7 @@ export default function SignupForm({ cbRegister }) {
                 return error;
               }}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.email}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="password">
             <Form.Label>Пароль</Form.Label>
