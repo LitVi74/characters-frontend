@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import api from "./AuthAxios";
 
 export default class AuthService {
@@ -12,8 +13,7 @@ export default class AuthService {
       localStorage.setItem("token", response.data.accessToken);
     } catch (err) {
       result.hasError = true;
-      result.errorMessage =
-        err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
       console.log(err);
     }
     return result;
@@ -35,8 +35,7 @@ export default class AuthService {
     } catch (err) {
       result.data = {};
       result.hasError = true;
-      result.errorMessage =
-        err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 
@@ -44,7 +43,24 @@ export default class AuthService {
   }
 
   static async logout() {
-    return api.post("/signout");
+    const result = {
+      hasError: false,
+      errorMessage: "",
+    };
+
+    try {
+      const response = await api.post("/signout");
+
+      if (response.status === 200) {
+        localStorage.removeItem("token");
+      }
+    } catch (err) {
+      result.hasError = true;
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 
   static async checkAuth() {

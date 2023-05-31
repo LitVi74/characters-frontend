@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useRoutes,
-} from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Header from "./components/Header/Header";
@@ -31,17 +26,6 @@ export default function App() {
   });
   const [chars, setChars] = useState([]);
 
-  const cbLogout = async () => {
-    try {
-      await AuthService.logout();
-      localStorage.removeItem("token");
-      setCurrentUser({});
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err);
-    }
-  };
-
   const getUserData = async () => {
     try {
       const response = await AuthService.checkAuth();
@@ -49,7 +33,6 @@ export default function App() {
       localStorage.setItem("token", accessToken);
       setCurrentUser({ email, role, isActivated });
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.log(err);
     }
   };
@@ -106,7 +89,7 @@ export default function App() {
 
   return (
     <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
-      <Header cbLogout={cbLogout} />
+      <Header />
       {routes}
     </CurrentUserContext.Provider>
   );

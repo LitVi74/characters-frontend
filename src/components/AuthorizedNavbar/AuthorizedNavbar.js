@@ -1,13 +1,24 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { PATHS } from "../../constants/constants";
+import { CurrentUserContext } from "../../contexts/currentUserContext";
+import AuthService from "../../service/AuthService/AuthService";
 
-export default function AuthorizedNavbar({ cbLogout }) {
-  const handleExitButtonClick = useCallback(() => {
-    cbLogout();
-  }, [cbLogout]);
+export default function AuthorizedNavbar() {
+  const { setCurrentUser } = useContext(CurrentUserContext);
+
+  const handleExitButtonClick = useCallback(async () => {
+    const { hasError } = await AuthService.logout();
+    if (!hasError) {
+      setCurrentUser({
+        email: "",
+        role: "",
+        isActivated: false,
+      });
+    }
+  }, [setCurrentUser]);
 
   return (
     <Navbar className="w-100 p-0 m">
