@@ -39,13 +39,18 @@ export default function App() {
     if (token) {
       getUserData().then(() => navigate(PATHS.characters));
     }
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (location.pathname === "/" && currentUser.isActivated) {
       navigate(PATHS.characters);
     }
   }, [location, navigate, currentUser]);
+
+  const currentUserContextValue = useMemo(
+    () => ({ currentUser, setCurrentUser }),
+    [currentUser, setCurrentUser]
+  );
 
   const routes = useRoutes([
     {
@@ -85,7 +90,7 @@ export default function App() {
   ]);
 
   return (
-    <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
+    <CurrentUserContext.Provider value={currentUserContextValue}>
       <Header />
       {routes}
     </CurrentUserContext.Provider>
