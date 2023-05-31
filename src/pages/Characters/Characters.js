@@ -7,7 +7,8 @@ import CharacterLink from "../../components/CharacterLink/CharacterLink";
 import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 
-export default function Characters({ chars, setChars }) {
+export default function Characters() {
+  const [chars, setChars] = useState([]);
   const [isForm, setIsForm] = useState({
     isShow: false,
     data: {},

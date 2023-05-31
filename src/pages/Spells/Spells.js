@@ -170,7 +170,7 @@ export default function Spells() {
   };
 
   const checkCreatorRights = useCallback(() => {
-    setIsCreator(!!currentUser.id && char.owner === currentUser.id);
+    setIsCreator(char.owner === currentUser.id);
   }, [char.owner, currentUser.id]);
 
   const filterSpells = useCallback(
