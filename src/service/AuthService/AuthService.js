@@ -29,9 +29,9 @@ export default class AuthService {
     try {
       const response = await api.post("/signin", { email, password });
 
-      const { role, isActivated, accessToken } = response.data;
+      const { _id: id, role, isActivated, accessToken } = response.data;
       localStorage.setItem("token", accessToken);
-      result.data = { email, role, isActivated };
+      result.data = { id, email, role, isActivated };
     } catch (err) {
       result.data = {};
       result.hasError = true;
@@ -73,9 +73,9 @@ export default class AuthService {
     try {
       const response = await api.get("/refresh");
 
-      const { email, role, isActivated, accessToken } = response.data;
+      const { _id: id, email, role, isActivated, accessToken } = response.data;
       localStorage.setItem("token", accessToken);
-      result.data = { email, role, isActivated };
+      result.data = { id, email, role, isActivated };
     } catch (err) {
       result.data = {};
       result.hasError = true;

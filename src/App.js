@@ -19,6 +19,7 @@ import { CurrentUserContext } from "./contexts/currentUserContext";
 export default function App() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({
+    id: "",
     email: "",
     role: "",
     isActivated: false,
