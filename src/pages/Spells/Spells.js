@@ -15,7 +15,7 @@ import IconButton from "../../components/IconButton/IconButton";
 let charSpells = [];
 
 export default function Spells({ charList, chars }) {
-  const { role } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
 
   const { charID } = useParams();
 
@@ -37,10 +37,10 @@ export default function Spells({ charList, chars }) {
     });
   };
 
-  const cbSubmit = async (data, update) => {
+  const cbSubmit = async (data, spellID, update) => {
     try {
       const spell = update
-        ? await ResourcesService.updateSpell(data._id, data)
+        ? await ResourcesService.updateSpell(spellID, data)
         : await ResourcesService.createSpell(data);
 
       let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
@@ -122,8 +122,9 @@ export default function Spells({ charList, chars }) {
     try {
       const { _id: spellID } = data;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
-      charSpells = await ResourcesService.updateCharacter(charID, { spells: spellsData })
-        .spells;
+      charSpells = await ResourcesService.updateCharacter(charID, {
+        spells: spellsData,
+      }).spells;
 
       if (!isAddLiseElements) {
         setSpells(charSpells);
@@ -136,8 +137,9 @@ export default function Spells({ charList, chars }) {
   const cbPlus = async (data) => {
     try {
       const spellsData = charSpells.push(data);
-      charSpells = await ResourcesService.updateCharacter(charID, { spells: spellsData })
-        .spells;
+      charSpells = await ResourcesService.updateCharacter(charID, {
+        spells: spellsData,
+      }).spells;
     } catch (err) {
       console.log(err);
     }
@@ -209,7 +211,7 @@ export default function Spells({ charList, chars }) {
           <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
         )
       ) : (
-        role === "Admin" && (
+        currentUser.role === "Admin" && (
           <IconButton icon={<Plus size={24} />} onClick={handleAddInAllSpells} />
         )
       )}

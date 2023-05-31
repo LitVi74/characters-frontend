@@ -18,7 +18,7 @@ export default function SpellCard({
   charList,
   isCreator,
 }) {
-  const { role } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
   const {
     inList,
     name,
@@ -34,16 +34,16 @@ export default function SpellCard({
     desc,
     higher_level,
   } = spell;
-  const [isСlosure, setIsСlosure] = useState(inList);
+  const [isClosure, setIsClosure] = useState(inList);
 
   const handlePlusButton = () => {
     cbPlus(spell);
-    setIsСlosure(true);
+    setIsClosure(true);
   };
 
   const handleCloseButton = () => {
     cbClose(spell);
-    setIsСlosure(false);
+    setIsClosure(false);
   };
 
   const handleUpdate = () => {
@@ -63,13 +63,13 @@ export default function SpellCard({
       <div className="spell__container">
         <h3 className="spell__title">{name}</h3>
         {charList ? (
-          isCreator && isСlosure ? (
+          isCreator && isClosure ? (
             <CloseButton onClick={handleCloseButton} />
           ) : (
             <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
           )
         ) : (
-          role === "Admin" && (
+          currentUser.role === "Admin" && (
             <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell />
           )
         )}
