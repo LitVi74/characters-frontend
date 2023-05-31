@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
 
-import Header from "./components/Header/Header";
 import LogIn from "./pages/LogIn/LogIn";
-import Characters from "./pages/Characters/Characters";
-import Spells from "./pages/Spells/Spells";
 import SignUp from "./pages/SignUp/SignUp";
+import Spells from "./pages/Spells/Spells";
+import Header from "./components/Header/Header";
+import Error404 from "./pages/Error404/Error404";
+import Characters from "./pages/Characters/Characters";
 
-import ProtectedRoute from "./utils/ProtectedRoute";
 import AuthService from "./service/AuthService/AuthService";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 import { PATHS } from "./constants/constants";
 
 import { CurrentUserContext } from "./contexts/currentUserContext";
-import Error404 from "./pages/Error404/Error404";
 
 export default function App() {
   const location = useLocation();
@@ -27,13 +27,10 @@ export default function App() {
   const [chars, setChars] = useState([]);
 
   const getUserData = async () => {
-    try {
-      const response = await AuthService.checkAuth();
-      const { email, role, isActivated, accessToken } = response.data;
-      localStorage.setItem("token", accessToken);
-      setCurrentUser({ email, role, isActivated });
-    } catch (err) {
-      console.log(err);
+    const { hasError, data } = await AuthService.checkAuth();
+
+    if (!hasError) {
+      setCurrentUser(data);
     }
   };
 
@@ -43,6 +40,12 @@ export default function App() {
       getUserData().then(() => navigate(PATHS.characters));
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (location.pathname === "/" && currentUser.isActivated) {
+      navigate(PATHS.characters);
+    }
+  }, [location, navigate, currentUser]);
 
   const routes = useRoutes([
     {
@@ -80,12 +83,6 @@ export default function App() {
       element: <Error404 />,
     },
   ]);
-
-  useEffect(() => {
-    if (location.pathname === "/" && currentUser.isActivated) {
-      navigate(PATHS.characters);
-    }
-  }, [location, navigate, currentUser]);
 
   return (
     <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>

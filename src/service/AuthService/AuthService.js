@@ -64,6 +64,25 @@ export default class AuthService {
   }
 
   static async checkAuth() {
-    return api.get("/refresh");
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get("/refresh");
+
+      const { email, role, isActivated, accessToken } = response.data;
+      localStorage.setItem("token", accessToken);
+      result.data = { email, role, isActivated };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 }
