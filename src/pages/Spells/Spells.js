@@ -12,12 +12,17 @@ import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 
-let charSpells = [];
-
-export default function Spells({ charList, chars }) {
+export default function Spells({ chars }) {
   const { currentUser } = useContext(CurrentUserContext);
+  const { charID = "" } = useParams();
 
-  const { charID } = useParams();
+  const [char, setChar] = useState({
+    id: charID,
+    name: "",
+    spells: [],
+    owner: "",
+  });
+  const [spells, setSpells] = useState(char.spells);
 
   const [isCreator, setIsCreator] = useState(false);
   const [isForm, setIsForm] = useState({
@@ -25,7 +30,6 @@ export default function Spells({ charList, chars }) {
     data: {},
     update: false,
   });
-  const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
 
@@ -81,10 +85,10 @@ export default function Spells({ charList, chars }) {
   };
 
   const getCharSpells = useCallback(async () => {
-    try {
-      charSpells = (await ResourcesService.getCharacter(charID)).spells;
-    } catch (err) {
-      console.log(err);
+    const { hasError, data } = await ResourcesService.getCharacter(charID);
+
+    if (!hasError) {
+      setChar({ id: charID, name: data.name, spells: data.spells, owner: data.owner });
     }
   }, [charID]);
 
@@ -92,7 +96,7 @@ export default function Spells({ charList, chars }) {
     getAllSpells()
       .then((res) => {
         res = res.map((spell) => {
-          spell.inList = charSpells.some((s) => s._id === spell._id);
+          spell.inList = char.spells.some((s) => s._id === spell._id);
           return spell;
         });
         setSpells(res);
@@ -101,7 +105,7 @@ export default function Spells({ charList, chars }) {
   }, []);
 
   const renderCharSpells = () => {
-    const spells = charSpells.map((spell) => {
+    const spells = char.spells.map((spell) => {
       spell.inList = true;
       return spell;
     });
@@ -118,30 +122,35 @@ export default function Spells({ charList, chars }) {
     setIsAddLiseElements(true);
   };
 
-  const cbClose = async (data) => {
-    try {
-      const { _id: spellID } = data;
-      const spellsData = charSpells.filter((s) => s._id !== spellID);
-      charSpells = await ResourcesService.updateCharacter(charID, {
-        spells: spellsData,
-      }).spells;
+  const cbClose = async (spell) => {
+    const { _id: spellID } = spell;
+    const spellsData = char.spells.filter((s) => s._id !== spellID);
 
-      if (!isAddLiseElements) {
-        setSpells(charSpells);
-      }
-    } catch (err) {
-      console.log(err);
+    const { hasError, data } = await ResourcesService.updateCharacter(charID, {
+      spells: spellsData,
+    });
+
+    if (!hasError) {
+      setChar({ id: charID, name: data.name, spells: data.spells, owner: data.owner });
+    }
+
+    if (!isAddLiseElements && !hasError) {
+      setSpells(data.spells);
     }
   };
 
-  const cbPlus = async (data) => {
-    try {
-      const spellsData = charSpells.push(data);
-      charSpells = await ResourcesService.updateCharacter(charID, {
-        spells: spellsData,
-      }).spells;
-    } catch (err) {
-      console.log(err);
+  const cbPlus = async (spell) => {
+    const spellsData = [...char.spells, spell];
+    const { hasError, data } = await ResourcesService.updateCharacter(charID, {
+      spells: spellsData,
+    });
+
+    if (!hasError) {
+      setChar({ id: charID, name: data.name, spells: data.spells, owner: data.owner });
+    }
+
+    if (!isAddLiseElements && !hasError) {
+      setSpells(data.spells);
     }
   };
 
@@ -181,7 +190,7 @@ export default function Spells({ charList, chars }) {
   );
 
   useEffect(() => {
-    if (!charList) {
+    if (!charID) {
       getAllSpells()
         .then((res) => setSpells(res))
         .catch((err) => console.log(err));
@@ -189,14 +198,14 @@ export default function Spells({ charList, chars }) {
       checkCreatorRights();
       getCharSpells();
 
-      if (!charSpells.length) {
+      if (!char.spells?.length) {
         setIsAddLiseElements(true);
         renderAllSpells();
       } else {
         renderCharSpells();
       }
     }
-  }, [charList, getCharSpells, renderAllSpells, checkCreatorRights]);
+  }, [charID, getCharSpells, renderAllSpells, checkCreatorRights]);
 
   return (
     <main>
@@ -204,7 +213,7 @@ export default function Spells({ charList, chars }) {
         filterActionList={filterActionList}
         setFilterActionList={setFilterActionList}
       />
-      {charList ? (
+      {!!charID ? (
         isAddLiseElements ? (
           <CloseButton onClick={handleCloseButton} />
         ) : (
@@ -221,7 +230,7 @@ export default function Spells({ charList, chars }) {
             key={spell._id}
             cbForm={setIsForm}
             spell={spell}
-            charList={charList}
+            charList={!!charID}
             cbClose={cbClose}
             cbPlus={cbPlus}
             cbDell={cbDell}

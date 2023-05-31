@@ -41,7 +41,7 @@ export default function App() {
     }
 
     // особенности работы navigate
-    // navigate в зависимости перезапескает useEffect при изменении location
+    // если navigate в зависимости, то он перезапескает useEffect при изменении location
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -67,7 +67,7 @@ export default function App() {
     },
     {
       path: `${PATHS.spells}/:charID`,
-      element: <Spells charList chars={chars} />,
+      element: <Spells chars={chars} />,
     },
     {
       path: "/",
@@ -79,7 +79,7 @@ export default function App() {
         },
         {
           path: PATHS.spells,
-          element: <Spells charList={false} />,
+          element: <Spells />,
         },
         {
           path: "*",

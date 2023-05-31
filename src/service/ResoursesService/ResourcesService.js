@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import api from "./ResourcesAxios";
 
 export default class ResourcesService {
@@ -36,8 +37,24 @@ export default class ResourcesService {
   }
 
   static async getCharacter(charId) {
-    const res = await api.get(`/characters/${charId}`);
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get(`/characters/${charId}`);
+
+      const { name, spells, owner } = response.data;
+      result.data = { name, spells, owner };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
   }
 
   static async deleteCharacter(charId) {
@@ -46,7 +63,22 @@ export default class ResourcesService {
   }
 
   static async updateCharacter(charId, obj) {
-    const res = await api.patch(`/characters/${charId}`, obj);
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+    try {
+      const response = await api.patch(`/characters/${charId}`, obj);
+
+      const { name, spells, owner } = response.data;
+      result.data = { name, spells, owner };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
   }
 }

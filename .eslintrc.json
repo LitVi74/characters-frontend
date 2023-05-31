@@ -26,6 +26,8 @@
         "react"
     ],
     "rules": {
+        "no-extra-boolean-cast": 0,
+        "no-nested-ternary": 0,
         "no-underscore-dangle": 0,
         "react/prop-types": 0,
         "react/react-in-jsx-scope": "off",
