@@ -227,6 +227,7 @@ export default function Spells({ charList, chars }) {
             charList={charList}
             cbClose={cbClose}
             cbPlus={cbPlus}
+            cbDell={cbDell}
             isCreator={isCreator}
           />
         ))}
