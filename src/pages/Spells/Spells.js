@@ -122,7 +122,7 @@ export default function Spells({ charList, chars }) {
     try {
       const { _id: spellID } = data;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
-      charSpells = await ResourcesService.updateCharacter(charID, spellsData)
+      charSpells = await ResourcesService.updateCharacter(charID, { spells: spellsData })
         .spells;
 
       if (!isAddLiseElements) {
@@ -136,7 +136,7 @@ export default function Spells({ charList, chars }) {
   const cbPlus = async (data) => {
     try {
       const spellsData = charSpells.push(data);
-      charSpells = await ResourcesService.updateCharacter(charID, spellsData)
+      charSpells = await ResourcesService.updateCharacter(charID, { spells: spellsData })
         .spells;
     } catch (err) {
       console.log(err);
@@ -210,10 +210,7 @@ export default function Spells({ charList, chars }) {
         )
       ) : (
         role === "Admin" && (
-          <IconButton
-            icon={<Plus size={24} />}
-            onClick={handleAddInAllSpells}
-          />
+          <IconButton icon={<Plus size={24} />} onClick={handleAddInAllSpells} />
         )
       )}
       <MasonryContainer>
@@ -225,6 +222,7 @@ export default function Spells({ charList, chars }) {
             charList={charList}
             cbClose={cbClose}
             cbPlus={cbPlus}
+            cbDell={cbDell}
             isCreator={isCreator}
           />
         ))}

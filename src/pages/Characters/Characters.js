@@ -26,7 +26,7 @@ export default function Characters({ chars, setChars }) {
     try {
       const { _id, name } = data;
       const char = update
-        ? await ResourcesService.updateCharacter(_id, name)
+        ? await ResourcesService.updateCharacter(_id, { name })
         : await ResourcesService.createCharacter(name);
 
       const newChars = update

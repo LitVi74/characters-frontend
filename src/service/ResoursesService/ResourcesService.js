@@ -45,8 +45,8 @@ export default class ResourcesService {
     return this._extractData(res);
   }
 
-  static async updateCharacter(charId, name) {
-    const res = await api.patch(`/characters/${charId}`, { name });
+  static async updateCharacter(charId, obj) {
+    const res = await api.patch(`/characters/${charId}`, obj);
     return this._extractData(res);
   }
 }
