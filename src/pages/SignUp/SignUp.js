@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import SignupForm from "../../components/SignupForm/SignupForm";
 import AuthService from "../../service/AuthService/AuthService";
 import InfoToast from "../../components/InfoToast/InfoToast";
@@ -10,19 +10,16 @@ export default function SignUp() {
     errorMessage: "",
   });
 
-  const cbRegister = async (email, password) => {
-    const { hasError, errorMessage } = await AuthService.registration(
-      email,
-      password
-    );
+  const handleRegister = useCallback(async (email, password) => {
+    const { hasError, errorMessage } = await AuthService.registration(email, password);
     setSignupResult({ hasError, errorMessage });
     setShowToast(true);
-  };
+  }, []);
 
   return (
     <main className="px-5">
       <h1>Регистрация</h1>
-      <SignupForm cbRegister={cbRegister} />
+      <SignupForm cbRegister={handleRegister} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}
@@ -33,8 +30,8 @@ export default function SignUp() {
             signupResult.errorMessage
           ) : (
             <p>
-              Проверьте почту, вам должно было прийти <strong>письмо</strong>.
-              Оно могло случайно попасть в <strong>спам</strong>
+              Проверьте почту, вам должно было прийти <strong>письмо</strong>. Оно могло
+              случайно попасть в <strong>спам</strong>
             </p>
           )
         }

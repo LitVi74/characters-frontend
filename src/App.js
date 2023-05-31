@@ -39,6 +39,10 @@ export default function App() {
     if (token) {
       getUserData().then(() => navigate(PATHS.characters));
     }
+
+    // особенности работы navigate
+    // navigate в зависимости перезапескает useEffect при изменении location
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
