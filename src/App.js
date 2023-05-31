@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { Navigate, useNavigate, useRoutes } from "react-router-dom";
 
 import LogIn from "./pages/LogIn/LogIn";
 import SignUp from "./pages/SignUp/SignUp";
@@ -17,7 +17,6 @@ import { PATHS } from "./constants/constants";
 import { CurrentUserContext } from "./contexts/currentUserContext";
 
 export default function App() {
-  const location = useLocation();
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({
     email: "",
@@ -44,12 +43,6 @@ export default function App() {
     // если navigate в зависимости, то он перезапескает useEffect при изменении location
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (location.pathname === "/" && currentUser.isActivated) {
-      navigate(PATHS.characters);
-    }
-  }, [location, navigate, currentUser]);
 
   const currentUserContextValue = useMemo(
     () => ({ currentUser, setCurrentUser }),

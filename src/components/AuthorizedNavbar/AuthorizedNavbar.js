@@ -1,9 +1,10 @@
-import { useCallback, useContext } from "react";
-import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Button, Nav, Navbar } from "react-bootstrap";
+import { useCallback, useContext } from "react";
 
 import { PATHS } from "../../constants/constants";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
+
 import AuthService from "../../service/AuthService/AuthService";
 
 export default function AuthorizedNavbar() {

@@ -12,7 +12,7 @@ export default function SignUp() {
     errorMessage: "",
   });
 
-  const handleRegister = useCallback(async (email, password) => {
+  const handleSignupFormSubmit = useCallback(async (email, password) => {
     const { hasError, errorMessage } = await AuthService.registration(email, password);
     setSignupResult({ hasError, errorMessage });
     setShowToast(true);
@@ -21,7 +21,7 @@ export default function SignUp() {
   return (
     <main className="px-5">
       <h1>Регистрация</h1>
-      <SignupForm cbRegister={handleRegister} />
+      <SignupForm cbRegister={handleSignupFormSubmit} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}

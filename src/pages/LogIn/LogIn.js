@@ -19,7 +19,7 @@ export default function LogIn() {
     errorMessage: "",
   });
 
-  const handleLogin = useCallback(
+  const handleLoginFormSubmit = useCallback(
     async (email, password) => {
       const { hasError, errorMessage, data } = await AuthService.login(email, password);
       setCurrentUser(data);
@@ -37,7 +37,7 @@ export default function LogIn() {
   return (
     <main className="px-5">
       <h1>Вход</h1>
-      <LoginForm cbLogin={handleLogin} />
+      <LoginForm cbLogin={handleLoginFormSubmit} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}
