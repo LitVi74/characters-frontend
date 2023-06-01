@@ -23,29 +23,27 @@ export default function Characters() {
     });
   };
 
-  const cbSubmit = async (data, update) => {
-    try {
-      const { _id, name } = data;
-      const char = update
-        ? await ResourcesService.updateCharacter(_id, { name })
-        : await ResourcesService.createCharacter(name);
+  const cbSubmit = async (char, update) => {
+    const { _id, name } = char;
+    const { hasError, data: newChar } = update
+      ? await ResourcesService.updateCharacter(_id, { name })
+      : await ResourcesService.createCharacter(name);
 
+    if (!hasError) {
       const newChars = update
         ? chars.map((s) => {
-            if (char._id === s._id) {
-              return char;
+            if (newChar._id === s._id) {
+              return newChar;
             }
             return s;
           })
-        : [...chars, char];
+        : [...chars, newChar];
 
       setChars(newChars);
       setIsForm({
         ...isForm,
         isShow: false,
       });
-    } catch (err) {
-      console.log(err);
     }
   };
 

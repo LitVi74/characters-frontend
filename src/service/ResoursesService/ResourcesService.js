@@ -31,9 +31,23 @@ export default class ResourcesService {
     return this._extractData(res);
   }
 
-  static async createCharacter(name) {
-    const res = await api.post("/characters", { name });
-    return this._extractData(res);
+  static async createCharacter(charName) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+    try {
+      const response = await api.post("/characters", { charName });
+
+      result.data = response.data;
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
   }
 
   static async getCharacter(charId) {
@@ -46,8 +60,7 @@ export default class ResourcesService {
     try {
       const response = await api.get(`/characters/${charId}`);
 
-      const { name, spells, owner } = response.data;
-      result.data = { name, spells, owner };
+      result.data = response.data;
     } catch (err) {
       result.data = {};
       result.hasError = true;
@@ -71,8 +84,7 @@ export default class ResourcesService {
     try {
       const response = await api.patch(`/characters/${charId}`, obj);
 
-      const { name, spells, owner } = response.data;
-      result.data = { name, spells, owner };
+      result.data = response.data;
     } catch (err) {
       result.data = {};
       result.hasError = true;
