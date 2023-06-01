@@ -10,12 +10,12 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
 
   const deleteFilterFunctionByName = useCallback((name) => {
     setFilterActionList(filterActionList.filter(func => func.name !== name));
-  }, [filterActionList]);
+  }, [filterActionList, setFilterActionList]);
 
   const addFilterFunctionToList = useCallback((filterFunc) => {
     const functionList = filterActionList.filter(func => func.name !== filterFunc.name)
     setFilterActionList([...functionList, filterFunc]);
-  }, [filterActionList])
+  }, [filterActionList, setFilterActionList])
 
   const handleSearchInputBlur = useCallback((event) => {
     if (!event.currentTarget.value) {
@@ -29,7 +29,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     };
 
     addFilterFunctionToList(searchSpellsByName);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   const handleLevelsChange = useCallback((event) => {
     setSelectedLevels(event);
@@ -44,7 +44,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     };
 
     addFilterFunctionToList(searchSpellsByLevel);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   const handleClassesChange = useCallback((event) => {
     setSelectedClasses(event);
@@ -59,7 +59,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     }
 
     addFilterFunctionToList(searchSpellsByClass);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   const handleSchoolsChange = useCallback((event) => {
     setSelectedSchools(event);
@@ -74,7 +74,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     }
 
     addFilterFunctionToList(searchSpellsBySchool);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   const handleRitualChange = useCallback((event) => {
     setSelectedRitual(event);
@@ -89,7 +89,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     }
 
     addFilterFunctionToList(searchSpellsByRitual);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   const handleConcentrationChange = useCallback((event) => {
     setsSlectedConcentration(event);
@@ -104,7 +104,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     }
 
     addFilterFunctionToList(searchSpellsByConcentration);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   const handleCastingTimeChange = useCallback((event) => {
     setSelectedCastingTime(event);
@@ -120,7 +120,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
     }
 
     addFilterFunctionToList(searchSpellsByCastingTime);
-  }, []);
+  }, [addFilterFunctionToList, deleteFilterFunctionByName]);
 
   return {
     handleSearchInputBlur,

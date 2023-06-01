@@ -92,7 +92,7 @@ export default function App() {
     if (location.pathname === '/' && currentUser.isActivated) {
       navigate(PATHS.characters);
     }
-  }, [location, currentUser])
+  }, [location, currentUser, navigate])
 
   return (
     <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
