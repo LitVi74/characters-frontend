@@ -49,7 +49,7 @@ export default function App() {
       getUserData()
         .then(() => navigate(PATHS.characters));
     }
-  }, [])
+  }, [navigate])
 
   const routes = useRoutes([
     {
