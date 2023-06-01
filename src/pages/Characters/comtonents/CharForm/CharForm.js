@@ -13,10 +13,7 @@ export default function CharForm({ cbSubmit, char, update }) {
   });
 
   return (
-    <Form
-      id={`spell-${char ? char._id : "add"}-form`}
-      onSubmit={formik.handleSubmit}
-    >
+    <Form id={`character-${char ? char._id : "add"}-form`} onSubmit={formik.handleSubmit}>
       <Form.Group controlId="char-name">
         <Form.Label>Название</Form.Label>
         <Form.Control

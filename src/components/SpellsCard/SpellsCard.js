@@ -10,7 +10,7 @@ import { CurrentUserContext } from "../../contexts/currentUserContext";
 import IconButton from "../IconButton/IconButton";
 
 export default function SpellCard({
-  cbForm,
+  handleShowForm,
   cbDell,
   cbClose,
   cbPlus,
@@ -47,11 +47,7 @@ export default function SpellCard({
   };
 
   const handleUpdate = () => {
-    cbForm({
-      isShow: true,
-      data: spell,
-      update: true,
-    });
+    handleShowForm(spell);
   };
 
   const handleDelete = () => {

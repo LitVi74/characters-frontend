@@ -12,8 +12,33 @@ export default class ResourcesService {
   }
 
   static async createSpell(data) {
-    const res = await api.post("/spells", data);
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.post("/spells", data);
+
+      const newSpell = response.data;
+      let allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+
+      allSpells = [...allSpells, newSpell];
+
+      sessionStorage.setItem("spellsData", JSON.stringify(allSpells));
+
+      result.data = {
+        newSpell,
+        allSpells,
+      };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
   }
 
   static async deleteSpell(spellId) {
@@ -22,8 +47,38 @@ export default class ResourcesService {
   }
 
   static async updateSpell(spellId, data) {
-    const res = await api.patch(`/spells/${spellId}`, data);
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.patch(`/spells/${spellId}`, data);
+
+      const newSpell = response.data;
+      let allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+
+      allSpells = allSpells.map((s) => {
+        if (newSpell._id === s._id) {
+          return newSpell;
+        }
+        return s;
+      });
+
+      sessionStorage.setItem("spellsData", JSON.stringify(allSpells));
+
+      result.data = {
+        newSpell,
+        allSpells,
+      };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
   }
 
   static async getUserCharacters() {
@@ -37,6 +92,7 @@ export default class ResourcesService {
       errorMessage: "",
       data: {},
     };
+
     try {
       const response = await api.post("/characters", { charName });
 
@@ -44,7 +100,7 @@ export default class ResourcesService {
     } catch (err) {
       result.data = {};
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
     return result;
@@ -64,7 +120,7 @@ export default class ResourcesService {
     } catch (err) {
       result.data = {};
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
     return result;
@@ -81,6 +137,7 @@ export default class ResourcesService {
       errorMessage: "",
       data: {},
     };
+
     try {
       const response = await api.patch(`/characters/${charId}`, obj);
 
@@ -88,7 +145,7 @@ export default class ResourcesService {
     } catch (err) {
       result.data = {};
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
     return result;

@@ -4,7 +4,8 @@ import { Plus } from "react-bootstrap-icons";
 
 import IconButton from "../../components/IconButton/IconButton";
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
-import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
+import CharacterModalForm from "./comtonents/CharacterModalForm/CharacterModalForm";
+
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 
 export default function Characters() {
@@ -90,12 +91,7 @@ export default function Characters() {
           />
         ))}
       </ListGroup>
-      <SpellModalForm
-        isForm={isForm}
-        cbForm={setIsForm}
-        cbSubmit={cbSubmit}
-        isSpellForm={false}
-      />
+      <CharacterModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
     </Stack>
   );
 }

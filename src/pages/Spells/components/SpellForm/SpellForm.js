@@ -1,7 +1,7 @@
 import { Container, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 
-export default function SpellForm({ cbSubmit, spell, update }) {
+export default function SpellForm({ cbSubmit, spell }) {
   const castingTime = spell?.casting_time?.split(", ");
 
   const formik = useFormik({
@@ -38,7 +38,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
         higher_level: values.higherLevel.trim(),
       };
 
-      cbSubmit(data, spell._id, update);
+      cbSubmit(data, spell._id);
     },
   });
 

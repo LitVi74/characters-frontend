@@ -5,7 +5,7 @@ import { CloseButton } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
-import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
+import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
@@ -24,49 +24,28 @@ export default function Spells() {
   });
   const [spells, setSpells] = useState(char.spells);
 
-  const [isCreator, setIsCreator] = useState(false);
-  const [isForm, setIsForm] = useState({
-    isShow: false,
-    data: {},
-    update: false,
+  const [formState, setFormState] = useState({
+    show: false,
+    chosenSpell: {},
   });
+
+  const [isCreator, setIsCreator] = useState(false);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
 
-  const handleAddInAllSpells = () => {
-    setIsForm({
-      isShow: true,
-      data: {},
-      update: false,
+  const handleShowForm = useCallback((spell = {}) => {
+    setFormState({
+      show: true,
+      chosenSpell: spell,
     });
-  };
+  }, []);
 
-  const cbSubmit = async (data, spellID, update) => {
-    try {
-      const spell = update
-        ? await ResourcesService.updateSpell(spellID, data)
-        : await ResourcesService.createSpell(data);
-
-      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
-      spellsData = update
-        ? spellsData.map((s) => {
-            if (spell._id === s._id) {
-              return spell;
-            }
-            return s;
-          })
-        : [...spells, spell];
-      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
-
-      setSpells(spellsData);
-      setIsForm({
-        ...isForm,
-        isShow: false,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const handelHideForm = useCallback(() => {
+    setFormState({
+      show: false,
+      chosenSpell: {},
+    });
+  }, []);
 
   const getAllSpells = async () => {
     try {
@@ -218,14 +197,14 @@ export default function Spells() {
         )
       ) : (
         currentUser.role === "Admin" && (
-          <IconButton icon={<Plus size={24} />} onClick={handleAddInAllSpells} />
+          <IconButton icon={<Plus size={24} />} onClick={() => handleShowForm()} />
         )
       )}
       <MasonryContainer>
         {filterSpells(spells).map((spell) => (
           <SpellCard
             key={spell._id}
-            cbForm={setIsForm}
+            handleShowForm={handleShowForm}
             spell={spell}
             charList={!!charID}
             cbClose={cbClose}
@@ -235,12 +214,13 @@ export default function Spells() {
           />
         ))}
       </MasonryContainer>
-      <SpellModalForm
-        isForm={isForm}
-        cbForm={setIsForm}
-        cbSubmit={cbSubmit}
-        isSpellForm
-      />
+      {!charID && currentUser.role === "Admin" && (
+        <SpellModalForm
+          formState={formState}
+          handelHideForm={handelHideForm}
+          setSpells={setSpells}
+        />
+      )}
     </main>
   );
 }

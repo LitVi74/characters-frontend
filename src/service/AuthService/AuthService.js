@@ -13,7 +13,7 @@ export default class AuthService {
       localStorage.setItem("token", response.data.accessToken);
     } catch (err) {
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
     return result;
@@ -35,7 +35,7 @@ export default class AuthService {
     } catch (err) {
       result.data = {};
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 
@@ -56,7 +56,7 @@ export default class AuthService {
       }
     } catch (err) {
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 
@@ -79,7 +79,7 @@ export default class AuthService {
     } catch (err) {
       result.data = {};
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 
