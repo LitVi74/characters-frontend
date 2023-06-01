@@ -49,7 +49,7 @@ export default function App() {
       getUserData()
         .then(() => navigate(PATHS.characters));
     }
-  }, [navigate])
+  }, [])
 
   const routes = useRoutes([
     {
@@ -92,7 +92,7 @@ export default function App() {
     if (location.pathname === '/' && currentUser.isActivated) {
       navigate(PATHS.characters);
     }
-  }, [location, currentUser, navigate])
+  }, [location, currentUser])
 
   return (
     <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
