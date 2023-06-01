@@ -5,16 +5,14 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedSchools, setSelectedSchools] = useState([]);
   const [selectedRitual, setSelectedRitual] = useState([]);
-  const [selectedConcentration, setsSlectedConcentration] = useState([]);
+  const [selectedConcentration, setsSelectedConcentration] = useState([]);
   const [selectedCastingTime, setSelectedCastingTime] = useState([]);
 
   const deleteFilterFunctionByName = useCallback(
     (name) => {
-      setFilterActionList(
-        filterActionList.filter((func) => func.name !== name)
-      );
+      setFilterActionList(filterActionList.filter((func) => func.name !== name));
     },
-    [filterActionList]
+    [filterActionList, setFilterActionList]
   );
 
   const addFilterFunctionToList = useCallback(
@@ -24,108 +22,129 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       );
       setFilterActionList([...functionList, filterFunc]);
     },
-    [filterActionList]
+    [filterActionList, setFilterActionList]
   );
 
-  const handleSearchInputBlur = useCallback((event) => {
-    if (!event.currentTarget.value) {
-      deleteFilterFunctionByName("searchSpellsByName");
-      return;
-    }
+  const handleSearchInputBlur = useCallback(
+    (event) => {
+      if (!event.currentTarget.value) {
+        deleteFilterFunctionByName("searchSpellsByName");
+        return;
+      }
 
-    const regExp = new RegExp(event.currentTarget.value, "i");
-    const searchSpellsByName = (spells) =>
-      spells.filter((spell) => regExp.test(spell.name));
+      const regExp = new RegExp(event.currentTarget.value, "i");
+      const searchSpellsByName = (spells) =>
+        spells.filter((spell) => regExp.test(spell.name));
 
-    addFilterFunctionToList(searchSpellsByName);
-  }, []);
+      addFilterFunctionToList(searchSpellsByName);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
-  const handleLevelsChange = useCallback((event) => {
-    setSelectedLevels(event);
+  const handleLevelsChange = useCallback(
+    (event) => {
+      setSelectedLevels(event);
 
-    if (!event.length) {
-      deleteFilterFunctionByName("searchSpellsByLevel");
-      return;
-    }
+      if (!event.length) {
+        deleteFilterFunctionByName("searchSpellsByLevel");
+        return;
+      }
 
-    const searchSpellsByLevel = (spells) =>
-      spells.filter((spell) => event.includes(spell.level));
+      const searchSpellsByLevel = (spells) =>
+        spells.filter((spell) => event.includes(spell.level));
 
-    addFilterFunctionToList(searchSpellsByLevel);
-  }, []);
+      addFilterFunctionToList(searchSpellsByLevel);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
-  const handleClassesChange = useCallback((event) => {
-    setSelectedClasses(event);
+  const handleClassesChange = useCallback(
+    (event) => {
+      setSelectedClasses(event);
 
-    if (!event.length) {
-      deleteFilterFunctionByName("searchSpellsByClass");
-      return;
-    }
+      if (!event.length) {
+        deleteFilterFunctionByName("searchSpellsByClass");
+        return;
+      }
 
-    const searchSpellsByClass = (spell) =>
-      spell.filter((spell) =>
-        spell.classes.some((spellClass) => event.includes(spellClass))
-      );
+      const searchSpellsByClass = (spell) =>
+        spell.filter((spell) =>
+          spell.classes.some((spellClass) => event.includes(spellClass))
+        );
 
-    addFilterFunctionToList(searchSpellsByClass);
-  }, []);
+      addFilterFunctionToList(searchSpellsByClass);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
-  const handleSchoolsChange = useCallback((event) => {
-    setSelectedSchools(event);
+  const handleSchoolsChange = useCallback(
+    (event) => {
+      setSelectedSchools(event);
 
-    if (!event.length) {
-      deleteFilterFunctionByName("searchSpellsBySchool");
-      return;
-    }
+      if (!event.length) {
+        deleteFilterFunctionByName("searchSpellsBySchool");
+        return;
+      }
 
-    const searchSpellsBySchool = (spell) =>
-      spell.filter((spell) => event.includes(spell.school));
+      const searchSpellsBySchool = (spell) =>
+        spell.filter((spell) => event.includes(spell.school));
 
-    addFilterFunctionToList(searchSpellsBySchool);
-  }, []);
+      addFilterFunctionToList(searchSpellsBySchool);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
-  const handleRitualChange = useCallback((event) => {
-    setSelectedRitual(event);
+  const handleRitualChange = useCallback(
+    (event) => {
+      setSelectedRitual(event);
 
-    if (!event.length) {
-      deleteFilterFunctionByName("searchSpellsByRitual");
-      return;
-    }
+      if (!event.length) {
+        deleteFilterFunctionByName("searchSpellsByRitual");
+        return;
+      }
 
-    const searchSpellsByRitual = (spell) =>
-      spell.filter((spell) => event.includes(spell.ritual));
+      const searchSpellsByRitual = (spell) =>
+        spell.filter((spell) => event.includes(spell.ritual));
 
-    addFilterFunctionToList(searchSpellsByRitual);
-  }, []);
+      addFilterFunctionToList(searchSpellsByRitual);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
-  const handleConcentrationChange = useCallback((event) => {
-    setsSlectedConcentration(event);
+  const handleConcentrationChange = useCallback(
+    (event) => {
+      setsSelectedConcentration(event);
 
-    if (!event.length) {
-      deleteFilterFunctionByName("searchSpellsByConcentration");
-      return;
-    }
+      if (!event.length) {
+        deleteFilterFunctionByName("searchSpellsByConcentration");
+        return;
+      }
 
-    const searchSpellsByConcentration = (spell) =>
-      spell.filter((spell) => event.includes(spell.ritual));
+      const searchSpellsByConcentration = (spell) =>
+        spell.filter((spell) => event.includes(spell.ritual));
 
-    addFilterFunctionToList(searchSpellsByConcentration);
-  }, []);
+      addFilterFunctionToList(searchSpellsByConcentration);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
-  const handleCastingTimeChange = useCallback((event) => {
-    setSelectedCastingTime(event);
+  const handleCastingTimeChange = useCallback(
+    (event) => {
+      setSelectedCastingTime(event);
 
-    if (!event.length) {
-      deleteFilterFunctionByName("searchSpellsByCastingTime");
-      return;
-    }
+      if (!event.length) {
+        deleteFilterFunctionByName("searchSpellsByCastingTime");
+        return;
+      }
 
-    const regExp = new RegExp(event.join("|"), "i");
-    const searchSpellsByCastingTime = (spell) =>
-      spell.filter((spell) => regExp.test(spell.casting_time));
+      const regExp = new RegExp(event.join("|"), "i");
+      const searchSpellsByCastingTime = (spell) =>
+        spell.filter((spell) => regExp.test(spell.casting_time));
 
-    addFilterFunctionToList(searchSpellsByCastingTime);
-  }, []);
+      addFilterFunctionToList(searchSpellsByCastingTime);
+    },
+    [addFilterFunctionToList, deleteFilterFunctionByName]
+  );
 
   return {
     handleSearchInputBlur,
