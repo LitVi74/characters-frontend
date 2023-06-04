@@ -13,8 +13,9 @@ import IconButton from "../../components/IconButton/IconButton";
 import { Plus } from "react-bootstrap-icons";
 
 let charSpells = [];
+let charOwner;
 
-export default function Spells({ charList, chars }) {
+export default function Spells({ charList }) {
   const { currentUser } = useContext(CurrentUserContext);
 
   const { charID } = useParams();
@@ -28,7 +29,6 @@ export default function Spells({ charList, chars }) {
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
-  console.log(spells)
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -82,7 +82,9 @@ export default function Spells({ charList, chars }) {
 
   const getCharSpells = useCallback(async () => {
     try {
-      charSpells = (await ResourcesService.getCharacter(charID)).spells;
+      const char = await ResourcesService.getCharacter(charID);
+      charSpells = char.spells;
+      charOwner = char.owner;
     } catch (err) {
       console.log(err);
     }
@@ -141,11 +143,8 @@ export default function Spells({ charList, chars }) {
   };
 
   const checkCreatorRights = useCallback(() => {
-    if (chars.length) {
-      const rights = chars.some((c) => c._id === charID);
-      setIsCreator(rights);
-    }
-  }, [chars, charID]);
+    setIsCreator(charOwner === currentUser.id);
+  }, [currentUser]);
 
   const filterSpells = useCallback(
     (spells) => {
@@ -190,18 +189,20 @@ export default function Spells({ charList, chars }) {
         setFilterActionList={setFilterActionList}
       />
       {charList ? (
-        isAddLiseElements ? (
-          <CloseButton 
-            onClick={handleCloseButton} 
-            className="my-2 mx-5"
-          />
-        ) : (
-          <IconButton 
-            icon={<Plus size={24} />} 
-            onClick={handlePlusButton} 
-            className="my-2 mx-5"
-          />
-        )
+        isCreator ? (
+          isAddLiseElements ? (
+            <CloseButton 
+              onClick={handleCloseButton} 
+              className="my-2 mx-5"
+            />
+          ) : (
+            <IconButton 
+              icon={<Plus size={24} />} 
+              onClick={handlePlusButton} 
+              className="my-2 mx-5"
+            />
+          )
+        ) : ( null )
       ) : (
         currentUser.role === "Admin" && (
           <IconButton

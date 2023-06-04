@@ -26,7 +26,7 @@ export default function App() {
     try {
       await AuthService.logout();
       localStorage.removeItem('token');
-      setCurrentUser({});
+      setCurrentUser({ email: '', role: '', isActivated: false });
       navigate(PATHS.login);
     } catch(err) {
       console.log(err);
@@ -36,9 +36,9 @@ export default function App() {
   const getUserData = async () => {
     try {
       const response = await AuthService.checkAuth();
-      const { email, role, isActivated, accessToken } = response.data;
+      const { _id, email, role, isActivated, accessToken } = response.data;
       localStorage.setItem('token', accessToken);
-      setCurrentUser({email, role, isActivated});
+      setCurrentUser({ _id, email, role, isActivated });
     } catch(err) {
       console.log(err);
     }
@@ -63,7 +63,7 @@ export default function App() {
     },
     {
       path: PATHS.spells + '/:charID',
-      element: <Spells charList={true} chars={chars} />
+      element: <Spells charList={true} />
     },
     {
       path: '/',

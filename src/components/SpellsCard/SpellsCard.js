@@ -63,11 +63,13 @@ export default function SpellCard({
       <div className="spell__container">
         <h3 className="spell__title">{name}</h3>
         {charList ? (
-          isCreator && isClosure ? (
-            <CloseButton onClick={handleCloseButton} />
-          ) : (
-            <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
-          )
+          isCreator ? (
+            isClosure ? (
+              <CloseButton onClick={handleCloseButton} />
+            ) : (
+              <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
+            )
+          ) : ( null )
         ) : (
           currentUser.role === "Admin" && (
             <CardMenu
