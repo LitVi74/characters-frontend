@@ -27,7 +27,7 @@ export default function CharacterLink({char, cbForm, cbClose}) {
   };
 
   return (
-    <li className='list-group-item' onClick={handleNavLink}>
+    <li className='list-group-item d-flex justify-content-between align-items-center' onClick={handleNavLink}>
       {name}
       <CardMenu cbForm={handleUpdate} cbDell={handleDelete} />
     </li>
