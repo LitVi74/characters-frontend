@@ -28,6 +28,7 @@ export default function Spells({ charList, chars }) {
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
+  console.log(spells)
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -101,9 +102,9 @@ export default function Spells({ charList, chars }) {
     try {
       const { _id: spellID } = data;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
-      charSpells = await ResourcesService.updateCharacter(charID, {
+      charSpells = (await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
-      }).spells;
+      })).spells;
 
       if (!isAddLiseElements) {
         setSpells(charSpells);
@@ -116,9 +117,9 @@ export default function Spells({ charList, chars }) {
   const cbPlus = async (data) => {
     try {
       const spellsData = [ ...charSpells, data ];
-      charSpells = await ResourcesService.updateCharacter(charID, {
+      charSpells = (await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
-      }).spells;
+      })).spells;
     } catch (err) {
       console.log(err);
     }
