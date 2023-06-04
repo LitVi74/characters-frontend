@@ -19,17 +19,10 @@ export default function LogIn() {
 
   const cbLogin = async (email, password) => {
     const { hasError, errorMessage, data } = await AuthService.login(email, password);
-    const { _id, role, isActivated } = data;
-    
-    setCurrentUser({ 
-      _id, 
-      email: data.email, 
-      role, 
-      isActivated 
-    });
+    setCurrentUser(data);
     setSignInResult({ hasError, errorMessage });
 
-    if (hasError || !isActivated) {
+    if (hasError || !data.isActivated) {
       setShowToast(true);
     } else {
       navigate(PATHS.characters);
