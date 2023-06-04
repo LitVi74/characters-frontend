@@ -10,7 +10,7 @@ import { CurrentUserContext } from '../../contexts/currentUserContext';
 export default function Header({cbLogout}) {
   const { currentUser } = useContext(CurrentUserContext);
   return (
-    <header className="d-flex flex-row align-content-center w-100 px-2">
+    <header className="d-flex flex-row align-content-center w-100 px-5">
       <img
         alt=""
         src={logo}

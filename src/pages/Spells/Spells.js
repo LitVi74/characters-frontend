@@ -191,9 +191,16 @@ export default function Spells({ charList, chars }) {
       />
       {charList ? (
         isAddLiseElements ? (
-          <CloseButton onClick={handleCloseButton} />
+          <CloseButton 
+            onClick={handleCloseButton} 
+            className="my-2 mx-5"
+          />
         ) : (
-          <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
+          <IconButton 
+            icon={<Plus size={24} />} 
+            onClick={handlePlusButton} 
+            className="my-2 mx-5"
+          />
         )
       ) : (
         currentUser.role === "Admin" && (

@@ -75,8 +75,11 @@ export default function Characters({ chars, setChars }) {
 
   return (
     <Stack as="main" className="gap-2 align-self-center px-5">
-      <h1>Characters Page</h1>
-      <IconButton icon={<Plus size={24}/>} onClick={handleAddUserChar} className="my-0 mx-auto" />
+      <IconButton 
+        icon={<Plus size={24}/>} 
+        onClick={handleAddUserChar} 
+        className="my-0 mx-auto"
+      >Добавить персонажа</IconButton>
       <ListGroup as={"ul"}>
         {chars.map((char) =>
           <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
