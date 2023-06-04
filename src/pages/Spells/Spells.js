@@ -73,10 +73,9 @@ export default function Spells({ charList, chars }) {
         sessionStorage.setItem("spellsData", JSON.stringify(spells));
       }
 
-      return spells;
+      setSpells(spells);
     } catch (err) {
       console.log(err);
-      return [];
     }
   };
 
@@ -88,33 +87,13 @@ export default function Spells({ charList, chars }) {
     }
   }, [charID]);
 
-  const renderAllSpells = useCallback(() => {
-    getAllSpells()
-      .then((res) => {
-        res = res.map((spell) => {
-          spell.inList = charSpells.some((s) => s._id === spell._id);
-          return spell;
-        });
-        setSpells(res);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const renderCharSpells = () => {
-    const spells = charSpells.map((spell) => {
-      spell.inList = true;
-      return spell;
-    });
-    setSpells(spells);
-  };
-
   const handleCloseButton = () => {
-    renderCharSpells();
+    setSpells(charSpells);
     setIsAddLiseElements(false);
   };
 
   const handlePlusButton = () => {
-    renderAllSpells();
+    getAllSpells();
     setIsAddLiseElements(true);
   };
 
@@ -136,7 +115,7 @@ export default function Spells({ charList, chars }) {
 
   const cbPlus = async (data) => {
     try {
-      const spellsData = charSpells.push(data);
+      const spellsData = [ ...charSpells, data ];
       charSpells = await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
       }).spells;
@@ -180,23 +159,28 @@ export default function Spells({ charList, chars }) {
     [filterActionList]
   );
 
+  const setLikeSpellCard = (spell) => {
+    if(charList && charSpells.length) {
+      return true;
+    }
+    return charSpells.some((s) => s._id === spell._id);
+  };
+
   useEffect(() => {
     if (!charList) {
-      getAllSpells()
-        .then((res) => setSpells(res))
-        .catch((err) => console.log(err));
+      getAllSpells();
     } else {
       checkCreatorRights();
       getCharSpells();
 
       if (!charSpells.length) {
         setIsAddLiseElements(true);
-        renderAllSpells();
+        getAllSpells();
       } else {
-        renderCharSpells();
+        setSpells(charSpells);
       }
     }
-  }, [charList, getCharSpells, renderAllSpells, checkCreatorRights]);
+  }, [charList, getCharSpells, checkCreatorRights]);
 
   return (
     <main>
@@ -224,6 +208,7 @@ export default function Spells({ charList, chars }) {
             key={spell._id}
             cbForm={setIsForm}
             spell={spell}
+            inList={() => setLikeSpellCard(spell)}
             charList={charList}
             cbClose={cbClose}
             cbPlus={cbPlus}

@@ -17,10 +17,10 @@ export default function SpellCard({
   spell,
   charList,
   isCreator,
+  inList,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
   const {
-    inList,
     name,
     school,
     level,
