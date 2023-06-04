@@ -19,7 +19,7 @@ import Error404 from "./pages/Error404/Error404";
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false});
+  const [ currentUser, setCurrentUser ] = useState({ email: '', role: '', isActivated: false });
   const [ chars, setChars ] = useState([]);
 
   const cbLogout = async () => {
@@ -27,6 +27,7 @@ export default function App() {
       await AuthService.logout();
       localStorage.removeItem('token');
       setCurrentUser({});
+      navigate(PATHS.login);
     } catch(err) {
       console.log(err);
     }
