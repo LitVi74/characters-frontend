@@ -17,7 +17,7 @@ export default function Spells() {
   const { charID = "" } = useParams();
 
   const [char, setChar] = useState({
-    id: charID,
+    _id: charID,
     name: "",
     spells: [],
     owner: "",
@@ -56,48 +56,28 @@ export default function Spells() {
         sessionStorage.setItem("spellsData", JSON.stringify(spells));
       }
 
-      return spells;
+      setSpells(spells);
     } catch (err) {
       console.log(err);
-      return [];
     }
   };
 
   const getCharSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getCharacter(charID);
+    const { _id, name, spells, owner } = data;
 
     if (!hasError) {
-      setChar({ id: charID, name: data.name, spells: data.spells, owner: data.owner });
+      setChar({ _id, name, spells, owner });
     }
   }, [charID]);
 
-  const renderAllSpells = useCallback(() => {
-    getAllSpells()
-      .then((res) => {
-        res = res.map((spell) => {
-          spell.inList = char.spells.some((s) => s._id === spell._id);
-          return spell;
-        });
-        setSpells(res);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const renderCharSpells = () => {
-    const spells = char.spells.map((spell) => {
-      spell.inList = true;
-      return spell;
-    });
-    setSpells(spells);
-  };
-
   const handleCloseButton = () => {
-    renderCharSpells();
+    setSpells(char.spells);
     setIsAddLiseElements(false);
   };
 
   const handlePlusButton = () => {
-    renderAllSpells();
+    getAllSpells();
     setIsAddLiseElements(true);
   };
 
@@ -108,9 +88,10 @@ export default function Spells() {
     const { hasError, data } = await ResourcesService.updateCharacter(charID, {
       spells: spellsData,
     });
+    const { _id, name, spells, owner } = data;
 
     if (!hasError) {
-      setChar({ id: charID, name: data.name, spells: data.spells, owner: data.owner });
+      setChar({ _id, name, spells, owner });
     }
 
     if (!isAddLiseElements && !hasError) {
@@ -123,9 +104,10 @@ export default function Spells() {
     const { hasError, data } = await ResourcesService.updateCharacter(charID, {
       spells: spellsData,
     });
+    const { _id, name, spells, owner } = data;
 
     if (!hasError) {
-      setChar({ id: charID, name: data.name, spells: data.spells, owner: data.owner });
+      setChar({ _id, name, spells, owner });
     }
 
     if (!isAddLiseElements && !hasError) {
@@ -165,23 +147,28 @@ export default function Spells() {
     [filterActionList]
   );
 
+  const setLikeSpellCard = (spell) => {
+    if (charID && char.spells.length) {
+      return true;
+    }
+    return char.spells.some((s) => s._id === spell._id);
+  };
+
   useEffect(() => {
     if (!charID) {
-      getAllSpells()
-        .then((res) => setSpells(res))
-        .catch((err) => console.log(err));
+      getAllSpells();
     } else {
       checkCreatorRights();
       getCharSpells();
 
       if (!char.spells?.length) {
         setIsAddLiseElements(true);
-        renderAllSpells();
+        getAllSpells();
       } else {
-        renderCharSpells();
+        setSpells(char.spells);
       }
     }
-  }, [charID, getCharSpells, renderAllSpells, checkCreatorRights]);
+  }, [charID, getCharSpells, checkCreatorRights]);
 
   return (
     <main>
@@ -189,12 +176,18 @@ export default function Spells() {
         filterActionList={filterActionList}
         setFilterActionList={setFilterActionList}
       />
-      {!!charID ? (
-        isAddLiseElements ? (
-          <CloseButton onClick={handleCloseButton} />
-        ) : (
-          <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
-        )
+      {charID ? (
+        isCreator ? (
+          isAddLiseElements ? (
+            <CloseButton onClick={handleCloseButton} className="my-2 mx-5" />
+          ) : (
+            <IconButton
+              icon={<Plus size={24} />}
+              onClick={handlePlusButton}
+              className="my-2 mx-5"
+            />
+          )
+        ) : null
       ) : (
         currentUser.role === "Admin" && (
           <IconButton icon={<Plus size={24} />} onClick={() => handleShowForm()} />
@@ -206,6 +199,7 @@ export default function Spells() {
             key={spell._id}
             handleShowForm={handleShowForm}
             spell={spell}
+            inList={() => setLikeSpellCard(spell)}
             charList={!!charID}
             cbClose={cbClose}
             cbPlus={cbPlus}

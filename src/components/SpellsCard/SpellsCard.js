@@ -17,10 +17,10 @@ export default function SpellCard({
   spell,
   charList,
   isCreator,
+  inList,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
   const {
-    inList,
     name,
     school,
     level,
@@ -58,16 +58,19 @@ export default function SpellCard({
     <li className="spell">
       <div className="spell__container">
         <h3 className="spell__title">{name}</h3>
-        {charList
-          ? isCreator &&
-            (isClosure ? (
+        {charList ? (
+          isCreator ? (
+            isClosure ? (
               <CloseButton onClick={handleCloseButton} />
             ) : (
               <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
-            ))
-          : currentUser.role === "Admin" && (
-              <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell />
-            )}
+            )
+          ) : null
+        ) : (
+          currentUser.role === "Admin" && (
+            <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isSpell />
+          )
+        )}
       </div>
       <div className="spell__container">
         <p className="spell__text">{school}</p>

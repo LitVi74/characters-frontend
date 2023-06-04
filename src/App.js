@@ -19,9 +19,10 @@ export default function App() {
 
   const getUserData = async () => {
     const { hasError, data } = await AuthService.checkAuth();
+    const { _id, email, role, isActivated } = data;
 
     if (!hasError) {
-      setCurrentUser(data);
+      setCurrentUser({ _id, email, role, isActivated });
     }
 
     return hasError;

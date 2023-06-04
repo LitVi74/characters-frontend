@@ -75,12 +75,13 @@ export default function Characters() {
 
   return (
     <Stack as="main" className="gap-2 align-self-center px-5">
-      <h1>Characters Page</h1>
       <IconButton
         icon={<Plus size={24} />}
         onClick={handleAddUserChar}
         className="my-0 mx-auto"
-      />
+      >
+        Добавить персонажа
+      </IconButton>
       <ListGroup as="ul">
         {chars.map((char) => (
           <CharacterLink

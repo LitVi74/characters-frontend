@@ -14,7 +14,7 @@ export default function AuthorizedNavbar() {
     const { hasError } = await AuthService.logout();
     if (!hasError) {
       setCurrentUser({
-        id: "",
+        _id: "",
         email: "",
         role: "",
         isActivated: false,

@@ -22,7 +22,14 @@ export default function LogIn() {
   const handleLoginFormSubmit = useCallback(
     async (email, password) => {
       const { hasError, errorMessage, data } = await AuthService.login(email, password);
-      setCurrentUser(data);
+      const { _id, role, isActivated } = data;
+
+      setCurrentUser({
+        _id,
+        email,
+        role,
+        isActivated,
+      });
       setSignInResult({ hasError, errorMessage });
 
       if (hasError || !data.isActivated) {
