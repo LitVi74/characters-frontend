@@ -48,17 +48,11 @@ export default function Spells() {
   }, []);
 
   const getAllSpells = async () => {
-    try {
-      let spells = JSON.parse(sessionStorage.getItem("spellsData"));
+    const { hasError, data } = await ResourcesService.getSpells();
+    const { spells: allSpells } = data;
 
-      if (!spells) {
-        spells = await ResourcesService.getSpells();
-        sessionStorage.setItem("spellsData", JSON.stringify(spells));
-      }
-
-      setSpells(spells);
-    } catch (err) {
-      console.log(err);
+    if (!hasError) {
+      setSpells(allSpells);
     }
   };
 

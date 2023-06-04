@@ -7,8 +7,30 @@ export default class ResourcesService {
   }
 
   static async getSpells() {
-    const res = await api.get("/spells");
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      let spells = JSON.parse(sessionStorage.getItem("spellsData"));
+
+      if (!spells) {
+        const response = await api.get("/spells");
+        spells = response.data;
+
+        sessionStorage.setItem("spellsData", JSON.stringify(spells));
+      }
+
+      result.data = { spells };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
   }
 
   static async createSpell(data) {
