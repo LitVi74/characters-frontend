@@ -12,7 +12,6 @@ import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import { Plus } from "react-bootstrap-icons";
 
-let charSpells = [];
 let charOwner;
 
 export default function Spells({ charList }) {
@@ -29,6 +28,7 @@ export default function Spells({ charList }) {
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState([]);
+  const [charSpells, setCharSpells] = useState([]);
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -87,7 +87,7 @@ export default function Spells({ charList }) {
   const getCharSpells = useCallback(async () => {
     try {
       const char = await ResourcesService.getCharacter(charID);
-      charSpells = char.spells;
+      setCharSpells(char.spells);
       charOwner = char.owner;
     } catch (err) {
       console.log(err);
@@ -107,10 +107,12 @@ export default function Spells({ charList }) {
   const cbClose = async (data) => {
     try {
       const { _id: spellID } = data;
-      const spellsData = charSpells.filter((s) => s._id !== spellID);
-      charSpells = (await ResourcesService.updateCharacter(charID, {
+      let spellsData = charSpells.filter((s) => s._id !== spellID);
+      
+      spellsData = (await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
       })).spells;
+      setCharSpells(spellsData);
 
       if (!isAddLiseElements) {
         setSpells(charSpells);
@@ -122,10 +124,12 @@ export default function Spells({ charList }) {
 
   const cbPlus = async (data) => {
     try {
-      const spellsData = [ ...charSpells, data ];
-      charSpells = (await ResourcesService.updateCharacter(charID, {
+      let spellsData = [ ...charSpells, data ];
+
+      spellsData = (await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
       })).spells;
+      setCharSpells(spellsData);
     } catch (err) {
       console.log(err);
     }
@@ -160,7 +164,7 @@ export default function Spells({ charList }) {
   );
 
   const setLikeSpellCard = (spell) => {
-    if(charList && charSpells.length) {
+    if(!isAddLiseElements) {
       return true;
     }
     return charSpells.some((s) => s._id === spell._id);
@@ -180,7 +184,7 @@ export default function Spells({ charList }) {
         setSpells(charSpells);
       }
     }
-  }, [charList, getCharSpells, checkCreatorRights]);
+  }, [charList, charSpells, getCharSpells, checkCreatorRights]);
 
   return (
     <main>
