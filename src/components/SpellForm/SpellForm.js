@@ -91,7 +91,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <option value="Вызов">Вызов</option>
           <option value="Воплощение">Воплощение</option>
           <option value="Иллюзия">Иллюзия</option>
-          <option value="Некромант">Некромант</option>
+          <option value="Некромантия">Некромантия</option>
           <option value="Ограждение">Ограждение</option>
           <option value="Очарование">Очарование</option>
           <option value="Преобразование">Преобразование</option>
@@ -275,9 +275,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           />
           <Form.Check
             name="classes"
-            defaultChecked={formik.initialValues.classes.includes(
-              "Изобретатель"
-            )}
+            defaultChecked={formik.initialValues.classes.includes("Изобретатель")}
             label={"Изобретатель"}
             value={"Изобретатель"}
             onChange={formik.handleChange}
