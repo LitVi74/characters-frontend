@@ -108,13 +108,13 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <option hidden value="">
             {" "}
           </option>
-          <option value="1 бонусное действие">бонусное действие</option>
-          <option value="1 реакция">реакция</option>
-          <option value="1 действие">дейсвие</option>
-          <option value="1 ход">ход</option>
-          <option value="1 минута">минута</option>
+          <option value="1 бонусное действие">1 бонусное действие</option>
+          <option value="1 реакция">1 реакция</option>
+          <option value="1 действие">1 действие</option>
+          <option value="1 ход">1 ход</option>
+          <option value="1 минута">1 минута</option>
           <option value="10 минут">10 минут</option>
-          <option value="1 час">час</option>
+          <option value="1 час">1 час</option>
           <option value="8 часов">8 часов</option>
           <option value="12 часов">12 часов</option>
           <option value="24 часов">24 часов</option>
