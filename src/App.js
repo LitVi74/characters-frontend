@@ -39,6 +39,7 @@ export default function App() {
       const { _id, email, role, isActivated, accessToken } = response.data;
       localStorage.setItem('token', accessToken);
       setCurrentUser({ _id, email, role, isActivated });
+      navigate(PATHS.characters);
     } catch(err) {
       console.log(err);
     }
@@ -47,8 +48,7 @@ export default function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      getUserData()
-        .then(() => navigate(PATHS.characters));
+      getUserData();
     }
   }, [])
 
@@ -88,12 +88,6 @@ export default function App() {
       element: <Error404 />
     }
   ]);
-
-  useEffect(() => {
-    if (location.pathname === '/' && currentUser.isActivated) {
-      navigate(PATHS.characters);
-    }
-  }, [location, currentUser])
 
   return (
     <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
