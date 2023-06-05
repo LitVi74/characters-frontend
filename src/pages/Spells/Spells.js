@@ -58,10 +58,10 @@ export default function Spells() {
 
   const getCharSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getCharacter(charID);
-    const { _id, name, spells, owner } = data;
+    const { _id, name, spells: charSpells, owner } = data;
 
     if (!hasError) {
-      setChar({ _id, name, spells, owner });
+      setChar({ _id, name, spells: charSpells, owner });
     }
   }, [charID]);
 
