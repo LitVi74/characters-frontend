@@ -12,8 +12,6 @@ import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import { Plus } from "react-bootstrap-icons";
 
-let charOwner;
-
 export default function Spells({ charList }) {
   const { currentUser } = useContext(CurrentUserContext);
 
@@ -80,19 +78,16 @@ export default function Spells({ charList }) {
     }
   };
 
-  const checkCreatorRights = useCallback(() => {
-    setIsCreator(charOwner === currentUser._id);
-  }, [currentUser]);
-
   const getCharSpells = useCallback(async () => {
     try {
-      const char = await ResourcesService.getCharacter(charID);
-      setCharSpells(char.spells);
-      charOwner = char.owner;
+      const { spells, owner} = await ResourcesService.getCharacter(charID);
+      setCharSpells(spells);
+      setSpells(spells);
+      setIsCreator(owner === currentUser._id);
     } catch (err) {
       console.log(err);
     }
-  }, [charID]);
+  }, [charID, currentUser]);
 
   const handleCloseButton = () => {
     setSpells(charSpells);
@@ -115,7 +110,7 @@ export default function Spells({ charList }) {
       setCharSpells(spellsData);
 
       if (!isAddLiseElements) {
-        setSpells(charSpells);
+        setSpells(spellsData);
       }
     } catch (err) {
       console.log(err);
@@ -175,16 +170,8 @@ export default function Spells({ charList }) {
       getAllSpells();
     } else {
       getCharSpells();
-      checkCreatorRights();
-
-      if (!charSpells.length) {
-        setIsAddLiseElements(true);
-        getAllSpells();
-      } else {
-        setSpells(charSpells);
-      }
     }
-  }, [charList, charSpells, getCharSpells, checkCreatorRights]);
+  }, [charList, getCharSpells]);
 
   return (
     <main>
