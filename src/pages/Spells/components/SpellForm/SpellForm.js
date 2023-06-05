@@ -72,6 +72,59 @@ export default function SpellForm({ cbSubmit, spell }) {
           <option value={8}>9 уровень</option>
         </Form.Select>
       </Form.Group>
+      <Form.Group controlId="spell-school">
+        <Form.Label>Школа</Form.Label>
+        <Form.Select
+          name="school"
+          onChange={formik.handleChange}
+          defaultValue={formik.initialValues.school}
+        >
+          <option hidden value="">
+            {" "}
+          </option>
+          <option value="Вызов">Вызов</option>
+          <option value="Воплощение">Воплощение</option>
+          <option value="Иллюзия">Иллюзия</option>
+          <option value="Некромантия">Некромантия</option>
+          <option value="Ограждение">Ограждение</option>
+          <option value="Очарование">Очарование</option>
+          <option value="Преобразование">Преобразование</option>
+          <option value="Прорицание">Прорицание</option>
+        </Form.Select>
+      </Form.Group>
+      <Form.Group controlId="spell-cast-time">
+        <Form.Label>Время накладывания</Form.Label>
+        <Form.Select
+          name="castingTime"
+          onChange={formik.handleChange}
+          defaultValue={formik.initialValues.castingTime}
+        >
+          <option hidden value="">
+            {" "}
+          </option>
+          <option value="1 бонусное действие">1 бонусное действие</option>
+          <option value="1 реакция">1 реакция</option>
+          <option value="1 действие">1 действие</option>
+          <option value="1 ход">1 ход</option>
+          <option value="1 минута">1 минута</option>
+          <option value="10 минут">10 минут</option>
+          <option value="1 час">1 час</option>
+          <option value="8 часов">8 часов</option>
+          <option value="12 часов">12 часов</option>
+          <option value="24 часов">24 часов</option>
+        </Form.Select>
+      </Form.Group>
+      <Form.Group controlId="spell-cast-time-additional-condition">
+        <Form.Label>Дополнительное условие накладывания заклинания</Form.Label>
+        <Form.Control
+          as="textarea"
+          name="castingTimeAdditional"
+          type="text"
+          onChange={formik.handleChange}
+          defaultValue={formik.initialValues.castingTimeAdditional}
+          placeholder="Например: при получении урона кислотой, холодом, огнем, электричеством или звуком"
+        />
+      </Form.Group>
       <Form.Group controlId="spell-range">
         <Form.Label>Дистанция</Form.Label>
         <Form.Select
@@ -97,59 +150,6 @@ export default function SpellForm({ cbSubmit, spell }) {
           <option value={400}>400 футов</option>
           <option value={1000}>1000 футов</option>
         </Form.Select>
-      </Form.Group>
-      <Form.Group controlId="spell-school">
-        <Form.Label>Школа</Form.Label>
-        <Form.Select
-          name="school"
-          onChange={formik.handleChange}
-          defaultValue={formik.initialValues.school}
-        >
-          <option hidden value="">
-            {" "}
-          </option>
-          <option value="Вызов">Вызов</option>
-          <option value="Воплощение">Воплощение</option>
-          <option value="Иллюзия">Иллюзия</option>
-          <option value="Некромант">Некромант</option>
-          <option value="Ограждение">Ограждение</option>
-          <option value="Очарование">Очарование</option>
-          <option value="Преобразование">Преобразование</option>
-          <option value="Прорицание">Прорицание</option>
-        </Form.Select>
-      </Form.Group>
-      <Form.Group controlId="spell-cast-time">
-        <Form.Label>Время накладывания</Form.Label>
-        <Form.Select
-          name="castingTime"
-          onChange={formik.handleChange}
-          defaultValue={formik.initialValues.castingTime}
-        >
-          <option hidden value="">
-            {" "}
-          </option>
-          <option value="1 бонусное действие">бонусное действие</option>
-          <option value="1 реакция">реакция</option>
-          <option value="1 действие">дейсвие</option>
-          <option value="1 ход">ход</option>
-          <option value="1 минута">минута</option>
-          <option value="10 минут">10 минут</option>
-          <option value="1 час">час</option>
-          <option value="8 часов">8 часов</option>
-          <option value="12 часов">12 часов</option>
-          <option value="24 часов">24 часов</option>
-        </Form.Select>
-      </Form.Group>
-      <Form.Group controlId="spell-cast-time-additional-condition">
-        <Form.Label>Дополнительное условие накладывания заклинания</Form.Label>
-        <Form.Control
-          as="textarea"
-          name="castingTimeAdditional"
-          type="text"
-          onChange={formik.handleChange}
-          defaultValue={formik.initialValues.castingTimeAdditional}
-          placeholder="Например: при получении урона кислотой, холодом, огнем, электричеством или звуком"
-        />
       </Form.Group>
       <Form.Group>
         <Form.Label>Компоненты</Form.Label>

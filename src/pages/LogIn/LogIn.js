@@ -32,7 +32,7 @@ export default function LogIn() {
       });
       setSignInResult({ hasError, errorMessage });
 
-      if (hasError || !data.isActivated) {
+      if (hasError || !isActivated) {
         setShowToast(true);
       } else {
         navigate(PATHS.characters);
