@@ -1,16 +1,9 @@
-import { useState } from "react";
-import { Funnel } from "react-bootstrap-icons";
-import { FormControl, InputGroup } from "react-bootstrap";
-
-import IconButton from "../IconButton/IconButton";
-import FiltersModal from "../FiltersModal/FiltersModal";
 import useFilterAction from "./hooks/useFilterAction";
 
 import { SPELL } from "../../constants/constants";
+import Filters from "../Filters/Filters";
 
 function SpellFilters({ filterActionList, setFilterActionList }) {
-  const [show, setShow] = useState(false);
-
   const filterAction = useFilterAction(filterActionList, setFilterActionList);
   const filters = [
     {
@@ -54,29 +47,11 @@ function SpellFilters({ filterActionList, setFilterActionList }) {
     },
   ];
 
-  const handleModalClose = () => {
-    setShow(false);
-  };
-
   return (
     <div className="d-flex align-items-center justify-content-center gap-3 p-lg-5">
-      <InputGroup>
-        <FormControl
-          onBlur={filterAction.handleSearchInputBlur}
-          onKeyDown={(event) =>
-            event.keyCode === 13 && event.currentTarget.blur()
-          }
-        />
-        <IconButton
-          variant="outline-primary"
-          icon={<Funnel size={20} />}
-          onClick={() => setShow(true)}
-        />
-      </InputGroup>
-      <FiltersModal
+      <Filters
         filters={filters}
-        show={show}
-        handleModalClose={handleModalClose}
+        handleSearchInputBlur={filterActionList.handleSearchInputBlur}
       />
     </div>
   );

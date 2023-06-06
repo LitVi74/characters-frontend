@@ -56,10 +56,6 @@ export default function Spells() {
     }
   };
 
-  const checkCreatorRights = useCallback(() => {
-    setIsCreator(char.owner === currentUser._id);
-  }, [char.owner, currentUser._id]);
-
   const getCharSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getCharacter(charID);
     const { _id, name, spells: charSpells, owner } = data;
@@ -149,11 +145,14 @@ export default function Spells() {
   };
 
   useEffect(() => {
+    setIsCreator(char.owner === currentUser._id);
+  }, [char.owner, currentUser._id]);
+
+  useEffect(() => {
     if (!charID) {
       getAllSpells();
     } else {
       getCharSpells();
-      checkCreatorRights();
 
       if (!char.spells?.length) {
         setIsAddLiseElements(true);
@@ -162,7 +161,7 @@ export default function Spells() {
         setSpells(char.spells);
       }
     }
-  }, [charID, getCharSpells, checkCreatorRights]);
+  }, [charID, getCharSpells]);
 
   return (
     <main>
