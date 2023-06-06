@@ -10,17 +10,19 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
 
   const deleteFilterFunctionByName = useCallback(
     (name) => {
-      setFilterActionList(filterActionList.filter((func) => func.name !== name));
+      const filterActionClone = new Map(filterActionList);
+      if (filterActionClone.delete(name)) {
+        setFilterActionList(filterActionClone);
+      }
     },
     [filterActionList, setFilterActionList]
   );
 
   const addFilterFunctionToList = useCallback(
-    (filterFunc) => {
-      const functionList = filterActionList.filter(
-        (func) => func.name !== filterFunc.name
-      );
-      setFilterActionList([...functionList, filterFunc]);
+    (name, filterFunc) => {
+      const filterActionClone = new Map(filterActionList);
+      filterActionClone.set(name, filterFunc);
+      setFilterActionList(filterActionClone);
     },
     [filterActionList, setFilterActionList]
   );
@@ -36,7 +38,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       const searchSpellsByName = (spells) =>
         spells.filter((spell) => regExp.test(spell.name));
 
-      addFilterFunctionToList(searchSpellsByName);
+      addFilterFunctionToList("searchSpellsByName", searchSpellsByName);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -53,7 +55,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       const searchSpellsByLevel = (spells) =>
         spells.filter((spell) => event.includes(spell.level));
 
-      addFilterFunctionToList(searchSpellsByLevel);
+      addFilterFunctionToList("searchSpellsByLevel", searchSpellsByLevel);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -67,12 +69,12 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
         return;
       }
 
-      const searchSpellsByClass = (spell) =>
-        spell.filter((spell) =>
+      const searchSpellsByClass = (spells) =>
+        spells.filter((spell) =>
           spell.classes.some((spellClass) => event.includes(spellClass))
         );
 
-      addFilterFunctionToList(searchSpellsByClass);
+      addFilterFunctionToList("searchSpellsByClass", searchSpellsByClass);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -86,10 +88,10 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
         return;
       }
 
-      const searchSpellsBySchool = (spell) =>
-        spell.filter((spell) => event.includes(spell.school));
+      const searchSpellsBySchool = (spells) =>
+        spells.filter((spell) => event.includes(spell.school));
 
-      addFilterFunctionToList(searchSpellsBySchool);
+      addFilterFunctionToList("searchSpellsBySchool", searchSpellsBySchool);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -103,10 +105,10 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
         return;
       }
 
-      const searchSpellsByRitual = (spell) =>
-        spell.filter((spell) => event.includes(spell.ritual));
+      const searchSpellsByRitual = (spells) =>
+        spells.filter((spell) => event.includes(spell.ritual));
 
-      addFilterFunctionToList(searchSpellsByRitual);
+      addFilterFunctionToList("searchSpellsBySchool", searchSpellsByRitual);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -120,10 +122,10 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
         return;
       }
 
-      const searchSpellsByConcentration = (spell) =>
-        spell.filter((spell) => event.includes(spell.ritual));
+      const searchSpellsByConcentration = (spells) =>
+        spells.filter((spell) => event.includes(spell.ritual));
 
-      addFilterFunctionToList(searchSpellsByConcentration);
+      addFilterFunctionToList("searchSpellsByConcentration", searchSpellsByConcentration);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -138,10 +140,11 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       }
 
       const regExp = new RegExp(event.join("|"), "i");
-      const searchSpellsByCastingTime = (spell) =>
-        spell.filter((spell) => regExp.test(spell.casting_time));
 
-      addFilterFunctionToList(searchSpellsByCastingTime);
+      const searchSpellsByCastingTime = (spells) =>
+        spells.filter((spell) => regExp.test(spell.casting_time));
+
+      addFilterFunctionToList("searchSpellsByCastingTime", searchSpellsByCastingTime);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );

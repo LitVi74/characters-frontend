@@ -82,7 +82,7 @@ export default function SpellCard({
           ? 'На себя' 
           : range === 0 
             ? 'Касание' 
-            : range + 'футов'}`}</p>
+            : range + ' футов'}`}</p>
       <p className="spell__text">{`Компоненты: ${components.join(", ")}${
         material ? `(${material})` : ""
       }`}</p>

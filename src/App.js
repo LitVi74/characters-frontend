@@ -23,15 +23,14 @@ export default function App() {
 
     if (!hasError) {
       setCurrentUser({ _id, email, role, isActivated });
+      navigate(PATHS.characters);
     }
-
-    return hasError;
   };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      getUserData().then((hasError) => !hasError && navigate(PATHS.characters));
+      getUserData();
     }
     // особенности работы navigate
     // если navigate в зависимости, то он перезапескает useEffect при изменении location
