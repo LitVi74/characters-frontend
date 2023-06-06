@@ -25,7 +25,7 @@ export default function Spells({ charList }) {
   });
   const [spells, setSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
-  const [filterActionList, setFilterActionList] = useState([]);
+  const [filterActionList, setFilterActionList] = useState(new Map());
   const [charSpells, setCharSpells] = useState([]);
 
   const handleAddInAllSpells = () => {
@@ -80,7 +80,7 @@ export default function Spells({ charList }) {
 
   const getCharSpells = useCallback(async () => {
     try {
-      const { spells, owner} = await ResourcesService.getCharacter(charID);
+      const { spells, owner } = await ResourcesService.getCharacter(charID);
       setCharSpells(spells);
       setSpells(spells);
       setIsCreator(owner === currentUser._id);
@@ -103,10 +103,12 @@ export default function Spells({ charList }) {
     try {
       const { _id: spellID } = data;
       let spellsData = charSpells.filter((s) => s._id !== spellID);
-      
-      spellsData = (await ResourcesService.updateCharacter(charID, {
-        spells: spellsData,
-      })).spells;
+
+      spellsData = (
+        await ResourcesService.updateCharacter(charID, {
+          spells: spellsData,
+        })
+      ).spells;
       setCharSpells(spellsData);
 
       if (!isAddLiseElements) {
@@ -119,11 +121,13 @@ export default function Spells({ charList }) {
 
   const cbPlus = async (data) => {
     try {
-      let spellsData = [ ...charSpells, data ];
+      let spellsData = [...charSpells, data];
 
-      spellsData = (await ResourcesService.updateCharacter(charID, {
-        spells: spellsData,
-      })).spells;
+      spellsData = (
+        await ResourcesService.updateCharacter(charID, {
+          spells: spellsData,
+        })
+      ).spells;
       setCharSpells(spellsData);
     } catch (err) {
       console.log(err);
@@ -159,7 +163,7 @@ export default function Spells({ charList }) {
   );
 
   const setLikeSpellCard = (spell) => {
-    if(!isAddLiseElements) {
+    if (!isAddLiseElements) {
       return true;
     }
     return charSpells.some((s) => s._id === spell._id);
@@ -182,18 +186,15 @@ export default function Spells({ charList }) {
       {charList ? (
         isCreator ? (
           isAddLiseElements ? (
-            <CloseButton 
-              onClick={handleCloseButton} 
-              className="my-2 mx-5"
-            />
+            <CloseButton onClick={handleCloseButton} className="my-2 mx-5" />
           ) : (
-            <IconButton 
-              icon={<Plus size={24} />} 
-              onClick={handlePlusButton} 
+            <IconButton
+              icon={<Plus size={24} />}
+              onClick={handlePlusButton}
               className="my-2 mx-5"
             />
           )
-        ) : ( null )
+        ) : null
       ) : (
         currentUser.role === "Admin" && (
           <IconButton
