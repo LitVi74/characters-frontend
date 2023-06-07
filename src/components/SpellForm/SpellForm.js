@@ -138,9 +138,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           onChange={formik.handleChange}
           defaultValue={formik.initialValues.range}
         >
-          <option hidden value={-1}>
-            На себя
-          </option>
+          <option value={-1}>На себя</option>
           <option value={0}>Касание</option>
           <option value={5}>5 футов</option>
           <option value={10}>10 футов</option>
