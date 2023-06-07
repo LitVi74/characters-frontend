@@ -151,6 +151,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <option value={60}>60 футов</option>
           <option value={90}>90 футов</option>
           <option value={100}>100 футов</option>
+          <option value={120}>120 футов</option>
           <option value={150}>150 футов</option>
           <option value={300}>300 футов</option>
           <option value={400}>400 футов</option>
