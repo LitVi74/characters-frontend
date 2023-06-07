@@ -155,6 +155,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <option value={150}>150 футов</option>
           <option value={300}>300 футов</option>
           <option value={400}>400 футов</option>
+          <option value={500}>500 футов</option>
           <option value={1000}>1000 футов</option>
         </Form.Select>
       </Form.Group>
