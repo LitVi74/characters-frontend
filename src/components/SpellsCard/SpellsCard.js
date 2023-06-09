@@ -85,16 +85,7 @@ export default function SpellCard({
         <p className="spell__text">{`${level} уровень`}</p>
       </div>
       <p className="spell__text">{`Время накладывания: ${casting_time}`}</p>
-      <p className="spell__text">{`Дистанция: ${
-        range === -3
-          ? 'В пределах видимости'
-          : range === -2 
-            ? 'Особая' 
-            : range === -1 
-              ? 'На себя' 
-              : range === 0 
-                ? 'Касание' 
-                : range + ' футов'}`}</p>
+      <p className="spell__text">{`Дистанция: ${range}`}</p>
       <p className="spell__text">{`Компоненты: ${components.join(", ")}${
         material ? "(" + material + ")" : ""
       }`}</p>

@@ -9,10 +9,10 @@ export default function SpellForm({ cbSubmit, spell, update }) {
       name: spell?.name ?? "",
       level: spell?.level ?? 0,
       school: spell?.school ?? "",
-      castingTime: castingTime?.[0] ?? "",
+      castingTime: castingTime?.[0] ?? "1 действие",
       castingTimeAdditional:
         castingTime?.slice(1, castingTime?.length)?.join(", ") ?? "",
-      range: spell?.range ?? -1,
+      range: spell?.range ?? "",
       components: spell?.components ?? [],
       material: spell?.material ?? "",
       ritual: spell?.ritual ?? false,
@@ -133,31 +133,12 @@ export default function SpellForm({ cbSubmit, spell, update }) {
       </Form.Group>
       <Form.Group controlId="spell-range">
         <Form.Label>Дистанция</Form.Label>
-        <Form.Select
+        <Form.Control
           name="range"
+          type="text"
           onChange={formik.handleChange}
           defaultValue={formik.initialValues.range}
-        >
-          <option value={-3}>В пределах видимости</option>
-          <option value={-2}>Особая</option>
-          <option value={-1}>На себя</option>
-          <option value={0}>Касание</option>
-          <option value={5}>5 футов</option>
-          <option value={10}>10 футов</option>
-          <option value={25}>25 футов</option>
-          <option value={30}>30 футов</option>
-          <option value={40}>40 футов</option>
-          <option value={50}>50 футов</option>
-          <option value={60}>60 футов</option>
-          <option value={90}>90 футов</option>
-          <option value={100}>100 футов</option>
-          <option value={120}>120 футов</option>
-          <option value={150}>150 футов</option>
-          <option value={300}>300 футов</option>
-          <option value={400}>400 футов</option>
-          <option value={500}>500 футов</option>
-          <option value={1000}>1000 футов</option>
-        </Form.Select>
+        />
       </Form.Group>
       <Form.Group>
         <Form.Label>Компоненты</Form.Label>
