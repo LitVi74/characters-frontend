@@ -33,6 +33,7 @@ export default function SpellCard({
     classes,
     desc,
     higher_level,
+    ritual,
   } = spell;
   const [isClosure, setIsClosure] = useState(inList);
 
@@ -81,7 +82,7 @@ export default function SpellCard({
         )}
       </div>
       <div className="spell__container">
-        <p className="spell__text">{school}</p>
+        <p className="spell__text">{school + ritual === true ? ' (ритуал)' : ''}</p>
         <p className="spell__text">{`${level} уровень`}</p>
       </div>
       <p className="spell__text">{`Время накладывания: ${casting_time}`}</p>
