@@ -117,7 +117,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <option value="1 час">1 час</option>
           <option value="8 часов">8 часов</option>
           <option value="12 часов">12 часов</option>
-          <option value="24 часов">24 часов</option>
+          <option value="24 часа">24 часа</option>
         </Form.Select>
       </Form.Group>
       <Form.Group controlId="spell-cast-time-additional-condition">
