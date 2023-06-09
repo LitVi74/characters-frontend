@@ -128,7 +128,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       }
 
       const searchSpellsByConcentration = (spell) => {
-        return spell.filter((spell) => event.includes(spell.ritual));
+        return spell.filter((spell) => event.includes(spell.concentration));
       };
 
       addFilterFunctionToList(
