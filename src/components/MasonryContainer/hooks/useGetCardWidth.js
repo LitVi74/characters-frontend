@@ -1,14 +1,17 @@
-import constants from '../../../constants/constants.scss';
+import constants from "../../../constants/constants.scss";
 
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 
-function useGetCardWidth (containerRef) {
+function useGetCardWidth(containerRef) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
 
   const handleResize = useCallback(() => {
-    setTimeout(setContainerWidth.bind(null,containerRef.current?.clientWidth ?? 0), 50)
-  }, [containerRef])
+    setTimeout(
+      () => setContainerWidth(containerRef.current?.clientWidth ?? 0),
+      50
+    );
+  }, [containerRef.current?.clientWidth]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -18,7 +21,9 @@ function useGetCardWidth (containerRef) {
     };
   }, [handleResize]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!containerWidth) return;
+
     const gap = +constants.gap.match(/^\d+/)[0];
     const minCardWidth = +constants.minCardWidth.match(/^\d+/)[0];
 

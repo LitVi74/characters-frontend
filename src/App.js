@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { Navigate, useNavigate, useRoutes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Header from "./components/Header/Header";
@@ -11,24 +11,28 @@ import SignUp from "./pages/SignUp/SignUp";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import AuthService from "./service/AuthService/AuthService";
 
-import { PATHS } from './constants/constants';
+import { PATHS } from "./constants/constants";
 
-import { CurrentUserContext } from './contexts/currentUserContext';
+import { CurrentUserContext } from "./contexts/currentUserContext";
 import Error404 from "./pages/Error404/Error404";
 
 export default function App() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [ currentUser, setCurrentUser ] = useState({ _id: '', email: '', role: '', isActivated: false });
-  const [ chars, setChars ] = useState([]);
+  const [currentUser, setCurrentUser] = useState({
+    _id: "",
+    email: "",
+    role: "",
+    isActivated: false,
+  });
+  const [chars, setChars] = useState([]);
 
   const cbLogout = async () => {
     try {
       await AuthService.logout();
-      localStorage.removeItem('token');
-      setCurrentUser({ _id: '', email: '', role: '', isActivated: false });
+      localStorage.removeItem("token");
+      setCurrentUser({ _id: "", email: "", role: "", isActivated: false });
       navigate(PATHS.login);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -37,20 +41,20 @@ export default function App() {
     try {
       const response = await AuthService.checkAuth();
       const { _id, email, role, isActivated, accessToken } = response.data;
-      localStorage.setItem('token', accessToken);
+      localStorage.setItem("token", accessToken);
       setCurrentUser({ _id, email, role, isActivated });
       navigate(PATHS.characters);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       getUserData();
     }
-  }, [])
+  }, []);
 
   const routes = useRoutes([
     {
@@ -62,35 +66,35 @@ export default function App() {
       element: <SignUp />,
     },
     {
-      path: PATHS.spells + '/:charID',
-      element: <Spells charList={true} />
+      path: PATHS.spells + "/:charID",
+      element: <Spells charList={true} />,
     },
     {
-      path: '/',
-      element:<ProtectedRoute />,
+      path: "/",
+      element: <ProtectedRoute />,
       children: [
         {
           path: PATHS.characters,
-          element: <Characters chars={chars} setChars={setChars}/>
+          element: <Characters chars={chars} setChars={setChars} />,
         },
         {
           path: PATHS.spells,
-          element: <Spells charList={false} />
+          element: <Spells charList={false} />,
         },
         {
-          path: '*',
-          element: <Navigate to={PATHS.page404} />
-        }
-      ]
+          path: "*",
+          element: <Navigate to={PATHS.page404} />,
+        },
+      ],
     },
     {
       path: PATHS.page404,
-      element: <Error404 />
-    }
+      element: <Error404 />,
+    },
   ]);
 
   return (
-    <CurrentUserContext.Provider value={{currentUser, setCurrentUser}}>
+    <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
       <Header cbLogout={cbLogout} />
       {routes}
     </CurrentUserContext.Provider>
