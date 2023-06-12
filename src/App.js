@@ -15,9 +15,11 @@ import { PATHS } from "./constants/constants";
 
 import { CurrentUserContext } from "./contexts/currentUserContext";
 import Error404 from "./pages/Error404/Error404";
+import Home from "./pages/Home/Home";
 
 export default function App() {
   const navigate = useNavigate();
+  const [hasFirstLoader, setHasFirstLoader] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     _id: "",
     email: "",
@@ -43,9 +45,10 @@ export default function App() {
       const { _id, email, role, isActivated, accessToken } = response.data;
       localStorage.setItem("token", accessToken);
       setCurrentUser({ _id, email, role, isActivated });
-      navigate(PATHS.characters);
     } catch (err) {
       console.log(err);
+    } finally {
+      setHasFirstLoader(true);
     }
   };
 
@@ -70,7 +73,6 @@ export default function App() {
       element: <Spells charList={true} />,
     },
     {
-      path: "/",
       element: <ProtectedRoute />,
       children: [
         {
@@ -81,11 +83,15 @@ export default function App() {
           path: PATHS.spells,
           element: <Spells charList={false} />,
         },
-        {
-          path: "*",
-          element: <Navigate to={PATHS.page404} />,
-        },
       ],
+    },
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "*",
+      element: <Navigate to={PATHS.page404} />,
     },
     {
       path: PATHS.page404,
@@ -96,7 +102,7 @@ export default function App() {
   return (
     <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
       <Header cbLogout={cbLogout} />
-      {routes}
+      {hasFirstLoader && routes}
     </CurrentUserContext.Provider>
   );
 }
