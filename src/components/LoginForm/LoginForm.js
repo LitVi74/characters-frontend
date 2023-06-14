@@ -1,7 +1,7 @@
 import { Formik, Field } from "formik";
 import { Button, Form } from "react-bootstrap";
 
-export default function LoginForm({cbLogin}) {
+export default function LoginForm({cbLogin, isSubmitted}) {
   return (
     <Formik 
       initialValues={{
@@ -23,6 +23,7 @@ export default function LoginForm({cbLogin}) {
               name="email"
               type="email"
               isInvalid={!!errors.email && touched.email}
+              disabled={isSubmitted}
               validate={(value) => {
                 const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                 let error;
@@ -43,6 +44,7 @@ export default function LoginForm({cbLogin}) {
               name="password"
               type="password"
               isInvalid={!!errors.password && touched.password}
+              disabled={isSubmitted}
               validate={(value) => {
                 let error;
 
@@ -55,7 +57,7 @@ export default function LoginForm({cbLogin}) {
               />
               <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit" variant="primary" className="w-100">
+          <Button type="submit" variant="primary" className="w-100" disabled={isSubmitted}>
             Войти
           </Button>
         </Form>

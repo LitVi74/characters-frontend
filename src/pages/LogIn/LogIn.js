@@ -16,8 +16,10 @@ export default function LogIn() {
     hasError: false,
     errorMessage: "",
   });
+  const [isSubmitted, setIsSubmitted] = setState(false);
 
   const cbLogin = async (email, password) => {
+    setIsSubmitted(true);
     const { hasError, errorMessage, data } = await AuthService.login(
       email,
       password
@@ -30,12 +32,13 @@ export default function LogIn() {
     } else {
       navigate(PATHS.characters);
     }
+    setIsSubmitted(false);
   };
 
   return (
     <main className="px-5">
       <h1>Вход</h1>
-      <LoginForm cbLogin={cbLogin} />
+      <LoginForm cbLogin={cbLogin} isSubmitted={isSubmitted} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}
