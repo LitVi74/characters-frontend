@@ -28,7 +28,7 @@ export default function Spells({ charList }) {
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState(new Map());
   const [charSpells, setCharSpells] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [isLoader, setIsLoader] = useState(true);
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -177,7 +177,7 @@ export default function Spells({ charList }) {
     } else {
       await getCharSpells();
     }
-    setLoader(false);
+    setIsLoader(false);
   }
 
   useEffect(() => {
@@ -193,12 +193,17 @@ export default function Spells({ charList }) {
       {charList ? (
         isCreator ? (
           isAddLiseElements ? (
-            <CloseButton onClick={handleCloseButton} className="my-2 mx-5" />
+            <CloseButton 
+              onClick={handleCloseButton} 
+              className="my-2 mx-5" 
+              disabled={isLoader ? 'disabled' : ''}
+            />
           ) : (
             <IconButton
               icon={<Plus size={24} />}
               onClick={handlePlusButton}
               className="my-2 mx-5"
+              isLoader={isLoader}
             />
           )
         ) : null
@@ -207,10 +212,11 @@ export default function Spells({ charList }) {
           <IconButton
             icon={<Plus size={24} />}
             onClick={handleAddInAllSpells}
+            isLoader={isLoader}
           />
         )
       )}
-      {loader
+      {isLoader
         ? <Spinner />
         : <MasonryContainer>
           {filterSpells(spells).map((spell) => (
