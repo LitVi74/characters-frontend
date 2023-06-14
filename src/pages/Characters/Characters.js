@@ -5,10 +5,12 @@ import ResourcesService from '../../service/ResoursesService/ResourcesService';
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 import IconButton from "../../components/IconButton/IconButton";
+import Spinner from "../../components/Spinner/Spinner";
 import {Plus} from "react-bootstrap-icons";
 
 export default function Characters({ chars, setChars }) {
-  const [ isForm, setIsForm ] = useState({
+  const [isLoader, setIsLoader] = useState(false);
+  const [isForm, setIsForm] = useState({
     isShow: false,
     data: {},
     update: false
@@ -59,7 +61,7 @@ export default function Characters({ chars, setChars }) {
     }
   };
 
-  const renderInitialCharacters = useCallback(async () => {
+  const getCharacters = useCallback(async () => {
     try {
       const initialChars = await ResourcesService.getUserCharacters();
 
@@ -69,22 +71,32 @@ export default function Characters({ chars, setChars }) {
     }
   }, [setChars]);
 
+  const renderPage = async () => {
+    setIsLoader(true);
+    await getCharacters();
+    setIsLoader(false);
+  };
+
   useEffect(() => {
-    renderInitialCharacters();
-  }, [renderInitialCharacters]);
+    renderPage();
+  }, [renderPage]);
 
   return (
     <Stack as="main" className="gap-2 align-self-center px-5">
       <IconButton 
         icon={<Plus size={24}/>} 
-        onClick={handleAddUserChar} 
+        onClick={handleAddUserChar}
         className="my-0 mx-auto"
+        isLoader={isLoader}
       >Добавить персонажа</IconButton>
-      <ListGroup as={"ul"}>
-        {chars.map((char) =>
-          <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
-        )}
-      </ListGroup>
+      {isLoader
+        ? <Spinner />
+        : <ListGroup as={"ul"}>
+            {chars.map((char) =>
+              <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
+            )}
+          </ListGroup>
+      }
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={false} />
     </Stack>
   );
