@@ -10,6 +10,7 @@ import { CurrentUserContext } from "../../contexts/currentUserContext";
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
+import Spinner from "../../components/Spinner/Spinner";
 import { Plus } from "react-bootstrap-icons";
 
 export default function Spells({ charList }) {
@@ -27,6 +28,7 @@ export default function Spells({ charList }) {
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState(new Map());
   const [charSpells, setCharSpells] = useState([]);
+  const [loader, setLoader] = useState(true);
 
   const handleAddInAllSpells = () => {
     setIsForm({
@@ -169,12 +171,17 @@ export default function Spells({ charList }) {
     return charSpells.some((s) => s._id === spell._id);
   };
 
-  useEffect(() => {
+  const renderPage = async () => {
     if (!charList) {
-      getAllSpells();
+      await getAllSpells();
     } else {
-      getCharSpells();
+      await getCharSpells();
     }
+    setLoader(false);
+  }
+
+  useEffect(() => {
+    renderPage();
   }, [charList, getCharSpells]);
 
   return (
@@ -203,21 +210,24 @@ export default function Spells({ charList }) {
           />
         )
       )}
-      <MasonryContainer>
-        {filterSpells(spells).map((spell) => (
-          <SpellCard
-            key={spell._id}
-            cbForm={setIsForm}
-            spell={spell}
-            inList={() => setLikeSpellCard(spell)}
-            charList={charList}
-            cbClose={cbClose}
-            cbPlus={cbPlus}
-            cbDell={cbDell}
-            isCreator={isCreator}
-          />
-        ))}
-      </MasonryContainer>
+      {loader
+        ? <Spinner />
+        : <MasonryContainer>
+          {filterSpells(spells).map((spell) => (
+            <SpellCard
+              key={spell._id}
+              cbForm={setIsForm}
+              spell={spell}
+              inList={() => setLikeSpellCard(spell)}
+              charList={charList}
+              cbClose={cbClose}
+              cbPlus={cbPlus}
+              cbDell={cbDell}
+              isCreator={isCreator}
+            />
+          ))}
+        </MasonryContainer>
+      }
       <SpellModalForm
         isForm={isForm}
         cbForm={setIsForm}
