@@ -36,15 +36,17 @@ export default function SpellCard({
     ritual,
   } = spell;
   const [isClosure, setIsClosure] = useState(inList);
+  const [isLoader, setIsLoader] = useState(false);
 
-  const handlePlusButton = () => {
-    cbPlus(spell);
-    setIsClosure(true);
-  };
-
-  const handleCloseButton = () => {
-    cbClose(spell);
-    setIsClosure(false);
+  const handleButton = async (isClose) => {
+    setIsLoader(true);
+    if(isClose) {
+      await cbClose(spell);
+    } else {
+      await cbPlus(spell);
+    }
+    setIsClosure(!isClosure);
+    setIsLoader(false);
   };
 
   const handleUpdate = () => {
@@ -66,11 +68,15 @@ export default function SpellCard({
         {charList ? (
           isCreator ? (
             isClosure ? (
-              <CloseButton onClick={handleCloseButton} />
+              <CloseButton 
+                onClick={() => handleButton(true)} 
+                disabled={isLoader ? 'disabled' : ''}
+              />
             ) : (
               <IconButton
                 icon={<Plus size={24} />}
-                onClick={handlePlusButton}
+                onClick={() => handleButton(false)}
+                isLoader={isLoader}
               />
             )
           ) : null
