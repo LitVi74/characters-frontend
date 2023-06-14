@@ -171,18 +171,18 @@ export default function Spells({ charList }) {
     return charSpells.some((s) => s._id === spell._id);
   };
 
-  const renderPage = async () => {
+  const renderPage = useCallback(async () => {
     if (!charList) {
       await getAllSpells();
     } else {
       await getCharSpells();
     }
     setIsLoader(false);
-  }
+  }, [charList, getCharSpells])
 
   useEffect(() => {
     renderPage();
-  }, [charList, getCharSpells]);
+  }, [renderPage]);
 
   return (
     <main>

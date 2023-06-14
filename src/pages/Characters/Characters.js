@@ -71,11 +71,11 @@ export default function Characters({ chars, setChars }) {
     }
   }, [setChars]);
 
-  const renderPage = async () => {
+  const renderPage = useCallback(async () => {
     setIsLoader(true);
     await getCharacters();
     setIsLoader(false);
-  };
+  }, [getCharacters]);
 
   useEffect(() => {
     renderPage();

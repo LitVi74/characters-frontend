@@ -16,7 +16,7 @@ export default function LogIn() {
     hasError: false,
     errorMessage: "",
   });
-  const [isSubmitted, setIsSubmitted] = setState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const cbLogin = async (email, password) => {
     setIsSubmitted(true);

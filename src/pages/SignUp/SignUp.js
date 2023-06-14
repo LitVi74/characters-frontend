@@ -9,7 +9,7 @@ export default function SignUp() {
     hasError: false,
     errorMessage: '',
   });
-  const [isSubmitted, setIsSubmitted] = setState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const cbRegister = async (email, password) => {
     setIsSubmitted(true);
