@@ -5,6 +5,7 @@ import { PATHS } from "../../constants/constants";
 import CardMenu from "../CardMenu/CardMenu";
 
 export default function CharacterLink({char, cbForm, cbClose}) {
+  const [isLoader, setIsLoader] = useState(false);
   const navigate = useNavigate();
   const {_id, name} = char;
 
@@ -17,7 +18,9 @@ export default function CharacterLink({char, cbForm, cbClose}) {
   };
 
   const handleDelete = () => {
-    cbClose(char)
+    setIsLoader(true);
+    cbClose(char);
+    setIsLoader(false);
   };
 
   const handleNavLink = (e) => {
@@ -29,7 +32,7 @@ export default function CharacterLink({char, cbForm, cbClose}) {
   return (
     <li className='list-group-item d-flex justify-content-between align-items-center' onClick={handleNavLink}>
       {name}
-      <CardMenu cbForm={handleUpdate} cbDell={handleDelete} />
+      <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isLoader={isLoader}/>
     </li>
   );
 }

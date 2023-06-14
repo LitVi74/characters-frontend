@@ -38,7 +38,7 @@ export default function SpellCard({
   const [isClosure, setIsClosure] = useState(inList);
   const [isLoader, setIsLoader] = useState(false);
 
-  const handleButton = async (isClose) => {
+  const handleCharButton = async (isClose) => {
     setIsLoader(true);
     if(isClose) {
       await cbClose(spell);
@@ -57,8 +57,10 @@ export default function SpellCard({
     });
   };
 
-  const handleDelete = () => {
-    cbDell(spell);
+  const handleDelete = async () => {
+    setIsLoader(true);
+    await cbDell(spell);
+    setIsLoader(false);
   };
 
   return (
@@ -69,13 +71,13 @@ export default function SpellCard({
           isCreator ? (
             isClosure ? (
               <CloseButton 
-                onClick={() => handleButton(true)} 
+                onClick={() => handleCharButton(true)} 
                 disabled={isLoader ? 'disabled' : ''}
               />
             ) : (
               <IconButton
                 icon={<Plus size={24} />}
-                onClick={() => handleButton(false)}
+                onClick={() => handleCharButton(false)}
                 isLoader={isLoader}
               />
             )
@@ -86,6 +88,7 @@ export default function SpellCard({
               cbForm={handleUpdate}
               cbDell={handleDelete}
               isSpell={true}
+              isLoader={isLoader}
             />
           )
         )}
