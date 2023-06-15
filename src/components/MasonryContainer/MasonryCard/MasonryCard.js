@@ -31,7 +31,7 @@ export default function MasonryCard({ cardWidth, children }) {
 
   return (
     <div className="masonry__card masonry__card-ready" ref={card}>
-      {children}
+      {!!cardWidth && children}
     </div>
   );
 }

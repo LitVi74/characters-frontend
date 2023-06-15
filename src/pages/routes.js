@@ -8,6 +8,7 @@ import Spells from "./Spells/Spells";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Characters from "./Characters/Characters";
 import Error404 from "./Error404/Error404";
+import Home from "./Home/Home";
 
 const ROUTES = [
   {
@@ -34,11 +35,15 @@ const ROUTES = [
         path: PATHS.spells,
         element: <Spells />,
       },
-      {
-        path: "*",
-        element: <Navigate to={PATHS.page404} />,
-      },
     ],
+  },
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "*",
+    element: <Navigate to={PATHS.page404} />,
   },
   {
     path: PATHS.page404,

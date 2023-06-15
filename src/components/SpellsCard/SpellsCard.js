@@ -33,6 +33,7 @@ export default function SpellCard({
     classes,
     desc,
     higher_level,
+    ritual,
   } = spell;
   const [isClosure, setIsClosure] = useState(inList);
 
@@ -63,7 +64,10 @@ export default function SpellCard({
             isClosure ? (
               <CloseButton onClick={handleCloseButton} />
             ) : (
-              <IconButton icon={<Plus size={24} />} onClick={handlePlusButton} />
+              <IconButton
+                icon={<Plus size={24} />}
+                onClick={handlePlusButton}
+              />
             )
           ) : null
         ) : (
@@ -73,16 +77,13 @@ export default function SpellCard({
         )}
       </div>
       <div className="spell__container">
-        <p className="spell__text">{school}</p>
+        <p className="spell__text">
+          {school} {ritual ? " (ритуал)" : ""}
+        </p>
         <p className="spell__text">{`${level} уровень`}</p>
       </div>
       <p className="spell__text">{`Время накладывания: ${casting_time}`}</p>
-      <p className="spell__text">{`Дистанция: ${
-        range === -1 
-          ? 'На себя' 
-          : range === 0 
-            ? 'Касание' 
-            : range + ' футов'}`}</p>
+      <p className="spell__text">{`Дистанция: ${range}`}</p>
       <p className="spell__text">{`Компоненты: ${components.join(", ")}${
         material ? `(${material})` : ""
       }`}</p>
@@ -93,7 +94,7 @@ export default function SpellCard({
       <p className="spell__text">{desc}</p>
       {higher_level ? (
         <p className="spell__text">{`На больших уровнях: ${higher_level}`}</p>
-      ) : ( null )}
+      ) : null}
     </li>
   );
 }

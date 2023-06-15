@@ -108,7 +108,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       const searchSpellsByRitual = (spells) =>
         spells.filter((spell) => event.includes(spell.ritual));
 
-      addFilterFunctionToList("searchSpellsBySchool", searchSpellsByRitual);
+      addFilterFunctionToList("searchSpellsByRitual", searchSpellsByRitual);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
@@ -123,7 +123,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       }
 
       const searchSpellsByConcentration = (spells) =>
-        spells.filter((spell) => event.includes(spell.ritual));
+        spells.filter((spell) => event.includes(spell.concentration));
 
       addFilterFunctionToList("searchSpellsByConcentration", searchSpellsByConcentration);
     },

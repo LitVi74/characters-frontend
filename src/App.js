@@ -1,15 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 
 import ROUTES from "./pages/routes";
 import Header from "./components/Header/Header";
 import AuthService from "./service/AuthService/AuthService";
-import { PATHS } from "./constants/constants";
 import { CurrentUserContext } from "./contexts/currentUserContext";
 
 export default function App() {
-  const navigate = useNavigate();
+  const [hasFirstLoader, setHasFirstLoader] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     _id: "",
     email: "",
@@ -23,8 +22,9 @@ export default function App() {
 
     if (!hasError) {
       setCurrentUser({ _id, email, role, isActivated });
-      navigate(PATHS.characters);
     }
+
+    setHasFirstLoader(true);
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function App() {
   return (
     <CurrentUserContext.Provider value={currentUserContextValue}>
       <Header />
-      {routes}
+      {hasFirstLoader && routes}
     </CurrentUserContext.Provider>
   );
 }
