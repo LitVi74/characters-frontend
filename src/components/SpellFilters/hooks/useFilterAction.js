@@ -1,12 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-const useFilterAction = (filterActionList, setFilterActionList) => {
-  const [selectedLevels, setSelectedLevels] = useState([]);
-  const [selectedClasses, setSelectedClasses] = useState([]);
-  const [selectedSchools, setSelectedSchools] = useState([]);
-  const [selectedRitual, setSelectedRitual] = useState([]);
-  const [selectedConcentration, setsSelectedConcentration] = useState([]);
-  const [selectedCastingTime, setSelectedCastingTime] = useState([]);
+const useFilterAction = (data, setFilteredData) => {
+  const [filterActionList, setFilterActionList] = useState(new Map());
 
   const deleteFilterFunctionByName = useCallback(
     (name) => {
@@ -15,7 +10,7 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
         setFilterActionList(filterActionClone);
       }
     },
-    [filterActionList, setFilterActionList]
+    [filterActionList]
   );
 
   const addFilterFunctionToList = useCallback(
@@ -24,145 +19,40 @@ const useFilterAction = (filterActionList, setFilterActionList) => {
       filterActionClone.set(name, filterFunc);
       setFilterActionList(filterActionClone);
     },
-    [filterActionList, setFilterActionList]
+    [filterActionList]
   );
 
-  const handleSearchInputBlur = useCallback(
-    (event) => {
-      if (!event.currentTarget.value) {
-        deleteFilterFunctionByName("searchSpellsByName");
+  const createFilterHandler = useCallback(
+    (functionName, handleFunction) => (event) => {
+      const searchFunction = handleFunction(event);
+
+      if (!event?.length && !event?.currentTarget?.value) {
+        deleteFilterFunctionByName(functionName);
         return;
       }
 
-      const regExp = new RegExp(event.currentTarget.value, "i");
-      const searchSpellsByName = (spells) =>
-        spells.filter((spell) => regExp.test(spell.name));
-
-      addFilterFunctionToList("searchSpellsByName", searchSpellsByName);
+      addFilterFunctionToList(functionName, searchFunction);
     },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
 
-  const handleLevelsChange = useCallback(
-    (event) => {
-      setSelectedLevels(event);
+  useEffect(() => {
+    let filteredData = [...data];
 
-      if (!event.length) {
-        deleteFilterFunctionByName("searchSpellsByLevel");
-        return;
-      }
+    if (!filterActionList.size) {
+      setFilteredData(filteredData);
+      return;
+    }
 
-      const searchSpellsByLevel = (spells) =>
-        spells.filter((spell) => event.includes(spell.level));
+    filterActionList.forEach((filterAction) => {
+      filteredData = filterAction(filteredData);
+    });
 
-      addFilterFunctionToList("searchSpellsByLevel", searchSpellsByLevel);
-    },
-    [addFilterFunctionToList, deleteFilterFunctionByName]
-  );
-
-  const handleClassesChange = useCallback(
-    (event) => {
-      setSelectedClasses(event);
-
-      if (!event.length) {
-        deleteFilterFunctionByName("searchSpellsByClass");
-        return;
-      }
-
-      const searchSpellsByClass = (spells) =>
-        spells.filter((spell) =>
-          spell.classes.some((spellClass) => event.includes(spellClass))
-        );
-
-      addFilterFunctionToList("searchSpellsByClass", searchSpellsByClass);
-    },
-    [addFilterFunctionToList, deleteFilterFunctionByName]
-  );
-
-  const handleSchoolsChange = useCallback(
-    (event) => {
-      setSelectedSchools(event);
-
-      if (!event.length) {
-        deleteFilterFunctionByName("searchSpellsBySchool");
-        return;
-      }
-
-      const searchSpellsBySchool = (spells) =>
-        spells.filter((spell) => event.includes(spell.school));
-
-      addFilterFunctionToList("searchSpellsBySchool", searchSpellsBySchool);
-    },
-    [addFilterFunctionToList, deleteFilterFunctionByName]
-  );
-
-  const handleRitualChange = useCallback(
-    (event) => {
-      setSelectedRitual(event);
-
-      if (!event.length) {
-        deleteFilterFunctionByName("searchSpellsByRitual");
-        return;
-      }
-
-      const searchSpellsByRitual = (spells) =>
-        spells.filter((spell) => event.includes(spell.ritual));
-
-      addFilterFunctionToList("searchSpellsByRitual", searchSpellsByRitual);
-    },
-    [addFilterFunctionToList, deleteFilterFunctionByName]
-  );
-
-  const handleConcentrationChange = useCallback(
-    (event) => {
-      setsSelectedConcentration(event);
-
-      if (!event.length) {
-        deleteFilterFunctionByName("searchSpellsByConcentration");
-        return;
-      }
-
-      const searchSpellsByConcentration = (spells) =>
-        spells.filter((spell) => event.includes(spell.concentration));
-
-      addFilterFunctionToList("searchSpellsByConcentration", searchSpellsByConcentration);
-    },
-    [addFilterFunctionToList, deleteFilterFunctionByName]
-  );
-
-  const handleCastingTimeChange = useCallback(
-    (event) => {
-      setSelectedCastingTime(event);
-
-      if (!event.length) {
-        deleteFilterFunctionByName("searchSpellsByCastingTime");
-        return;
-      }
-
-      const regExp = new RegExp(event.join("|"), "i");
-
-      const searchSpellsByCastingTime = (spells) =>
-        spells.filter((spell) => regExp.test(spell.casting_time));
-
-      addFilterFunctionToList("searchSpellsByCastingTime", searchSpellsByCastingTime);
-    },
-    [addFilterFunctionToList, deleteFilterFunctionByName]
-  );
+    setFilteredData(filteredData);
+  }, [filterActionList, data, setFilteredData]);
 
   return {
-    handleSearchInputBlur,
-    selectedLevels,
-    handleLevelsChange,
-    selectedClasses,
-    handleClassesChange,
-    selectedSchools,
-    handleSchoolsChange,
-    selectedRitual,
-    handleRitualChange,
-    selectedConcentration,
-    handleConcentrationChange,
-    selectedCastingTime,
-    handleCastingTimeChange,
+    createFilterHandler,
   };
 };
 

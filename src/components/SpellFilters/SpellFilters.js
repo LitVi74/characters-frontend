@@ -1,58 +1,119 @@
+import { useState } from "react";
+
 import useFilterAction from "./hooks/useFilterAction";
 
 import { SPELL } from "../../constants/constants";
 import Filters from "../Filters/Filters";
 
-function SpellFilters({ filterActionList, setFilterActionList }) {
-  const filterAction = useFilterAction(filterActionList, setFilterActionList);
+function SpellFilters({ spells, setFilteredSpells }) {
+  const [spellsFilterState, setSpellsFilterState] = useState({
+    selectedLevels: [],
+    selectedClasses: [],
+    selectedSchools: [],
+    selectedRitual: [],
+    selectedConcentration: [],
+    selectedCastingTime: [],
+  });
+
+  const { createFilterHandler } = useFilterAction(spells, setFilteredSpells);
   const filters = [
     {
       name: "Уровень",
-      selectedValue: filterAction.selectedLevels,
-      onChange: filterAction.handleLevelsChange,
+      selectedValue: spellsFilterState.selectedLevels,
+      onChange: createFilterHandler("searchSpellsByLevel", (event) => {
+        setSpellsFilterState({
+          ...spellsFilterState,
+          selectedLevels: event,
+        });
+        return (currentSpells) =>
+          currentSpells.filter((spell) => event.includes(spell.level));
+      }),
       values: SPELL.levels,
       valuesName: ["Заговор"],
     },
     {
       name: "Класс",
-      selectedValue: filterAction.selectedClasses,
-      onChange: filterAction.handleClassesChange,
+      selectedValue: spellsFilterState.selectedClasses,
+      onChange: createFilterHandler("searchSpellsByClass", (event) => {
+        setSpellsFilterState({
+          ...spellsFilterState,
+          selectedClasses: event,
+        });
+        return (currentSpells) =>
+          currentSpells.filter((spell) =>
+            spell.classes.some((spellClass) => event.includes(spellClass))
+          );
+      }),
       values: SPELL.classes,
     },
     {
       name: "Школа",
-      selectedValue: filterAction.selectedSchools,
-      onChange: filterAction.handleSchoolsChange,
+      selectedValue: spellsFilterState.selectedSchools,
+      onChange: createFilterHandler("searchSpellsBySchool", (event) => {
+        setSpellsFilterState({
+          ...spellsFilterState,
+          selectedSchools: event,
+        });
+        return (currentSpells) =>
+          currentSpells.filter((spell) => event.includes(spell.school));
+      }),
       values: SPELL.schools,
     },
     {
       name: "Ритуал",
-      selectedValue: filterAction.selectedRitual,
-      onChange: filterAction.handleRitualChange,
+      selectedValue: spellsFilterState.selectedRitual,
+      onChange: createFilterHandler("searchSpellsByRitual", (event) => {
+        setSpellsFilterState({
+          ...spellsFilterState,
+          selectedRitual: event,
+        });
+        return (currentSpells) =>
+          currentSpells.filter((spell) => event.includes(spell.ritual));
+      }),
       values: [true, false],
       valuesName: ["Ритуал", "Не ритуал"],
     },
     {
       name: "Концентрация",
-      selectedValue: filterAction.selectedConcentration,
-      onChange: filterAction.handleConcentrationChange,
+      selectedValue: spellsFilterState.selectedConcentration,
+      onChange: createFilterHandler("searchSpellsByConcentration", (event) => {
+        setSpellsFilterState({
+          ...spellsFilterState,
+          selectedConcentration: event,
+        });
+        return (currentSpells) =>
+          currentSpells.filter((spell) => event.includes(spell.concentration));
+      }),
       values: [true, false],
       valuesName: ["Требует концентрации", "Не требует концентрации"],
     },
     {
       name: "Время наложения",
-      selectedValue: filterAction.selectedCastingTime,
-      onChange: filterAction.handleCastingTimeChange,
+      selectedValue: spellsFilterState.selectedCastingTime,
+      onChange: createFilterHandler("searchSpellsByConcentration", (event) => {
+        setSpellsFilterState({
+          ...spellsFilterState,
+          selectedCastingTime: event,
+        });
+
+        const regExp = new RegExp(event.join("|"), "i");
+
+        return (currentSpells) =>
+          currentSpells.filter((spell) => regExp.test(spell.casting_time));
+      }),
       values: SPELL.castingTime,
     },
   ];
 
+  const handleSearchInputBlur = createFilterHandler("searchSpellsByName", (event) => {
+    const regExp = new RegExp(event.currentTarget.value, "i");
+
+    return (currentSpells) => currentSpells.filter((spell) => regExp.test(spell.name));
+  });
+
   return (
     <div className="d-flex align-items-center justify-content-center gap-3 p-lg-5">
-      <Filters
-        filters={filters}
-        handleSearchInputBlur={filterActionList.handleSearchInputBlur}
-      />
+      <Filters filters={filters} handleSearchInputBlur={handleSearchInputBlur} />
     </div>
   );
 }

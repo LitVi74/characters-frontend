@@ -18,6 +18,7 @@ export default function Spells() {
 
   const [charSpells, setCharSpells] = useState([]);
   const [spells, setSpells] = useState([]);
+  const [filteredSpells, setFilteredSpells] = useState([]);
 
   const [formState, setFormState] = useState({
     show: false,
@@ -26,7 +27,6 @@ export default function Spells() {
 
   const [isCreator, setIsCreator] = useState(false);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
-  const [filterActionList, setFilterActionList] = useState(new Map());
 
   const handleShowForm = useCallback((spell = {}) => {
     setFormState({
@@ -42,14 +42,14 @@ export default function Spells() {
     });
   }, []);
 
-  const getAllSpells = async () => {
+  const getAllSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getSpells();
     const { spells: allSpells } = data;
 
     if (!hasError) {
       setSpells(allSpells);
     }
-  };
+  }, []);
 
   const getCharSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getCharacter(charID);
@@ -119,19 +119,6 @@ export default function Spells() {
     }
   };
 
-  const filterSpells = useCallback(
-    (spells) => {
-      let filteredSpells = [...spells];
-
-      filterActionList.forEach((filterAction) => {
-        filteredSpells = filterAction(filteredSpells);
-      });
-
-      return filteredSpells;
-    },
-    [filterActionList]
-  );
-
   const setLikeSpellCard = (spell) => {
     if (!isAddLiseElements) {
       return true;
@@ -145,13 +132,14 @@ export default function Spells() {
     } else {
       getCharSpells();
     }
-  }, [charID, getCharSpells]);
+  }, [charID, getCharSpells, getAllSpells]);
 
   return (
     <main>
       <SpellFilters
-        filterActionList={filterActionList}
-        setFilterActionList={setFilterActionList}
+        spells={spells}
+        setFilteredSpells={setFilteredSpells}
+        isCreator={isCreator}
       />
       {charID ? (
         isCreator ? (
@@ -171,7 +159,7 @@ export default function Spells() {
         )
       )}
       <MasonryContainer>
-        {filterSpells(spells).map((spell) => (
+        {filteredSpells.map((spell) => (
           <SpellCard
             key={spell._id}
             handleShowForm={handleShowForm}
