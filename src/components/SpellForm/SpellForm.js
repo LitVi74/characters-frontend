@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 
 export default function SpellForm({ cbSubmit, spell, update }) {
   const castingTime = spell?.casting_time?.split(", ");
+  console.log(spell)
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +31,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
         casting_time: [values.castingTime, values.castingTimeAdditional].join(
           ", "
         ),
-        range: +values.range,
+        range: values.range,
         components: values.components,
         material: values.material.trim(),
         ritual: values.ritual,
