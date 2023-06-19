@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import LoginForm from "../../components/LoginForm/LoginForm";
@@ -18,7 +18,7 @@ export default function LogIn() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const cbLogin = async (email, password) => {
+  const cbLogin = useCallback(async (email, password) => {
     setIsSubmitted(true);
     const { hasError, errorMessage, data } = await AuthService.login(
       email,
@@ -33,7 +33,7 @@ export default function LogIn() {
       navigate(PATHS.characters);
     }
     setIsSubmitted(false);
-  };
+  }, [navigate, setCurrentUser]);
 
   return (
     <main className="px-5">

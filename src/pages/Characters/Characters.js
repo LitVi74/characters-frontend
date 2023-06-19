@@ -16,15 +16,15 @@ export default function Characters({ chars, setChars }) {
     update: false
   });
 
-  const handleAddUserChar = () => {
+  const handleAddUserChar = useCallback(() => {
     setIsForm({
       isShow: true,
       data: {},
       update: false
     });
-  };
+  }, []);
 
-  const cbSubmit = async (data, update) => {
+  const cbSubmit = useCallback(async (data, update) => {
     try {
       const { _id, name } = data;
       const char = update
@@ -48,9 +48,9 @@ export default function Characters({ chars, setChars }) {
     } catch(err) {
       console.log(err);
     }
-  };
+  }, [chars, isForm, setChars]);
 
-  const cbClose = async (char) => {
+  const cbClose = useCallback(async (char) => {
     try {
       const { _id: charID } = char;
       const charData = await ResourcesService.deleteCharacter(charID);
@@ -59,7 +59,7 @@ export default function Characters({ chars, setChars }) {
     } catch(err) {
       console.log(err);
     }
-  };
+  }, [chars, setChars]);
 
   const getCharacters = useCallback(async () => {
     try {

@@ -1,6 +1,6 @@
 import "./SpellsCard.scss";
 
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { CloseButton } from "react-bootstrap";
 
 import CardMenu from "../CardMenu/CardMenu";
@@ -38,7 +38,7 @@ export default function SpellCard({
   const [isClosure, setIsClosure] = useState(inList);
   const [isLoader, setIsLoader] = useState(false);
 
-  const handleCharButton = async (isClose) => {
+  const handleCharButton = useCallback(async (isClose) => {
     setIsLoader(true);
     if(isClose) {
       await cbClose(spell);
@@ -47,21 +47,21 @@ export default function SpellCard({
     }
     setIsClosure(!isClosure);
     setIsLoader(false);
-  };
+  }, [cbClose, cbPlus, isClosure, spell]);
 
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
     cbForm({
       isShow: true,
       data: spell,
       update: true,
     });
-  };
+  }, [cbForm, spell]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     setIsLoader(true);
     await cbDell(spell);
     setIsLoader(false);
-  };
+  }, [cbDell, spell]);
 
   return (
     <li className="spell">

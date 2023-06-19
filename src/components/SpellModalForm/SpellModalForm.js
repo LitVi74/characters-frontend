@@ -2,16 +2,17 @@ import {Button, Modal} from "react-bootstrap";
 
 import SpellForm from "../SpellForm/SpellForm";
 import CharForm from "../CharForm/CharForm";
+import { useCallback } from "react";
 
 export default function SpellModalForm({isForm, cbForm, cbSubmit, isSpellForm}) {
   const { isShow, data, update } = isForm;
 
-  const handleCloseForm = () => {
+  const handleCloseForm = useCallback(() => {
     cbForm({
       ...isForm,
       isShow: false
     })
-  }
+  }, [cbForm, isForm]);
 
   return (
     <Modal show={isShow} onHide={handleCloseForm}>
