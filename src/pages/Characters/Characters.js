@@ -86,7 +86,7 @@ export default function Characters({ chars, setChars }) {
       <IconButton 
         icon={<Plus size={24}/>} 
         onClick={handleAddUserChar}
-        className="my-0 mx-auto"
+        className="mb-3 mx-auto"
         isLoader={isLoader}
       >Добавить персонажа</IconButton>
       {isLoader

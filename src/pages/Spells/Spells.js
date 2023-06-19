@@ -212,8 +212,9 @@ export default function Spells({ charList }) {
           <IconButton
             icon={<Plus size={24} />}
             onClick={handleAddInAllSpells}
+            className="mb-3 mx-auto"
             isLoader={isLoader}
-          />
+          >Добавить заклинание</IconButton>
         )
       )}
       {isLoader

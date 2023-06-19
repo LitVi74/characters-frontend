@@ -2,9 +2,11 @@ import Spinner from 'react-bootstrap/Spinner';
 
 function BasicExample() {
   return (
-    <Spinner animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
+    <div className="d-flex justify-content-center mt-5">
+      <Spinner animation="border" role="status" style={{ width: '4rem', height: '4rem' }}>
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    </div>
   );
 }
 
