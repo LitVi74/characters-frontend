@@ -30,7 +30,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
         casting_time: [values.castingTime, values.castingTimeAdditional].join(
           ", "
         ),
-        range: +values.range,
+        range: values.range,
         components: values.components,
         material: values.material.trim(),
         ritual: values.ritual,

@@ -3,7 +3,7 @@ import { Funnel } from "react-bootstrap-icons";
 import IconButton from "../IconButton/IconButton";
 import useFilterAction from "./hooks/useFilterAction";
 import FiltersModal from "../FiltersModal/FiltersModal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { SPELL } from "../../constants/constants";
 
 const SpellFilters = ({ filterActionList, setFilterActionList }) => {
@@ -52,9 +52,9 @@ const SpellFilters = ({ filterActionList, setFilterActionList }) => {
     },
   ];
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setShow(false);
-  };
+  }, []);
 
   return (
     <div className="d-flex align-items-center justify-content-center gap-3 p-lg-5">

@@ -5,24 +5,26 @@ import ResourcesService from '../../service/ResoursesService/ResourcesService';
 import CharacterLink from "../../components/CharacterLink/CharacterLink";
 import SpellModalForm from '../../components/SpellModalForm/SpellModalForm';
 import IconButton from "../../components/IconButton/IconButton";
+import Spinner from "../../components/Spinner/Spinner";
 import {Plus} from "react-bootstrap-icons";
 
 export default function Characters({ chars, setChars }) {
-  const [ isForm, setIsForm ] = useState({
+  const [isLoader, setIsLoader] = useState(false);
+  const [isForm, setIsForm] = useState({
     isShow: false,
     data: {},
     update: false
   });
 
-  const handleAddUserChar = () => {
+  const handleAddUserChar = useCallback(() => {
     setIsForm({
       isShow: true,
       data: {},
       update: false
     });
-  };
+  }, []);
 
-  const cbSubmit = async (data, update) => {
+  const cbSubmit = useCallback(async (data, update) => {
     try {
       const { _id, name } = data;
       const char = update
@@ -46,9 +48,9 @@ export default function Characters({ chars, setChars }) {
     } catch(err) {
       console.log(err);
     }
-  };
+  }, [chars, isForm, setChars]);
 
-  const cbClose = async (char) => {
+  const cbClose = useCallback(async (char) => {
     try {
       const { _id: charID } = char;
       const charData = await ResourcesService.deleteCharacter(charID);
@@ -57,9 +59,9 @@ export default function Characters({ chars, setChars }) {
     } catch(err) {
       console.log(err);
     }
-  };
+  }, [chars, setChars]);
 
-  const renderInitialCharacters = useCallback(async () => {
+  const getCharacters = useCallback(async () => {
     try {
       const initialChars = await ResourcesService.getUserCharacters();
 
@@ -69,22 +71,32 @@ export default function Characters({ chars, setChars }) {
     }
   }, [setChars]);
 
+  const renderPage = useCallback(async () => {
+    setIsLoader(true);
+    await getCharacters();
+    setIsLoader(false);
+  }, [getCharacters]);
+
   useEffect(() => {
-    renderInitialCharacters();
-  }, [renderInitialCharacters]);
+    renderPage();
+  }, [renderPage]);
 
   return (
     <Stack as="main" className="gap-2 align-self-center px-5">
       <IconButton 
         icon={<Plus size={24}/>} 
-        onClick={handleAddUserChar} 
-        className="my-0 mx-auto"
+        onClick={handleAddUserChar}
+        className="mb-3 mx-auto"
+        isLoader={isLoader}
       >Добавить персонажа</IconButton>
-      <ListGroup as={"ul"}>
-        {chars.map((char) =>
-          <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
-        )}
-      </ListGroup>
+      {isLoader
+        ? <Spinner />
+        : <ListGroup as={"ul"}>
+            {chars.map((char) =>
+              <CharacterLink key={char._id} char={char} cbClose={cbClose} cbForm={setIsForm} />
+            )}
+          </ListGroup>
+      }
       <SpellModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} isSpellForm={false} />
     </Stack>
   );

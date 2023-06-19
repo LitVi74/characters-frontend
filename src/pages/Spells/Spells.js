@@ -10,6 +10,7 @@ import { CurrentUserContext } from "../../contexts/currentUserContext";
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
+import Spinner from "../../components/Spinner/Spinner";
 import { Plus } from "react-bootstrap-icons";
 
 export default function Spells({ charList }) {
@@ -27,16 +28,17 @@ export default function Spells({ charList }) {
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState(new Map());
   const [charSpells, setCharSpells] = useState([]);
+  const [isLoader, setIsLoader] = useState(true);
 
-  const handleAddInAllSpells = () => {
+  const handleAddInAllSpells = useCallback(() => {
     setIsForm({
       isShow: true,
       data: {},
       update: false,
     });
-  };
+  }, []);
 
-  const cbSubmit = async (data, spellID, update) => {
+  const cbSubmit = useCallback(async (data, spellID, update) => {
     try {
       const spell = update
         ? await ResourcesService.updateSpell(spellID, data)
@@ -61,9 +63,9 @@ export default function Spells({ charList }) {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [isForm, spells]);
 
-  const getAllSpells = async () => {
+  const getAllSpells = useCallback(async () => {
     try {
       let spells = JSON.parse(sessionStorage.getItem("spellsData"));
 
@@ -76,7 +78,7 @@ export default function Spells({ charList }) {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
   const getCharSpells = useCallback(async () => {
     try {
@@ -89,17 +91,17 @@ export default function Spells({ charList }) {
     }
   }, [charID, currentUser]);
 
-  const handleCloseButton = () => {
+  const handleCloseButton = useCallback(() => {
     setSpells(charSpells);
     setIsAddLiseElements(false);
-  };
+  }, [charSpells]);
 
-  const handlePlusButton = () => {
+  const handlePlusButton = useCallback(() => {
     getAllSpells();
     setIsAddLiseElements(true);
-  };
+  }, [getAllSpells]);
 
-  const cbClose = async (data) => {
+  const cbClose = useCallback(async (data) => {
     try {
       const { _id: spellID } = data;
       let spellsData = charSpells.filter((s) => s._id !== spellID);
@@ -117,9 +119,9 @@ export default function Spells({ charList }) {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [charID, charSpells, isAddLiseElements]);
 
-  const cbPlus = async (data) => {
+  const cbPlus = useCallback(async (data) => {
     try {
       let spellsData = [...charSpells, data];
 
@@ -132,9 +134,9 @@ export default function Spells({ charList }) {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [charSpells, charID]);
 
-  const cbDell = async (data) => {
+  const cbDell = useCallback(async (data) => {
     try {
       const { _id: spellID } = data;
       await ResourcesService.deleteSpell(spellID);
@@ -147,7 +149,7 @@ export default function Spells({ charList }) {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
   const filterSpells = useCallback(
     (spells) => {
@@ -162,20 +164,25 @@ export default function Spells({ charList }) {
     [filterActionList]
   );
 
-  const setLikeSpellCard = (spell) => {
+  const setLikeSpellCard = useCallback((spell) => {
     if (!isAddLiseElements) {
       return true;
     }
     return charSpells.some((s) => s._id === spell._id);
-  };
+  }, [charSpells, isAddLiseElements]);
+
+  const renderPage = useCallback(async () => {
+    if (!charList) {
+      await getAllSpells();
+    } else {
+      await getCharSpells();
+    }
+    setIsLoader(false);
+  }, [charList, getCharSpells, getAllSpells])
 
   useEffect(() => {
-    if (!charList) {
-      getAllSpells();
-    } else {
-      getCharSpells();
-    }
-  }, [charList, getCharSpells]);
+    renderPage();
+  }, [renderPage]);
 
   return (
     <main>
@@ -186,12 +193,17 @@ export default function Spells({ charList }) {
       {charList ? (
         isCreator ? (
           isAddLiseElements ? (
-            <CloseButton onClick={handleCloseButton} className="my-2 mx-5" />
+            <CloseButton 
+              onClick={handleCloseButton} 
+              className="my-2 mx-5" 
+              disabled={isLoader ? 'disabled' : ''}
+            />
           ) : (
             <IconButton
               icon={<Plus size={24} />}
               onClick={handlePlusButton}
               className="my-2 mx-5"
+              isLoader={isLoader}
             />
           )
         ) : null
@@ -200,24 +212,29 @@ export default function Spells({ charList }) {
           <IconButton
             icon={<Plus size={24} />}
             onClick={handleAddInAllSpells}
-          />
+            className="mb-3 mx-auto"
+            isLoader={isLoader}
+          >Добавить заклинание</IconButton>
         )
       )}
-      <MasonryContainer>
-        {filterSpells(spells).map((spell) => (
-          <SpellCard
-            key={spell._id}
-            cbForm={setIsForm}
-            spell={spell}
-            inList={() => setLikeSpellCard(spell)}
-            charList={charList}
-            cbClose={cbClose}
-            cbPlus={cbPlus}
-            cbDell={cbDell}
-            isCreator={isCreator}
-          />
-        ))}
-      </MasonryContainer>
+      {isLoader
+        ? <Spinner />
+        : <MasonryContainer>
+          {filterSpells(spells).map((spell) => (
+            <SpellCard
+              key={spell._id}
+              cbForm={setIsForm}
+              spell={spell}
+              inList={() => setLikeSpellCard(spell)}
+              charList={charList}
+              cbClose={cbClose}
+              cbPlus={cbPlus}
+              cbDell={cbDell}
+              isCreator={isCreator}
+            />
+          ))}
+        </MasonryContainer>
+      }
       <SpellModalForm
         isForm={isForm}
         cbForm={setIsForm}

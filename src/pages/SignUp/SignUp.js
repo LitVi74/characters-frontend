@@ -1,6 +1,6 @@
 import SignupForm from "../../components/SignupForm/SignupForm";
 import AuthService from "../../service/AuthService/AuthService";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import InfoToast from "../../components/InfoToast/InfoToast";
 
 export default function SignUp() {
@@ -8,18 +8,21 @@ export default function SignUp() {
   const [signupResult, setSignupResult] = useState({
     hasError: false,
     errorMessage: '',
-  })
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const cbRegister = async (email, password) => {
+  const cbRegister = useCallback(async (email, password) => {
+    setIsSubmitted(true);
     const {hasError, errorMessage} = await AuthService.registration(email, password);
     setSignupResult({ hasError, errorMessage });
     setShowToast(true);
-  };
+    setIsSubmitted(false);
+  }, []);
 
   return (
    <main className="px-5">
      <h1>Регистрация</h1>
-     <SignupForm cbRegister={cbRegister} />
+     <SignupForm cbRegister={cbRegister} isSubmitted={isSubmitted} />
      <InfoToast
        show={showToast}
        setShow={setShowToast}

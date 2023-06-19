@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Navigate, useNavigate, useRoutes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -28,7 +28,7 @@ export default function App() {
   });
   const [chars, setChars] = useState([]);
 
-  const cbLogout = async () => {
+  const cbLogout = useCallback(async () => {
     try {
       await AuthService.logout();
       localStorage.removeItem("token");
@@ -37,9 +37,9 @@ export default function App() {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [navigate]);
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     try {
       const response = await AuthService.checkAuth();
       const { _id, email, role, isActivated, accessToken } = response.data;
@@ -50,14 +50,14 @@ export default function App() {
     } finally {
       setHasFirstLoader(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       getUserData();
     }
-  }, []);
+  }, [getUserData]);
 
   const routes = useRoutes([
     {
