@@ -25,6 +25,7 @@ export default function Spells({ charList }) {
     update: false,
   });
   const [spells, setSpells] = useState([]);
+  const [currentSpells, setCurrentSpells] = useState([]);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [filterActionList, setFilterActionList] = useState(new Map());
   const [charSpells, setCharSpells] = useState([]);
@@ -178,11 +179,31 @@ export default function Spells({ charList }) {
       await getCharSpells();
     }
     setIsLoader(false);
-  }, [charList, getCharSpells, getAllSpells])
+  }, [charList, getCharSpells, getAllSpells]);
 
   useEffect(() => {
     renderPage();
   }, [renderPage]);
+
+  useEffect(() => {
+    const startCard = spells.slice(0, 20);
+    setCurrentSpells(startCard);
+  }, [spells]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight) {
+        const card = spells.slice(0, currentSpells.length + 20);
+        setCurrentSpells(card);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [spells, currentSpells]);
 
   return (
     <main>
@@ -217,23 +238,23 @@ export default function Spells({ charList }) {
           >Добавить заклинание</IconButton>
         )
       )}
-      {isLoader
-        ? <Spinner />
-        : <MasonryContainer>
-          {filterSpells(spells).map((spell) => (
-            <SpellCard
-              key={spell._id}
-              cbForm={setIsForm}
-              spell={spell}
-              inList={() => setLikeSpellCard(spell)}
-              charList={charList}
-              cbClose={cbClose}
-              cbPlus={cbPlus}
-              cbDell={cbDell}
-              isCreator={isCreator}
-            />
-          ))}
-        </MasonryContainer>
+      <MasonryContainer>
+        {filterSpells(currentSpells).map((spell) => (
+          <SpellCard
+            key={spell._id}
+            cbForm={setIsForm}
+            spell={spell}
+            inList={() => setLikeSpellCard(spell)}
+            charList={charList}
+            cbClose={cbClose}
+            cbPlus={cbPlus}
+            cbDell={cbDell}
+            isCreator={isCreator}
+          />
+        ))}
+      </MasonryContainer>
+      {isLoader &&
+        <Spinner />
       }
       <SpellModalForm
         isForm={isForm}
