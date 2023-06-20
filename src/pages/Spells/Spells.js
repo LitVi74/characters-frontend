@@ -1,17 +1,19 @@
 import { useState, useContext, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { CloseButton } from "react-bootstrap";
+import { Plus } from "react-bootstrap-icons";
 
-import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
-
-import { CurrentUserContext } from "../../contexts/currentUserContext";
 import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import Spinner from "../../components/Spinner/Spinner";
-import { Plus } from "react-bootstrap-icons";
+
+import ResourcesService from "../../service/ResoursesService/ResourcesService";
+import { trottle } from "../../utils/Decorations";
+
+import { CurrentUserContext } from "../../contexts/currentUserContext";
 
 export default function Spells({ charList }) {
   const { currentUser } = useContext(CurrentUserContext);
@@ -191,17 +193,18 @@ export default function Spells({ charList }) {
   }, [spells]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop === document.scrollingElement.scrollHeight) {
+    const exeEventScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop + 800 >= document.scrollingElement.scrollHeight) {
         const card = spells.slice(0, currentSpells.length + 20);
         setCurrentSpells(card);
       }
     };
-
+    const handleScroll = trottle(exeEventScroll, 1500);
+    
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', handleScroll);
     }
   }, [spells, currentSpells]);
 
