@@ -188,19 +188,15 @@ export default function Spells({ charList }) {
   }, [renderPage]);
 
   useEffect(() => {
-    const startCard = spells.slice(0, 20);
-    setCurrentSpells(startCard);
-  }, [spells]);
-
-  useEffect(() => {
     const exeEventScroll = () => {
       if (window.innerHeight + document.documentElement.scrollTop + 800 >= document.scrollingElement.scrollHeight) {
         const card = spells.slice(0, currentSpells.length + 20);
         setCurrentSpells(card);
       }
     };
+    if (currentSpells.length === 0) exeEventScroll();
+
     const handleScroll = trottle(exeEventScroll, 1500);
-    
     window.addEventListener('scroll', handleScroll);
 
     return () => {
