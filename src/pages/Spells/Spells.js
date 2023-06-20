@@ -188,21 +188,35 @@ export default function Spells({ charList }) {
   }, [renderPage]);
 
   useEffect(() => {
-    const exeEventScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop + 800 >= document.scrollingElement.scrollHeight) {
-        const card = spells.slice(0, currentSpells.length + 20);
-        setCurrentSpells(card);
-      }
-    };
-    if (currentSpells.length === 0) exeEventScroll();
+    const currentLength = currentSpells.length;
 
-    const handleScroll = trottle(exeEventScroll, 1500);
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    if (currentLength === 0) {
+      setCurrentSpells(spells.slice(0, currentLength + 20));
+    } else {
+      setCurrentSpells(spells.slice(0, currentLength));
     }
-  }, [spells, currentSpells]);
+  }, [spells]);
+
+  useEffect(() => {
+    const currentLength = currentSpells.length;
+
+    if (spells.length > currentLength) {
+      const exeEventScroll = () => {
+        if (window.innerHeight + document.documentElement.scrollTop + 1000 >= document.scrollingElement.scrollHeight) {
+          const card = spells.slice(0, currentLength + 20);
+          setCurrentSpells(card);
+          console.log('lol')
+        }
+      };
+  
+      const handleScroll = trottle(exeEventScroll, 50);
+      window.addEventListener('scroll', handleScroll);
+  
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      }
+    }
+  }, [currentSpells]);
 
   return (
     <main>
