@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRoutes } from "react-router-dom";
 
 import ROUTES from "./pages/routes";
@@ -16,7 +16,7 @@ export default function App() {
     isActivated: false,
   });
 
-  const getUserData = async () => {
+  const getUserData = useCallback(async () => {
     const { hasError, data } = await AuthService.checkAuth();
     const { _id, email, role, isActivated } = data;
 
@@ -25,7 +25,7 @@ export default function App() {
     }
 
     setHasFirstLoader(true);
-  };
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
