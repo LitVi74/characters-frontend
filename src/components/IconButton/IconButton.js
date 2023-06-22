@@ -1,10 +1,11 @@
 import { Button } from "react-bootstrap";
 
-function IconButton({ icon, iconPosition = "left", children, ...props }) {
+function IconButton({ icon, isLoader, iconPosition = "left", children, ...props }) {
   return (
     <Button
       {...props}
       className={`d-flex align-items-center gap-2 ${props.className ?? ""}`}
+      disabled={isLoader ? "disabled" : ""}
     >
       {iconPosition === "left" && icon}
       {children}

@@ -7,21 +7,24 @@ import AuthService from "../../service/AuthService/AuthService";
 
 export default function SignUp() {
   const [showToast, setShowToast] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [signupResult, setSignupResult] = useState({
     hasError: false,
     errorMessage: "",
   });
 
   const handleSignupFormSubmit = useCallback(async (email, password) => {
+    setIsSubmitted(true);
     const { hasError, errorMessage } = await AuthService.registration(email, password);
     setSignupResult({ hasError, errorMessage });
     setShowToast(true);
+    setIsSubmitted(false);
   }, []);
 
   return (
     <main className="px-5">
       <h1>Регистрация</h1>
-      <SignupForm cbRegister={handleSignupFormSubmit} />
+      <SignupForm cbRegister={handleSignupFormSubmit} isSubmitted={isSubmitted} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}

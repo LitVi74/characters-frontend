@@ -14,6 +14,7 @@ export default function LogIn() {
   const { setCurrentUser } = useContext(CurrentUserContext);
 
   const [showToast, setShowToast] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [signInResult, setSignInResult] = useState({
     hasError: false,
     errorMessage: "",
@@ -37,6 +38,8 @@ export default function LogIn() {
       } else {
         navigate(PATHS.characters);
       }
+
+      setIsSubmitted(false);
     },
     [navigate, setCurrentUser]
   );
@@ -44,7 +47,7 @@ export default function LogIn() {
   return (
     <main className="px-5">
       <h1>Вход</h1>
-      <LoginForm cbLogin={handleLoginFormSubmit} />
+      <LoginForm cbLogin={handleLoginFormSubmit} isSubmitted={isSubmitted} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}

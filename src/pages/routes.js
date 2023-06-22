@@ -24,7 +24,6 @@ const ROUTES = [
     element: <Spells />,
   },
   {
-    path: "/",
     element: <ProtectedRoute />,
     children: [
       {
@@ -38,7 +37,7 @@ const ROUTES = [
     ],
   },
   {
-    path: "/",
+    path: PATHS.home,
     element: <Home />,
   },
   {

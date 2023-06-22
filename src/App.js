@@ -35,7 +35,7 @@ export default function App() {
     // особенности работы navigate
     // если navigate в зависимости, то он перезапескает useEffect при изменении location
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getUserData]);
 
   const currentUserContextValue = useMemo(
     () => ({ currentUser, setCurrentUser }),
