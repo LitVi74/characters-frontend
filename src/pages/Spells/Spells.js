@@ -50,6 +50,7 @@ export default function Spells() {
     const { spells: allSpells } = data;
 
     if (!hasError) {
+      setCurrentSpells([]);
       setSpells(allSpells);
     }
   }, []);
@@ -60,6 +61,7 @@ export default function Spells() {
 
     if (!hasError) {
       setCharSpells(newCharSpells);
+      setCurrentSpells([]);
       setSpells(newCharSpells);
       setIsCreator(owner === currentUser._id);
     }
@@ -80,9 +82,12 @@ export default function Spells() {
       const { _id: spellID } = spell;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
 
-      const { hasError, data } = await ResourcesService.updateCharacter(charID, {
-        spells: spellsData,
-      });
+      const { hasError, data } = await ResourcesService.updateCharacter(
+        charID,
+        {
+          spells: spellsData,
+        }
+      );
 
       if (!hasError) {
         setCharSpells(data.spells);
@@ -98,9 +103,12 @@ export default function Spells() {
   const cbPlus = useCallback(
     async (spell) => {
       const spellsData = [...charSpells, spell];
-      const { hasError, data } = await ResourcesService.updateCharacter(charID, {
-        spells: spellsData,
-      });
+      const { hasError, data } = await ResourcesService.updateCharacter(
+        charID,
+        {
+          spells: spellsData,
+        }
+      );
 
       if (!hasError) {
         setCharSpells(data.spells);
@@ -159,7 +167,7 @@ export default function Spells() {
     } else {
       setCurrentSpells(spells.slice(0, currentLength));
     }
-  }, [spells, currentSpells.length]);
+  }, [spells]);
 
   useEffect(() => {
     const currentLength = currentSpells.length;
@@ -184,7 +192,7 @@ export default function Spells() {
     }
 
     return undefined;
-  }, [spells, currentSpells.length]);
+  }, [currentSpells.length]);
 
   return (
     <main>
@@ -206,7 +214,7 @@ export default function Spells() {
               icon={<Plus size={24} />}
               onClick={handlePlusButton}
               className="my-2 mx-5"
-              isLoader={isLoader}
+              disabled={isLoader}
             />
           )
         ) : null
@@ -216,7 +224,7 @@ export default function Spells() {
             icon={<Plus size={24} />}
             onClick={() => handleShowForm()}
             className="mb-3 mx-auto"
-            isLoader={isLoader}
+            disabled={isLoader}
           >
             Добавить заклинание
           </IconButton>
