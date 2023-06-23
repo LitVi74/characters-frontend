@@ -9,6 +9,7 @@ import ProtectedRoute from "../utils/ProtectedRoute";
 import Characters from "./Characters/Characters";
 import Error404 from "./Error404/Error404";
 import Home from "./Home/Home";
+import CharacterSpells from "./Spells/CharacterSpells";
 
 const ROUTES = [
   {
@@ -21,7 +22,7 @@ const ROUTES = [
   },
   {
     path: `${PATHS.spells}/:charID`,
-    element: <Spells />,
+    element: <CharacterSpells />,
   },
   {
     element: <ProtectedRoute />,
