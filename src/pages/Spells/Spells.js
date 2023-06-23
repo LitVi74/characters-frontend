@@ -41,32 +41,35 @@ export default function Spells({ charList }) {
     });
   }, []);
 
-  const cbSubmit = useCallback(async (data, spellID, update) => {
-    try {
-      const spell = update
-        ? await ResourcesService.updateSpell(spellID, data)
-        : await ResourcesService.createSpell(data);
+  const cbSubmit = useCallback(
+    async (data, spellID, update) => {
+      try {
+        const spell = update
+          ? await ResourcesService.updateSpell(spellID, data)
+          : await ResourcesService.createSpell(data);
 
-      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
-      spellsData = update
-        ? spellsData.map((s) => {
-            if (spell._id === s._id) {
-              return spell;
-            }
-            return s;
-          })
-        : [...spells, spell];
-      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
+        let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
+        spellsData = update
+          ? spellsData.map((s) => {
+              if (spell._id === s._id) {
+                return spell;
+              }
+              return s;
+            })
+          : [...spells, spell];
+        sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
 
-      setSpells(spellsData);
-      setIsForm({
-        ...isForm,
-        isShow: false,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }, [isForm, spells]);
+        setSpells(spellsData);
+        setIsForm({
+          ...isForm,
+          isShow: false,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [isForm, spells]
+  );
 
   const getAllSpells = useCallback(async () => {
     try {
@@ -78,6 +81,7 @@ export default function Spells({ charList }) {
       }
 
       setSpells(spells);
+      setCurrentSpells([]);
     } catch (err) {
       console.log(err);
     }
@@ -88,6 +92,7 @@ export default function Spells({ charList }) {
       const { spells, owner } = await ResourcesService.getCharacter(charID);
       setCharSpells(spells);
       setSpells(spells);
+      setCurrentSpells([]);
       setIsCreator(owner === currentUser._id);
     } catch (err) {
       console.log(err);
@@ -104,40 +109,46 @@ export default function Spells({ charList }) {
     setIsAddLiseElements(true);
   }, [getAllSpells]);
 
-  const cbClose = useCallback(async (data) => {
-    try {
-      const { _id: spellID } = data;
-      let spellsData = charSpells.filter((s) => s._id !== spellID);
+  const cbClose = useCallback(
+    async (data) => {
+      try {
+        const { _id: spellID } = data;
+        let spellsData = charSpells.filter((s) => s._id !== spellID);
 
-      spellsData = (
-        await ResourcesService.updateCharacter(charID, {
-          spells: spellsData,
-        })
-      ).spells;
-      setCharSpells(spellsData);
+        spellsData = (
+          await ResourcesService.updateCharacter(charID, {
+            spells: spellsData,
+          })
+        ).spells;
+        setCharSpells(spellsData);
 
-      if (!isAddLiseElements) {
-        setSpells(spellsData);
+        if (!isAddLiseElements) {
+          setSpells(spellsData);
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
-  }, [charID, charSpells, isAddLiseElements]);
+    },
+    [charID, charSpells, isAddLiseElements]
+  );
 
-  const cbPlus = useCallback(async (data) => {
-    try {
-      let spellsData = [...charSpells, data];
+  const cbPlus = useCallback(
+    async (data) => {
+      try {
+        let spellsData = [...charSpells, data];
 
-      spellsData = (
-        await ResourcesService.updateCharacter(charID, {
-          spells: spellsData,
-        })
-      ).spells;
-      setCharSpells(spellsData);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [charSpells, charID]);
+        spellsData = (
+          await ResourcesService.updateCharacter(charID, {
+            spells: spellsData,
+          })
+        ).spells;
+        setCharSpells(spellsData);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [charSpells, charID]
+  );
 
   const cbDell = useCallback(async (data) => {
     try {
@@ -167,12 +178,15 @@ export default function Spells({ charList }) {
     [filterActionList]
   );
 
-  const setLikeSpellCard = useCallback((spell) => {
-    if (!isAddLiseElements) {
-      return true;
-    }
-    return charSpells.some((s) => s._id === spell._id);
-  }, [charSpells, isAddLiseElements]);
+  const setLikeSpellCard = useCallback(
+    (spell) => {
+      if (!isAddLiseElements) {
+        return true;
+      }
+      return charSpells.some((s) => s._id === spell._id);
+    },
+    [charSpells, isAddLiseElements]
+  );
 
   const renderPage = useCallback(async () => {
     if (!charList) {
@@ -202,19 +216,22 @@ export default function Spells({ charList }) {
 
     if (spells.length > currentLength) {
       const exeEventScroll = () => {
-        if (window.innerHeight + document.documentElement.scrollTop + 1000 >= document.scrollingElement.scrollHeight) {
+        if (
+          window.innerHeight + document.documentElement.scrollTop + 1000 >=
+          document.scrollingElement.scrollHeight
+        ) {
           const card = spells.slice(0, currentLength + 20);
           setCurrentSpells(card);
-          console.log('lol')
+          console.log("lol");
         }
       };
-  
+
       const handleScroll = trottle(exeEventScroll, 50);
-      window.addEventListener('scroll', handleScroll);
-  
+      window.addEventListener("scroll", handleScroll);
+
       return () => {
-        window.removeEventListener('scroll', handleScroll);
-      }
+        window.removeEventListener("scroll", handleScroll);
+      };
     }
   }, [currentSpells]);
 
@@ -227,10 +244,10 @@ export default function Spells({ charList }) {
       {charList ? (
         isCreator ? (
           isAddLiseElements ? (
-            <CloseButton 
-              onClick={handleCloseButton} 
-              className="my-2 mx-5" 
-              disabled={isLoader ? 'disabled' : ''}
+            <CloseButton
+              onClick={handleCloseButton}
+              className="my-2 mx-5"
+              disabled={isLoader ? "disabled" : ""}
             />
           ) : (
             <IconButton
@@ -248,7 +265,9 @@ export default function Spells({ charList }) {
             onClick={handleAddInAllSpells}
             className="mb-3 mx-auto"
             isLoader={isLoader}
-          >Добавить заклинание</IconButton>
+          >
+            Добавить заклинание
+          </IconButton>
         )
       )}
       <MasonryContainer>
@@ -266,9 +285,7 @@ export default function Spells({ charList }) {
           />
         ))}
       </MasonryContainer>
-      {isLoader &&
-        <Spinner />
-      }
+      {isLoader && <Spinner />}
       <SpellModalForm
         isForm={isForm}
         cbForm={setIsForm}
