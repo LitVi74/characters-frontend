@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import useFilterAction from "./hooks/useFilterAction";
 
-import { SPELL } from "../../constants/constants";
-import Filters from "../Filters/Filters";
+import { SPELL } from "../../../../constants/constants";
+import Filters from "../../../../components/Filters/Filters";
 
 function SpellFilters({ spells, setFilteredSpells }) {
   const [spellsFilterState, setSpellsFilterState] = useState({

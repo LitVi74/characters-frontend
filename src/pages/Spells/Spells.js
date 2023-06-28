@@ -7,10 +7,12 @@ import MasonryContainer from "../../components/MasonryContainer/MasonryContainer
 import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
-import SpellFilters from "../../components/SpellFilters/SpellFilters";
+import { trottle } from "../../utils/Decorations";
+
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
-import { trottle } from "../../utils/Decorations";
+import SpellFilters from "./components/SpellFilters/SpellFilters";
+import CardMenu from "../../components/CardMenu/CardMenu";
 
 export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
@@ -46,7 +48,6 @@ export default function Spells() {
     const { spells: allSpells } = data;
 
     if (!hasError) {
-      setCurrentSpells([]);
       setSpells(allSpells);
     }
     setIsLoader(false);
@@ -131,6 +132,15 @@ export default function Spells() {
             cbPlus={() => {}}
             cbDell={cbDell}
             isCreator={false}
+            button={
+              currentUser.role === "Admin" && (
+                <CardMenu
+                  cbForm={() => handleShowForm(spell)}
+                  cbDell={cbDell}
+                  isLoader={isLoader}
+                />
+              )
+            }
           />
         ))}
       </MasonryContainer>

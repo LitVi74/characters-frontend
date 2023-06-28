@@ -1,30 +1,26 @@
 import "./SpellsCard.scss";
 
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import { CloseButton } from "react-bootstrap";
 
 import { Plus } from "react-bootstrap-icons";
-import CardMenu from "../CardMenu/CardMenu";
 
-import { CurrentUserContext } from "../../contexts/currentUserContext";
 import IconButton from "../IconButton/IconButton";
 
 export default function SpellCard({
-  handleShowForm,
-  cbDell,
   cbClose,
   cbPlus,
   spell,
   charList,
   isCreator,
   inList,
+  button,
 }) {
-  const { currentUser } = useContext(CurrentUserContext);
   const {
     name,
     school,
     level,
-    casting_time,
+    casting_time: castingTime,
     range,
     components,
     material,
@@ -32,7 +28,7 @@ export default function SpellCard({
     duration,
     classes,
     desc,
-    higher_level,
+    higher_level: higherLevel,
     ritual,
   } = spell;
   const [isClosure, setIsClosure] = useState(inList);
@@ -52,46 +48,23 @@ export default function SpellCard({
     [cbClose, cbPlus, isClosure, spell]
   );
 
-  const handleUpdate = useCallback(() => {
-    handleShowForm(spell);
-  }, [handleShowForm, spell]);
-
-  const handleDelete = useCallback(async () => {
-    setIsLoader(true);
-    await cbDell(spell);
-    setIsLoader(false);
-  }, [cbDell, spell]);
-
   return (
     <li className="spell">
       <div className="spell__container">
         <h3 className="spell__title">{name}</h3>
-        {charList ? (
-          isCreator ? (
+        {charList &&
+          (isCreator ? (
             isClosure ? (
-              <CloseButton
-                onClick={() => handleCharButton(true)}
-                disabled={isLoader ? "disabled" : ""}
-              />
+              <CloseButton onClick={() => handleCharButton(true)} disabled={isLoader} />
             ) : (
               <IconButton
                 icon={<Plus size={24} />}
                 onClick={() => handleCharButton(false)}
-                isLoader={isLoader}
-                e
+                disabled={isLoader}
               />
             )
-          ) : null
-        ) : (
-          currentUser.role === "Admin" && (
-            <CardMenu
-              cbForm={handleUpdate}
-              cbDell={handleDelete}
-              isSpell
-              isLoader={isLoader}
-            />
-          )
-        )}
+          ) : null)}
+        {button}
       </div>
       <div className="spell__container">
         <p className="spell__text">
@@ -99,7 +72,7 @@ export default function SpellCard({
         </p>
         <p className="spell__text">{`${level} уровень`}</p>
       </div>
-      <p className="spell__text">{`Время накладывания: ${casting_time}`}</p>
+      <p className="spell__text">{`Время накладывания: ${castingTime}`}</p>
       <p className="spell__text">{`Дистанция: ${range}`}</p>
       <p className="spell__text">{`Компоненты: ${components.join(", ")}${
         material ? `(${material})` : ""
@@ -109,8 +82,8 @@ export default function SpellCard({
       }${duration}`}</p>
       <p className="spell__text">{`Классы: ${classes.join(", ")}`}</p>
       <p className="spell__text">{desc}</p>
-      {higher_level ? (
-        <p className="spell__text">{`На больших уровнях: ${higher_level}`}</p>
+      {higherLevel ? (
+        <p className="spell__text">{`На больших уровнях: ${higherLevel}`}</p>
       ) : null}
     </li>
   );

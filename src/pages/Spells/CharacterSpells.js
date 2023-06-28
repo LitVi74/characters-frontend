@@ -4,12 +4,13 @@ import { CloseButton, Spinner } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
-import SpellFilters from "../../components/SpellFilters/SpellFilters";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import { trottle } from "../../utils/Decorations";
+
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellCard from "../../components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
+import SpellFilters from "./components/SpellFilters/SpellFilters";
 
 function CharacterSpells() {
   const { currentUser } = useContext(CurrentUserContext);
@@ -155,20 +156,22 @@ function CharacterSpells() {
   return (
     <main>
       <SpellFilters spells={currentSpells} setFilteredSpells={setFilteredSpells} />
-      {charID && isCreator && isAddLiseElements ? (
-        <CloseButton
-          onClick={handleCloseButton}
-          className="my-2 mx-5"
-          disabled={isLoader ? "disabled" : ""}
-        />
-      ) : (
-        <IconButton
-          icon={<Plus size={24} />}
-          onClick={handlePlusButton}
-          className="my-2 mx-5"
-          disabled={isLoader}
-        />
-      )}
+      {charID &&
+        isCreator &&
+        (isAddLiseElements ? (
+          <CloseButton
+            onClick={handleCloseButton}
+            className="my-2 mx-5"
+            disabled={isLoader}
+          />
+        ) : (
+          <IconButton
+            icon={<Plus size={24} />}
+            onClick={handlePlusButton}
+            className="my-2 mx-5"
+            disabled={isLoader}
+          />
+        ))}
       <MasonryContainer>
         {filteredSpells.map((spell) => (
           <SpellCard
