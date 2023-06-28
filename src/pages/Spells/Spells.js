@@ -9,7 +9,7 @@ import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import { trottle } from "../../utils/Decorations";
 
-import SpellCard from "../../components/SpellsCard/SpellsCard";
+import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 import CardMenu from "../../components/CardMenu/CardMenu";

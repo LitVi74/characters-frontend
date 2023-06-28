@@ -8,7 +8,7 @@ import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import { trottle } from "../../utils/Decorations";
 
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
-import SpellCard from "../../components/SpellsCard/SpellsCard";
+import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 

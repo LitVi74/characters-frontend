@@ -11,8 +11,8 @@ export default function MasonryContainer({ children }) {
 
   return (
     <section className="masonry__container" ref={ref}>
-      {children.map((element) => (
-        <MasonryCard key={`m-card-${element.key}`} cardWidth={cardWidth}>
+      {children?.map((element, index) => (
+        <MasonryCard key={`m-card-${element?.key || index}`} cardWidth={cardWidth}>
           {element}
         </MasonryCard>
       ))}
