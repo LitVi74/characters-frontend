@@ -5,7 +5,7 @@ import { Plus } from "react-bootstrap-icons";
 import IconButton from "../../components/IconButton/IconButton";
 import Spinner from "../../components/Spinner/Spinner";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
-import CharacterLink from "../../components/CharacterLink/CharacterLink";
+import CharacterLink from "./comtonents/CharacterLink/CharacterLink";
 import CharacterModalForm from "./comtonents/CharacterModalForm/CharacterModalForm";
 
 export default function Characters() {
@@ -49,25 +49,22 @@ export default function Characters() {
 
   const cbClose = useCallback(
     async (char) => {
-      try {
-        const { _id: charID } = char;
-        const charData = await ResourcesService.deleteCharacter(charID);
+      const { _id: charID } = char;
+      const { hasError, data: charData } = await ResourcesService.deleteCharacter(charID);
+
+      if (!hasError) {
         const newChars = chars.filter((c) => c._id !== charData._id);
         setChars(newChars);
-      } catch (err) {
-        console.log(err);
       }
     },
     [chars, setChars]
   );
 
   const getCharacters = useCallback(async () => {
-    try {
-      const initialChars = await ResourcesService.getUserCharacters();
+    const { hasError, data: initialChars } = await ResourcesService.getUserCharacters();
 
+    if (!hasError) {
       setChars(initialChars);
-    } catch (err) {
-      console.log(err);
     }
   }, [setChars]);
 

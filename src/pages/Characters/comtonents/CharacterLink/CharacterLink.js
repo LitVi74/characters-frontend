@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback, useState } from "react";
 
-import { PATHS } from "../../constants/constants";
+import { PATHS } from "../../../../constants/constants";
 
-import CardMenu from "../CardMenu/CardMenu";
+import CardMenu from "../../../../components/CardMenu/CardMenu";
 
 export default function CharacterLink({ char, cbForm, cbClose }) {
   const [isLoader, setIsLoader] = useState(false);
@@ -37,6 +37,7 @@ export default function CharacterLink({ char, cbForm, cbClose }) {
     <li
       className="list-group-item d-flex justify-content-between align-items-center"
       onClick={handleNavLink}
+      aria-hidden="true"
     >
       {name}
       <CardMenu cbForm={handleUpdate} cbDell={handleDelete} isLoader={isLoader} />

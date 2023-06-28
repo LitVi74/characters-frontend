@@ -126,8 +126,24 @@ export default class ResourcesService {
   }
 
   static async getUserCharacters() {
-    const res = await api.get("/characters");
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get("/characters");
+
+      result.data = response.data;
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 
   static async createCharacter(charData) {
@@ -147,6 +163,7 @@ export default class ResourcesService {
       result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
       console.log(err);
     }
+
     return result;
   }
 
@@ -171,8 +188,24 @@ export default class ResourcesService {
   }
 
   static async deleteCharacter(charId) {
-    const res = await api.delete(`/characters/${charId}`);
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.delete(`/characters/${charId}`);
+
+      result.data = response.data;
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 
   static async updateCharacter(charId, obj) {
