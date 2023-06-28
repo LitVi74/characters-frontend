@@ -130,7 +130,7 @@ export default class ResourcesService {
     return this._extractData(res);
   }
 
-  static async createCharacter(charName) {
+  static async createCharacter(charData) {
     const result = {
       hasError: false,
       errorMessage: "",
@@ -138,7 +138,7 @@ export default class ResourcesService {
     };
 
     try {
-      const response = await api.post("/characters", { charName });
+      const response = await api.post("/characters", charData);
 
       result.data = response.data;
     } catch (err) {

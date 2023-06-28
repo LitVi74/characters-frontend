@@ -27,7 +27,7 @@ export default function CharacterLink({ char, cbForm, cbClose }) {
   const handleNavLink = useCallback(
     (e) => {
       if (e.target === e.currentTarget) {
-        navigate(`${PATHS.spells}/${_id}`);
+        navigate(`${PATHS.characters}/${_id}`);
       }
     },
     [_id, navigate]

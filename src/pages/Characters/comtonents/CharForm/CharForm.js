@@ -1,14 +1,14 @@
 import { Form } from "react-bootstrap";
 import { useFormik } from "formik";
 
-export default function CharForm({ cbSubmit, char, update }) {
+export default function CharForm({ cbSubmit, char }) {
   const formik = useFormik({
     initialValues: {
-      _id: char?._id ?? "",
       name: char?.name ?? "",
     },
     onSubmit: (values) => {
-      cbSubmit(values, update);
+      console.log(values);
+      cbSubmit(char?._id, values);
     },
   });
 

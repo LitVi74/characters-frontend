@@ -73,7 +73,7 @@ export default function Spells() {
     } else {
       setCurrentSpells(spells.slice(0, currentLength));
     }
-  }, [spells]);
+  }, [spells, currentSpells.length]);
 
   useEffect(() => {
     const currentLength = currentSpells.length;

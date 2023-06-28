@@ -11,45 +11,40 @@ import CharacterModalForm from "./comtonents/CharacterModalForm/CharacterModalFo
 export default function Characters() {
   const [chars, setChars] = useState([]);
   const [isLoader, setIsLoader] = useState(false);
-  const [isForm, setIsForm] = useState({
-    isShow: false,
-    data: {},
-    update: false,
+
+  const [formState, setFormState] = useState({
+    show: false,
+    chosenChar: {},
   });
 
-  const handleAddUserChar = useCallback(() => {
-    setIsForm({
-      isShow: true,
-      data: {},
-      update: false,
+  const handleShowForm = useCallback((char = {}) => {
+    setFormState({
+      show: true,
+      chosenChar: char,
     });
   }, []);
 
-  const cbSubmit = useCallback(
-    async (char, update) => {
-      const { _id, name } = char;
-      const { hasError, data: newChar } = update
-        ? await ResourcesService.updateCharacter(_id, { name })
-        : await ResourcesService.createCharacter(name);
+  const handelHideForm = useCallback(() => {
+    setFormState({
+      show: false,
+      chosenChar: {},
+    });
+  }, []);
 
-      if (!hasError) {
-        const newChars = update
-          ? chars.map((s) => {
-              if (newChar._id === s._id) {
-                return newChar;
-              }
-              return s;
-            })
-          : [...chars, newChar];
+  const updateChars = useCallback(
+    async (newChar, isUpdate) => {
+      const newChars = isUpdate
+        ? chars.map((char) => {
+            if (newChar._id === char._id) {
+              return newChar;
+            }
+            return char;
+          })
+        : [...chars, newChar];
 
-        setChars(newChars);
-        setIsForm({
-          ...isForm,
-          isShow: false,
-        });
-      }
+      setChars(newChars);
     },
-    [chars, isForm, setChars]
+    [chars]
   );
 
   const cbClose = useCallback(
@@ -90,7 +85,7 @@ export default function Characters() {
     <Stack as="main" className="gap-2 align-self-center px-5">
       <IconButton
         icon={<Plus size={24} />}
-        onClick={handleAddUserChar}
+        onClick={() => handleShowForm()}
         className="mb-3 mx-auto"
         isLoader={isLoader}
       >
@@ -105,12 +100,16 @@ export default function Characters() {
               key={char._id}
               char={char}
               cbClose={cbClose}
-              cbForm={setIsForm}
+              cbForm={() => handleShowForm(char)}
             />
           ))}
         </ListGroup>
       )}
-      <CharacterModalForm isForm={isForm} cbForm={setIsForm} cbSubmit={cbSubmit} />
+      <CharacterModalForm
+        formState={formState}
+        handelHideForm={handelHideForm}
+        updateChars={updateChars}
+      />
     </Stack>
   );
 }

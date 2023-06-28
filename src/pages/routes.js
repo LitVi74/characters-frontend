@@ -21,7 +21,7 @@ const ROUTES = [
     element: <SignUp />,
   },
   {
-    path: `${PATHS.spells}/:charID`,
+    path: `${PATHS.characters}/:charID`,
     element: <CharacterSpells />,
   },
   {

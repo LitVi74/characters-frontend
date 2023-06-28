@@ -27,7 +27,7 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells })
   return (
     <Modal show={show} onHide={handelHideForm}>
       <Modal.Header closeButton>
-        <Modal.Title>{chosenSpell._id ? "Изменить" : "Добавить"} заклинание</Modal.Title>
+        <Modal.Title>{chosenSpell?._id ? "Изменить" : "Добавить"} заклинание</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <SpellForm spell={chosenSpell} cbSubmit={handleSpellFormSubmit} />
