@@ -64,8 +64,30 @@ export default class ResourcesService {
   }
 
   static async deleteSpell(spellId) {
-    const res = await api.delete(`/spells/${spellId}`);
-    return this._extractData(res);
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      await api.delete(`/spells/${spellId}`);
+
+      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
+      spellsData = spellsData.filter((s) => s._id !== spellId);
+      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
+
+      result.data = {
+        spells: spellsData,
+      };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 
   static async updateSpell(spellId, data) {

@@ -27,7 +27,7 @@ export default function SpellForm({ cbSubmit, spell }) {
         level: +values.level,
         school: values.school,
         casting_time: [values.castingTime, values.castingTimeAdditional].join(", "),
-        range: +values.range,
+        range: values.range,
         components: values.components,
         material: values.material.trim(),
         ritual: values.ritual,

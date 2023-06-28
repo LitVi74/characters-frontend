@@ -53,18 +53,11 @@ export default function Spells() {
     setIsLoader(false);
   }, []);
 
-  const cbDell = useCallback(async (data) => {
-    try {
-      const { _id: spellID } = data;
-      await ResourcesService.deleteSpell(spellID);
+  const handleDeleteSpell = useCallback(async (spellID) => {
+    const { hasError, data } = await ResourcesService.deleteSpell(spellID);
 
-      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
-      spellsData = spellsData.filter((s) => s._id !== spellID);
-      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
-
-      setSpells(spellsData);
-    } catch (err) {
-      console.log(err);
+    if (!hasError) {
+      setSpells(data.spells);
     }
   }, []);
 
@@ -124,19 +117,17 @@ export default function Spells() {
         {filteredSpells.map((spell) => (
           <SpellCard
             key={spell._id}
-            handleShowForm={handleShowForm}
             spell={spell}
             inList={() => {}}
             charList={false}
             cbClose={() => {}}
             cbPlus={() => {}}
-            cbDell={cbDell}
             isCreator={false}
             button={
               currentUser.role === "Admin" && (
                 <CardMenu
                   cbForm={() => handleShowForm(spell)}
-                  cbDell={cbDell}
+                  cbDell={() => handleDeleteSpell(spell._id)}
                   isLoader={isLoader}
                 />
               )
