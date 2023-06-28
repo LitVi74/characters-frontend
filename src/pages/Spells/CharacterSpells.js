@@ -30,23 +30,38 @@ function CharacterSpells() {
     const { spells: allSpells } = data;
 
     if (!hasError) {
-      setCurrentSpells([]);
       setSpells(allSpells);
     }
   }, []);
 
-  const handleCloseButton = useCallback(() => {
+  const getCharSpells = useCallback(async () => {
+    const { hasError, data } = await ResourcesService.getCharacter(charID);
+    const { spells: newCharSpells, owner } = data;
+
+    if (!hasError) {
+      setCharSpells(newCharSpells);
+      setSpells(newCharSpells);
+      setIsCreator(owner === currentUser._id);
+    }
+  }, [charID, currentUser]);
+
+  const handleShowCharSpells = useCallback(() => {
     setSpells(charSpells);
+    setCurrentSpells([]);
     setIsAddLiseElements(false);
   }, [charSpells]);
 
-  const handlePlusButton = useCallback(() => {
-    getAllSpells();
-    setIsAddLiseElements(true);
+  const handleShowAllSpells = useCallback(() => {
+    getAllSpells().then(() => {
+      setCurrentSpells([]);
+      setIsAddLiseElements(true);
+    });
   }, [getAllSpells]);
 
-  const cbClose = useCallback(
+  const handleUnlikedSpell = useCallback(
     async (spell) => {
+      setIsLoader(true);
+
       const { _id: spellID } = spell;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
 
@@ -61,12 +76,16 @@ function CharacterSpells() {
       if (!isAddLiseElements && !hasError) {
         setSpells(data.spells);
       }
+
+      setIsLoader(false);
     },
     [charID, charSpells, isAddLiseElements]
   );
 
-  const cbPlus = useCallback(
+  const handleLikedSpell = useCallback(
     async (spell) => {
+      setIsLoader(true);
+
       const spellsData = [...charSpells, spell];
       const { hasError, data } = await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
@@ -79,11 +98,13 @@ function CharacterSpells() {
       if (!isAddLiseElements && !hasError) {
         setSpells(data.spells);
       }
+
+      setIsLoader(false);
     },
-    [charSpells, charID]
+    [charSpells, charID, isAddLiseElements]
   );
 
-  const setLikeSpellCard = useCallback(
+  const hasSpellLiked = useCallback(
     (spell) => {
       if (!isAddLiseElements) {
         return true;
@@ -92,18 +113,6 @@ function CharacterSpells() {
     },
     [charSpells, isAddLiseElements]
   );
-
-  const getCharSpells = useCallback(async () => {
-    const { hasError, data } = await ResourcesService.getCharacter(charID);
-    const { spells: newCharSpells, owner } = data;
-
-    if (!hasError) {
-      setCharSpells(newCharSpells);
-      setCurrentSpells([]);
-      setSpells(newCharSpells);
-      setIsCreator(owner === currentUser._id);
-    }
-  }, [charID, currentUser]);
 
   const renderPage = useCallback(async () => {
     if (!charID) {
@@ -122,7 +131,7 @@ function CharacterSpells() {
     } else {
       setCurrentSpells(spells.slice(0, currentLength));
     }
-  }, [spells]);
+  }, [spells, currentSpells.length]);
 
   useEffect(() => {
     const currentLength = currentSpells.length;
@@ -160,14 +169,14 @@ function CharacterSpells() {
         isCreator &&
         (isAddLiseElements ? (
           <CloseButton
-            onClick={handleCloseButton}
+            onClick={handleShowCharSpells}
             className="my-2 mx-5"
             disabled={isLoader}
           />
         ) : (
           <IconButton
             icon={<Plus size={24} />}
-            onClick={handlePlusButton}
+            onClick={handleShowAllSpells}
             className="my-2 mx-5"
             disabled={isLoader}
           />
@@ -176,14 +185,22 @@ function CharacterSpells() {
         {filteredSpells.map((spell) => (
           <SpellCard
             key={spell._id}
-            handleShowForm={() => {}}
             spell={spell}
-            inList={() => setLikeSpellCard(spell)}
-            charList={!!charID}
-            cbClose={cbClose}
-            cbPlus={cbPlus}
-            cbDell={() => {}}
-            isCreator={false}
+            button={
+              isCreator &&
+              (hasSpellLiked(spell) ? (
+                <CloseButton
+                  onClick={() => handleUnlikedSpell(spell)}
+                  disabled={isLoader}
+                />
+              ) : (
+                <IconButton
+                  icon={<Plus size={24} />}
+                  onClick={() => handleLikedSpell(spell)}
+                  disabled={isLoader}
+                />
+              ))
+            }
           />
         ))}
       </MasonryContainer>

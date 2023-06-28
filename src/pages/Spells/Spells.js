@@ -118,11 +118,6 @@ export default function Spells() {
           <SpellCard
             key={spell._id}
             spell={spell}
-            inList={() => {}}
-            charList={false}
-            cbClose={() => {}}
-            cbPlus={() => {}}
-            isCreator={false}
             button={
               currentUser.role === "Admin" && (
                 <CardMenu

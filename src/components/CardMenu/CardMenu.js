@@ -6,7 +6,7 @@ export default function CardMenu({ cbForm, cbDell, isLoader }) {
       <Dropdown.Toggle variant="success" id="dropdown-basic" size="sm" />
       <Dropdown.Menu>
         <Dropdown.Item onClick={cbForm}>Изменить</Dropdown.Item>
-        <Dropdown.Item onClick={cbDell} disabled={isLoader ? "disabled" : ""}>
+        <Dropdown.Item onClick={cbDell} disabled={isLoader}>
           Удалить
         </Dropdown.Item>
       </Dropdown.Menu>

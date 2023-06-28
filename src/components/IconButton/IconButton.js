@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { Button } from "react-bootstrap";
 
 function IconButton({ icon, iconPosition = "left", children, ...props }) {

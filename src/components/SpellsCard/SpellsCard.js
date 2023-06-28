@@ -1,21 +1,6 @@
 import "./SpellsCard.scss";
 
-import { useCallback, useState } from "react";
-import { CloseButton } from "react-bootstrap";
-
-import { Plus } from "react-bootstrap-icons";
-
-import IconButton from "../IconButton/IconButton";
-
-export default function SpellCard({
-  cbClose,
-  cbPlus,
-  spell,
-  charList,
-  isCreator,
-  inList,
-  button,
-}) {
+export default function SpellCard({ spell, button }) {
   const {
     name,
     school,
@@ -31,39 +16,11 @@ export default function SpellCard({
     higher_level: higherLevel,
     ritual,
   } = spell;
-  const [isClosure, setIsClosure] = useState(inList);
-  const [isLoader, setIsLoader] = useState(false);
-
-  const handleCharButton = useCallback(
-    async (isClose) => {
-      setIsLoader(true);
-      if (isClose) {
-        await cbClose(spell);
-      } else {
-        await cbPlus(spell);
-      }
-      setIsClosure(!isClosure);
-      setIsLoader(false);
-    },
-    [cbClose, cbPlus, isClosure, spell]
-  );
 
   return (
     <li className="spell">
       <div className="spell__container">
         <h3 className="spell__title">{name}</h3>
-        {charList &&
-          (isCreator ? (
-            isClosure ? (
-              <CloseButton onClick={() => handleCharButton(true)} disabled={isLoader} />
-            ) : (
-              <IconButton
-                icon={<Plus size={24} />}
-                onClick={() => handleCharButton(false)}
-                disabled={isLoader}
-              />
-            )
-          ) : null)}
         {button}
       </div>
       <div className="spell__container">
