@@ -1,9 +1,9 @@
 // Не переносить!!! MasonryCard должен использоваться исключительно в MasonryContainer!!!
 
+import { useLayoutEffect, useRef } from "react";
+
 import constants from "../../../constants/constants.scss";
 import "./MasonryCard.scss";
-
-import { useLayoutEffect, useRef } from "react";
 
 export default function MasonryCard({ cardWidth, children }) {
   const card = useRef(null);
@@ -17,12 +17,12 @@ export default function MasonryCard({ cardWidth, children }) {
     card.current.classList.remove("masonry__card-ready");
     card.current.classList.add("masonry__card-calculation");
 
-    card.current.style.width = cardWidth + "px";
+    card.current.style.width = `${cardWidth}px`;
     const height = card.current.offsetHeight;
 
     const rowSpan = Math.ceil((height + gap) / (rowHeight + gap));
 
-    card.current.style.gridRowEnd = "span " + rowSpan;
+    card.current.style.gridRowEnd = `span ${rowSpan}`;
     card.current.style.width = "";
 
     card.current.classList.remove("masonry__card-calculation");

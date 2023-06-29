@@ -1,51 +1,88 @@
-import api from './AuthAxios';
+/* eslint-disable no-console */
+import api from "./AuthAxios";
 
 export default class AuthService {
   static async registration(email, password) {
-    let result = {
+    const result = {
       hasError: false,
       errorMessage: "",
-    }
+    };
     try {
-      const response =  await api.post('/signup', {email, password});
+      const response = await api.post("/signup", { email, password });
 
-      localStorage.setItem('token', response.data.accessToken);
-    } catch(err) {
+      localStorage.setItem("token", response.data.accessToken);
+    } catch (err) {
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
-      console.log(err)
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
     }
     return result;
   }
 
   static async login(email, password) {
-    let result = {
+    const result = {
       hasError: false,
       errorMessage: "",
       data: {},
-    }
+    };
 
     try {
-      const response = await api.post('/signin', {email, password})
+      const response = await api.post("/signin", { email, password });
 
       const { _id, role, isActivated, accessToken } = response.data;
-      localStorage.setItem('token', accessToken);
+      localStorage.setItem("token", accessToken);
       result.data = { _id, email, role, isActivated };
-    } catch(err) {
-      result.data = {}
+    } catch (err) {
+      result.data = {};
       result.hasError = true;
-      result.errorMessage = err.response.data.message || "Что-то сильно пошло не так";
-      console.log(err)
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
     }
 
     return result;
   }
 
   static async logout() {
-    return api.post('/signout')
+    const result = {
+      hasError: false,
+      errorMessage: "",
+    };
+
+    try {
+      const response = await api.post("/signout");
+
+      if (response.status === 200) {
+        localStorage.removeItem("token");
+      }
+    } catch (err) {
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 
   static async checkAuth() {
-    return api.get('/refresh')
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get("/refresh");
+
+      const { _id, email, role, isActivated, accessToken } = response.data;
+      localStorage.setItem("token", accessToken);
+      result.data = { _id, email, role, isActivated };
+    } catch (err) {
+      result.data = {};
+      result.hasError = true;
+      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
   }
 }

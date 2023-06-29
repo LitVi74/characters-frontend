@@ -1,205 +1,69 @@
 import { useState, useContext, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { CloseButton } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 
-import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
-import SpellModalForm from "../../components/SpellModalForm/SpellModalForm";
-import SpellFilters from "../../components/SpellFilters/SpellFilters";
-import SpellCard from "../../components/SpellsCard/SpellsCard";
-import IconButton from "../../components/IconButton/IconButton";
-import Spinner from "../../components/Spinner/Spinner";
-
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
-import { trottle } from "../../utils/Decorations";
+import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
+import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
+import { trottle } from "../../utils/Decorations";
 
-export default function Spells({ charList }) {
+import SpellCard from "./components/SpellsCard/SpellsCard";
+import IconButton from "../../components/IconButton/IconButton";
+import SpellFilters from "./components/SpellFilters/SpellFilters";
+import CardMenu from "../../components/CardMenu/CardMenu";
+
+export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
 
-  const { charID } = useParams();
-
-  const [isCreator, setIsCreator] = useState(false);
-  const [isForm, setIsForm] = useState({
-    isShow: false,
-    data: {},
-    update: false,
-  });
   const [spells, setSpells] = useState([]);
   const [currentSpells, setCurrentSpells] = useState([]);
-  const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
-  const [filterActionList, setFilterActionList] = useState(new Map());
-  const [charSpells, setCharSpells] = useState([]);
+  const [filteredSpells, setFilteredSpells] = useState([]);
+
+  const [formState, setFormState] = useState({
+    show: false,
+    chosenSpell: {},
+  });
+
   const [isLoader, setIsLoader] = useState(true);
 
-  const handleAddInAllSpells = useCallback(() => {
-    setIsForm({
-      isShow: true,
-      data: {},
-      update: false,
+  const handleShowForm = useCallback((spell = {}) => {
+    setFormState({
+      show: true,
+      chosenSpell: spell,
     });
   }, []);
 
-  const cbSubmit = useCallback(
-    async (data, spellID, update) => {
-      try {
-        const spell = update
-          ? await ResourcesService.updateSpell(spellID, data)
-          : await ResourcesService.createSpell(data);
-
-        let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
-        spellsData = update
-          ? spellsData.map((s) => {
-              if (spell._id === s._id) {
-                return spell;
-              }
-              return s;
-            })
-          : [...spells, spell];
-        sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
-
-        setSpells(spellsData);
-        setIsForm({
-          ...isForm,
-          isShow: false,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [isForm, spells]
-  );
+  const handelHideForm = useCallback(() => {
+    setFormState({
+      show: false,
+      chosenSpell: {},
+    });
+  }, []);
 
   const getAllSpells = useCallback(async () => {
-    try {
-      let spells = JSON.parse(sessionStorage.getItem("spellsData"));
+    setIsLoader(true);
+    const { hasError, data } = await ResourcesService.getSpells();
+    const { spells: allSpells } = data;
 
-      if (!spells) {
-        spells = await ResourcesService.getSpells();
-        sessionStorage.setItem("spellsData", JSON.stringify(spells));
-      }
-
-      setSpells(spells);
-      setCurrentSpells([]);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  const getCharSpells = useCallback(async () => {
-    try {
-      const { spells, owner } = await ResourcesService.getCharacter(charID);
-      setCharSpells(spells);
-      setSpells(spells);
-      setCurrentSpells([]);
-      setIsCreator(owner === currentUser._id);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [charID, currentUser]);
-
-  const handleCloseButton = useCallback(() => {
-    setSpells(charSpells);
-    setIsAddLiseElements(false);
-  }, [charSpells]);
-
-  const handlePlusButton = useCallback(() => {
-    getAllSpells();
-    setIsAddLiseElements(true);
-  }, [getAllSpells]);
-
-  const cbClose = useCallback(
-    async (data) => {
-      try {
-        const { _id: spellID } = data;
-        let spellsData = charSpells.filter((s) => s._id !== spellID);
-
-        spellsData = (
-          await ResourcesService.updateCharacter(charID, {
-            spells: spellsData,
-          })
-        ).spells;
-        setCharSpells(spellsData);
-
-        if (!isAddLiseElements) {
-          setSpells(spellsData);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [charID, charSpells, isAddLiseElements]
-  );
-
-  const cbPlus = useCallback(
-    async (data) => {
-      try {
-        let spellsData = [...charSpells, data];
-
-        spellsData = (
-          await ResourcesService.updateCharacter(charID, {
-            spells: spellsData,
-          })
-        ).spells;
-        setCharSpells(spellsData);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [charSpells, charID]
-  );
-
-  const cbDell = useCallback(async (data) => {
-    try {
-      const { _id: spellID } = data;
-      await ResourcesService.deleteSpell(spellID);
-
-      let spellsData = JSON.parse(sessionStorage.getItem("spellsData"));
-      spellsData = spellsData.filter((s) => s._id !== spellID);
-      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
-
-      setSpells(spellsData);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  const filterSpells = useCallback(
-    (spells) => {
-      let filteredSpells = [...spells];
-
-      filterActionList.forEach((filterAction) => {
-        filteredSpells = filterAction(filteredSpells);
-      });
-
-      return filteredSpells;
-    },
-    [filterActionList]
-  );
-
-  const setLikeSpellCard = useCallback(
-    (spell) => {
-      if (!isAddLiseElements) {
-        return true;
-      }
-      return charSpells.some((s) => s._id === spell._id);
-    },
-    [charSpells, isAddLiseElements]
-  );
-
-  const renderPage = useCallback(async () => {
-    if (!charList) {
-      await getAllSpells();
-    } else {
-      await getCharSpells();
+    if (!hasError) {
+      setSpells(allSpells);
     }
     setIsLoader(false);
-  }, [charList, getCharSpells, getAllSpells]);
+  }, []);
+
+  const handleDeleteSpell = useCallback(async (spellID) => {
+    const { hasError, data } = await ResourcesService.deleteSpell(spellID);
+
+    if (!hasError) {
+      setSpells(data.spells);
+    }
+  }, []);
 
   useEffect(() => {
-    renderPage();
-  }, [renderPage]);
+    getAllSpells();
+  }, [getAllSpells]);
 
   useEffect(() => {
     const currentLength = currentSpells.length;
@@ -222,76 +86,58 @@ export default function Spells({ charList }) {
         ) {
           const card = spells.slice(0, currentLength + 20);
           setCurrentSpells(card);
-          console.log("lol");
         }
       };
 
-      const handleScroll = trottle(exeEventScroll, 50);
+      const handleScroll = trottle(exeEventScroll, 30);
       window.addEventListener("scroll", handleScroll);
 
       return () => {
         window.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [currentSpells]);
+
+    return undefined;
+  }, [currentSpells.length]);
 
   return (
     <main>
-      <SpellFilters
-        filterActionList={filterActionList}
-        setFilterActionList={setFilterActionList}
-      />
-      {charList ? (
-        isCreator ? (
-          isAddLiseElements ? (
-            <CloseButton
-              onClick={handleCloseButton}
-              className="my-2 mx-5"
-              disabled={isLoader ? "disabled" : ""}
-            />
-          ) : (
-            <IconButton
-              icon={<Plus size={24} />}
-              onClick={handlePlusButton}
-              className="my-2 mx-5"
-              isLoader={isLoader}
-            />
-          )
-        ) : null
-      ) : (
-        currentUser.role === "Admin" && (
-          <IconButton
-            icon={<Plus size={24} />}
-            onClick={handleAddInAllSpells}
-            className="mb-3 mx-auto"
-            isLoader={isLoader}
-          >
-            Добавить заклинание
-          </IconButton>
-        )
+      <SpellFilters spells={currentSpells} setFilteredSpells={setFilteredSpells} />
+      {currentUser.role === "Admin" && (
+        <IconButton
+          icon={<Plus size={24} />}
+          onClick={() => handleShowForm()}
+          className="mb-3 mx-auto"
+          disabled={isLoader}
+        >
+          Добавить заклинание
+        </IconButton>
       )}
       <MasonryContainer>
-        {filterSpells(currentSpells).map((spell) => (
+        {filteredSpells.map((spell) => (
           <SpellCard
             key={spell._id}
-            cbForm={setIsForm}
             spell={spell}
-            inList={() => setLikeSpellCard(spell)}
-            charList={charList}
-            cbClose={cbClose}
-            cbPlus={cbPlus}
-            cbDell={cbDell}
-            isCreator={isCreator}
+            button={
+              currentUser.role === "Admin" && (
+                <CardMenu
+                  cbForm={() => handleShowForm(spell)}
+                  cbDell={() => handleDeleteSpell(spell._id)}
+                  isLoader={isLoader}
+                />
+              )
+            }
           />
         ))}
       </MasonryContainer>
       {isLoader && <Spinner />}
-      <SpellModalForm
-        isForm={isForm}
-        cbForm={setIsForm}
-        cbSubmit={cbSubmit}
-        isSpellForm={true}
-      />
+      {currentUser.role === "Admin" && (
+        <SpellModalForm
+          formState={formState}
+          handelHideForm={handelHideForm}
+          setSpells={setSpells}
+        />
+      )}
     </main>
   );
 }

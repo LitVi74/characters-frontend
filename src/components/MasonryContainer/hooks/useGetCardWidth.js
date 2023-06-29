@@ -1,16 +1,12 @@
-import constants from "../../../constants/constants.scss";
-
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import constants from "../../../constants/constants.scss";
 
 function useGetCardWidth(containerRef) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
 
   const handleResize = useCallback(() => {
-    setTimeout(
-      () => setContainerWidth(containerRef.current?.clientWidth ?? 0),
-      50
-    );
+    setTimeout(() => setContainerWidth(containerRef.current?.clientWidth ?? 0), 50);
   }, [containerRef.current?.clientWidth]);
 
   useEffect(() => {
@@ -28,12 +24,13 @@ function useGetCardWidth(containerRef) {
     const minCardWidth = +constants.minCardWidth.match(/^\d+/)[0];
 
     const cardCount = Math.floor((containerWidth + gap) / (minCardWidth + gap));
-    const cardWidth = (containerWidth - (cardCount - 1) * gap) / cardCount;
+    const newCardWidth = (containerWidth - (cardCount - 1) * gap) / cardCount;
 
-    setCardWidth(cardWidth);
+    setCardWidth(newCardWidth);
   }, [containerWidth]);
 
   return cardWidth;
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export { useGetCardWidth };

@@ -1,9 +1,9 @@
 import { Formik, Field } from "formik";
 import { Button, Form } from "react-bootstrap";
 
-export default function LoginForm({cbLogin, isSubmitted}) {
+export default function LoginForm({ cbLogin, isSubmitted }) {
   return (
-    <Formik 
+    <Formik
       initialValues={{
         email: "",
         password: "",
@@ -52,12 +52,19 @@ export default function LoginForm({cbLogin, isSubmitted}) {
                   error = "Пароль должен быть больше 6 символов";
                 }
 
-                  return error;
+                return error;
               }}
-              />
-              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit" variant="primary" className="w-100" disabled={isSubmitted}>
+          <Button
+            type="submit"
+            variant="primary"
+            className="w-100"
+            disabled={isSubmitted}
+          >
             Войти
           </Button>
         </Form>

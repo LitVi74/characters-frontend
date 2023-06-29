@@ -1,26 +1,17 @@
-import {Button} from "react-bootstrap";
+/* eslint-disable react/jsx-props-no-spreading */
+import { Button } from "react-bootstrap";
 
-const IconButton = ({
-  icon,
-  isLoader,
-  iconPosition = "left",
-  children,
-  ...props
-}) => {
+function IconButton({ icon, iconPosition = "left", children, ...props }) {
   return (
-    <Button {...props} 
-      className={`d-flex align-items-center gap-2 ${props.className ?? ""}`} 
-      disabled={isLoader ? 'disabled' : ''}
+    <Button
+      {...props}
+      className={`d-flex align-items-center gap-2 ${props.className ?? ""}`}
     >
-      {iconPosition === "left" &&
-        icon
-      }
-      { children }
-      {iconPosition === "right" &&
-        icon
-      }
+      {iconPosition === "left" && icon}
+      {children}
+      {iconPosition === "right" && icon}
     </Button>
   );
-};
+}
 
 export default IconButton;

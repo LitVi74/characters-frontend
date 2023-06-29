@@ -1,7 +1,7 @@
 import { Container, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 
-export default function SpellForm({ cbSubmit, spell, update }) {
+export default function SpellForm({ cbSubmit, spell }) {
   const castingTime = spell?.casting_time?.split(", ");
 
   const formik = useFormik({
@@ -10,8 +10,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
       level: spell?.level ?? 0,
       school: spell?.school ?? "",
       castingTime: castingTime?.[0] ?? "1 действие",
-      castingTimeAdditional:
-        castingTime?.slice(1, castingTime?.length)?.join(", ") ?? "",
+      castingTimeAdditional: castingTime?.slice(1, castingTime?.length)?.join(", ") ?? "",
       range: spell?.range ?? "",
       components: spell?.components ?? [],
       material: spell?.material ?? "",
@@ -27,9 +26,7 @@ export default function SpellForm({ cbSubmit, spell, update }) {
         name: values.name.trim(),
         level: +values.level,
         school: values.school,
-        casting_time: [values.castingTime, values.castingTimeAdditional].join(
-          ", "
-        ),
+        casting_time: [values.castingTime, values.castingTimeAdditional].join(", "),
         range: values.range,
         components: values.components,
         material: values.material.trim(),
@@ -41,15 +38,12 @@ export default function SpellForm({ cbSubmit, spell, update }) {
         higher_level: values.higherLevel.trim(),
       };
 
-      cbSubmit(data, spell._id, update);
+      cbSubmit(data, spell._id);
     },
   });
 
   return (
-    <Form
-      id={`spell-${spell ? spell._id : "add"}-form`}
-      onSubmit={formik.handleSubmit}
-    >
+    <Form id={`spell-${spell ? spell._id : "add"}-form`} onSubmit={formik.handleSubmit}>
       <Form.Group controlId="spell-name">
         <Form.Label>Название</Form.Label>
         <Form.Control
@@ -146,22 +140,22 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <Form.Check
             name="components"
             defaultChecked={formik.initialValues.components.includes("В")}
-            label={"В"}
-            value={"В"}
+            label="В"
+            value="В"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="components"
             defaultChecked={formik.initialValues.components.includes("С")}
-            label={"С"}
-            value={"С"}
+            label="С"
+            value="С"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="components"
             defaultChecked={formik.initialValues.components.includes("М")}
-            label={"М"}
-            value={"М"}
+            label="М"
+            value="М"
             onChange={formik.handleChange}
           />
         </Container>
@@ -203,64 +197,64 @@ export default function SpellForm({ cbSubmit, spell, update }) {
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Бард")}
-            label={"Бард"}
-            value={"Бард"}
+            label="Бард"
+            value="Бард"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Волшебник")}
-            label={"Волшебник"}
-            value={"Волшебник"}
+            label="Волшебник"
+            value="Волшебник"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Друид")}
-            label={"Друид"}
-            value={"Друид"}
+            label="Друид"
+            value="Друид"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Жрец")}
-            label={"Жрец"}
-            value={"Жрец"}
+            label="Жрец"
+            value="Жрец"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Колдун")}
-            label={"Колдун"}
-            value={"Колдун"}
+            label="Колдун"
+            value="Колдун"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Паладин")}
-            label={"Паладин"}
-            value={"Паладин"}
+            label="Паладин"
+            value="Паладин"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Следопыт")}
-            label={"Следопыт"}
-            value={"Следопыт"}
+            label="Следопыт"
+            value="Следопыт"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Чародей")}
-            label={"Чародей"}
-            value={"Чародей"}
+            label="Чародей"
+            value="Чародей"
             onChange={formik.handleChange}
           />
           <Form.Check
             name="classes"
             defaultChecked={formik.initialValues.classes.includes("Изобретатель")}
-            label={"Изобретатель"}
-            value={"Изобретатель"}
+            label="Изобретатель"
+            value="Изобретатель"
             onChange={formik.handleChange}
           />
         </Container>
