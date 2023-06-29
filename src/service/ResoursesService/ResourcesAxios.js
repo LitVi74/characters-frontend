@@ -10,26 +10,25 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-  return config;
+  const conf = config;
+  conf.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+  return conf;
 });
 
 api.interceptors.response.use(
   (config) => config,
   async (error) => {
     const originalRequest = error.config;
-    if (
-      error.response.status === 401 &&
-      error.config &&
-      !error.config._isRetry
-    ) {
+    if (error.response.status === 401 && error.config && !error.config._isRetry) {
       originalRequest._isRetry = true;
-      try {
-        const response = await AuthService.checkAuth();
+
+      const response = await AuthService.checkAuth();
+
+      if (response.hasError) {
+        console.log("Не авторизован");
+      } else {
         localStorage.setItem("token", response.data.accessToken);
         return api.request(originalRequest);
-      } catch (e) {
-        console.log("Не авторизован");
       }
     }
     throw error;

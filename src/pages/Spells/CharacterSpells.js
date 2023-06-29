@@ -18,7 +18,7 @@ function CharacterSpells() {
 
   const [charSpells, setCharSpells] = useState([]);
   const [spells, setSpells] = useState([]);
-  const [currentSpells, setCurrentSpells] = useState([]);
+  const [spellsLength, setSpellsLength] = useState(30);
   const [filteredSpells, setFilteredSpells] = useState([]);
 
   const [isCreator, setIsCreator] = useState(false);
@@ -47,13 +47,11 @@ function CharacterSpells() {
 
   const handleShowCharSpells = useCallback(() => {
     setSpells(charSpells);
-    setCurrentSpells([]);
     setIsAddLiseElements(false);
   }, [charSpells]);
 
   const handleShowAllSpells = useCallback(() => {
     getAllSpells().then(() => {
-      setCurrentSpells([]);
       setIsAddLiseElements(true);
     });
   }, [getAllSpells]);
@@ -124,26 +122,13 @@ function CharacterSpells() {
   }, [charID, getCharSpells, getAllSpells]);
 
   useEffect(() => {
-    const currentLength = currentSpells.length;
-
-    if (currentLength === 0) {
-      setCurrentSpells(spells.slice(0, currentLength + 20));
-    } else {
-      setCurrentSpells(spells.slice(0, currentLength));
-    }
-  }, [spells, currentSpells.length]);
-
-  useEffect(() => {
-    const currentLength = currentSpells.length;
-
-    if (spells.length > currentLength) {
+    if (spells.length > spellsLength) {
       const exeEventScroll = () => {
         if (
           window.innerHeight + document.documentElement.scrollTop + 1000 >=
           document.scrollingElement.scrollHeight
         ) {
-          const card = spells.slice(0, currentLength + 20);
-          setCurrentSpells(card);
+          setSpellsLength(spellsLength + 30);
         }
       };
 
@@ -156,7 +141,7 @@ function CharacterSpells() {
     }
 
     return undefined;
-  }, [currentSpells.length]);
+  }, [spells, spellsLength]);
 
   useEffect(() => {
     renderPage();
@@ -164,7 +149,7 @@ function CharacterSpells() {
 
   return (
     <main>
-      <SpellFilters spells={currentSpells} setFilteredSpells={setFilteredSpells} />
+      <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
       {charID &&
         isCreator &&
         (isAddLiseElements ? (
@@ -182,7 +167,7 @@ function CharacterSpells() {
           />
         ))}
       <MasonryContainer>
-        {filteredSpells.map((spell) => (
+        {filteredSpells.slice(0, spellsLength).map((spell) => (
           <SpellCard
             key={spell._id}
             spell={spell}

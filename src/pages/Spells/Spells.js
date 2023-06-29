@@ -18,7 +18,7 @@ export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
 
   const [spells, setSpells] = useState([]);
-  const [currentSpells, setCurrentSpells] = useState([]);
+  const [spellsLength, setSpellsLength] = useState(30);
   const [filteredSpells, setFilteredSpells] = useState([]);
 
   const [formState, setFormState] = useState({
@@ -66,26 +66,13 @@ export default function Spells() {
   }, [getAllSpells]);
 
   useEffect(() => {
-    const currentLength = currentSpells.length;
-
-    if (currentLength === 0) {
-      setCurrentSpells(spells.slice(0, currentLength + 20));
-    } else {
-      setCurrentSpells(spells.slice(0, currentLength));
-    }
-  }, [spells]);
-
-  useEffect(() => {
-    const currentLength = currentSpells.length;
-
-    if (spells.length > currentLength) {
+    if (spells.length > spellsLength) {
       const exeEventScroll = () => {
         if (
           window.innerHeight + document.documentElement.scrollTop + 1000 >=
           document.scrollingElement.scrollHeight
         ) {
-          const card = spells.slice(0, currentLength + 20);
-          setCurrentSpells(card);
+          setSpellsLength(spellsLength + 30);
         }
       };
 
@@ -98,11 +85,11 @@ export default function Spells() {
     }
 
     return undefined;
-  }, [currentSpells.length]);
+  }, [spells, spellsLength]);
 
   return (
     <main>
-      <SpellFilters spells={currentSpells} setFilteredSpells={setFilteredSpells} />
+      <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
       {currentUser.role === "Admin" && (
         <IconButton
           icon={<Plus size={24} />}
@@ -114,7 +101,7 @@ export default function Spells() {
         </IconButton>
       )}
       <MasonryContainer>
-        {filteredSpells.map((spell) => (
+        {filteredSpells.slice(0, spellsLength).map((spell) => (
           <SpellCard
             key={spell._id}
             spell={spell}

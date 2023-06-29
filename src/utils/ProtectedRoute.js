@@ -16,7 +16,5 @@ export default function ProtectedRoute() {
     }
   }, [location, navigate, currentUser]);
 
-  return (
-    <>{currentUser.isActivated ? <Outlet /> : <Navigate to={PATHS.login} replace />}</>
-  );
+  return currentUser.isActivated ? <Outlet /> : <Navigate to={PATHS.login} replace />;
 }
