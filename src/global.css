@@ -10,3 +10,7 @@ main {
   width: 100%;
   flex-grow: 1;
 }
+
+body {
+  padding: 0 calc(20px - (100vw - 100%)) 0 0;
+}
