@@ -7,7 +7,7 @@ import MasonryContainer from "../../components/MasonryContainer/MasonryContainer
 import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
-import { trottle } from "../../utils/Decorations";
+import trottle from "../../utils/Decorations";
 
 import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";

@@ -1,4 +1,6 @@
-function trottle(func, time) {
+/* eslint no-undef-init: off */
+
+export default function trottle(func, time) {
   let previousCall = undefined;
 
   return () => {
@@ -9,8 +11,4 @@ function trottle(func, time) {
       func();
     }
   }
-}
-
-export {
-  trottle
 }

@@ -5,7 +5,7 @@ import { Plus } from "react-bootstrap-icons";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
-import { trottle } from "../../utils/Decorations";
+import trottle from "../../utils/Decorations";
 
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellCard from "./components/SpellsCard/SpellsCard";

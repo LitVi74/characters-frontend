@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { PATHS } from "../../constants/constants";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 
-const Home = () => {
+export default function Home() {
   const navigate = useNavigate();
   const { currentUser } = useContext(CurrentUserContext);
 
@@ -17,6 +17,4 @@ const Home = () => {
   });
 
   return <h1>Welcome</h1>;
-};
-
-export default Home;
+}
