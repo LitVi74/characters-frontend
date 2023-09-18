@@ -25,7 +25,8 @@ api.interceptors.response.use(
       const response = await AuthService.checkAuth();
 
       if (response.hasError) {
-        console.log("Не авторизован");
+        localStorage.removeItem("token");
+        window.location.href = "/";
       } else {
         localStorage.setItem("token", response.data.accessToken);
         return api.request(originalRequest);

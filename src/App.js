@@ -17,6 +17,13 @@ export default function App() {
   });
 
   const getUserData = useCallback(async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setHasFirstLoader(true);
+      return;
+    }
+
     const { hasError, data } = await AuthService.checkAuth();
     const { _id, email, role, isActivated } = data;
 
@@ -28,10 +35,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      getUserData();
-    }
+    getUserData();
     // особенности работы navigate
     // если navigate в зависимости, то он перезапескает useEffect при изменении location
     // eslint-disable-next-line react-hooks/exhaustive-deps
