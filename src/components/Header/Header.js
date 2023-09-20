@@ -9,7 +9,7 @@ import { CurrentUserContext } from "../../contexts/currentUserContext";
 export default function Header() {
   const { currentUser } = useContext(CurrentUserContext);
   return (
-    <header className="d-flex flex-row align-content-center w-100 px-5">
+    <header className="d-flex flex-row align-content-center w-100">
       <img alt="" src={logo} width="42" height="42" />
       {currentUser.isActivated ? <AuthorizedNavbar /> : <UnauthorizedNavbar />}
     </header>
