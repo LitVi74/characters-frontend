@@ -1,3 +1,4 @@
+import "./CharacterLink.scss";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useState } from "react";
 
@@ -35,7 +36,7 @@ export default function CharacterLink({ char, cbForm, cbClose }) {
 
   return (
     <li
-      className="list-group-item d-flex justify-content-between align-items-center"
+      className="list-group-item d-flex justify-content-between align-items-center char"
       onClick={handleNavLink}
       aria-hidden="true"
     >

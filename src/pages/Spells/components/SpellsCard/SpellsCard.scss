@@ -10,12 +10,15 @@
   border-radius: 5%;
   border: 1px solid black;
 
+  background-color: #DDCFBB;
+
   &__title {
     font-family: 'Inter', Arial, sans-serif;;
     font-style: normal;
     font-weight: 500;
     font-size: 22px;
     line-height: 27px;
+    color: #000;
 
     margin: 0;
   }
@@ -31,6 +34,7 @@
     font-weight: 400;
     font-size: 11px;
     line-height: 13px;
+    color: #000;
 
     margin: 10px 0 0;
   }
