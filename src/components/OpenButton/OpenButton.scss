@@ -1,0 +1,16 @@
+.open-button {
+  background-image: url("../../assets/plus.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px 26px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  opacity: .5;
+
+  &:hover {
+    opacity: .75;
+  }
+}

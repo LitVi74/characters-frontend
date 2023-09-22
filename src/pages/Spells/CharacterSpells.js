@@ -10,6 +10,7 @@ import trottle from "../../utils/Decorations";
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
 import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
+import OpenButton from "../../components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 
 function CharacterSpells() {
@@ -179,8 +180,7 @@ function CharacterSpells() {
                   disabled={isLoader}
                 />
               ) : (
-                <IconButton
-                  icon={<Plus size={24} />}
+                <OpenButton
                   onClick={() => handleLikedSpell(spell)}
                   disabled={isLoader}
                 />
