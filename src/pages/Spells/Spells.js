@@ -89,13 +89,13 @@ export default function Spells() {
 
   return (
     <main>
-      <div className="d-flex justify-content-center gap-3 p-lg-5">
+      <div className="d-flex justify-content-center flex-column flex-md-row gap-3 p-3 p-md-4 p-lg-5">
         <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
         {currentUser.role === "Admin" && (
           <IconButton
             icon={<Plus size={24} />}
             onClick={() => handleShowForm()}
-            className="btn-warning"
+            className="btn-warning align-self-center"
             disabled={isLoader}
           >
             Добавить заклинание

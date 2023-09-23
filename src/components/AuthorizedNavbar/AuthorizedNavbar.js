@@ -29,7 +29,7 @@ export default function AuthorizedNavbar() {
           Заклинания
         </Nav.Link>
         <Nav.Link as={Link} to={PATHS.characters}>
-          Чарники
+          Персонажи
         </Nav.Link>
         <Nav.Link
           as={Button}
