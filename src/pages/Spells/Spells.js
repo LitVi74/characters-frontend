@@ -94,7 +94,7 @@ export default function Spells() {
         <IconButton
           icon={<Plus size={24} />}
           onClick={() => handleShowForm()}
-          className="mb-3 mx-auto"
+          className="mb-3 mx-auto btn-warning"
           disabled={isLoader}
         >
           Добавить заклинание

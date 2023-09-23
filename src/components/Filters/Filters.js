@@ -18,7 +18,7 @@ function Filters({ filters, handleSearchInputBlur }) {
         onKeyDown={(event) => event.keyCode === 13 && event.currentTarget.blur()}
       />
       <IconButton
-        variant="outline-primary"
+        variant="outline-warning"
         icon={<Funnel size={20} />}
         onClick={() => setShow(true)}
       />

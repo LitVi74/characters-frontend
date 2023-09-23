@@ -83,7 +83,7 @@ export default function Characters() {
       <IconButton
         icon={<Plus size={24} />}
         onClick={() => handleShowForm()}
-        className="mb-3 mx-auto"
+        className="mb-3 mx-auto btn-warning"
         isLoader={isLoader}
       >
         Добавить персонажа

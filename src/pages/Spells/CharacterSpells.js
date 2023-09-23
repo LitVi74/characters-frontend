@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { CloseButton, Spinner } from "react-bootstrap";
-import { Plus } from "react-bootstrap-icons";
+import { Plus, X } from "react-bootstrap-icons";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
@@ -153,20 +153,13 @@ function CharacterSpells() {
       <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
       {charID &&
         isCreator &&
-        (isAddLiseElements ? (
-          <CloseButton
-            onClick={handleShowCharSpells}
-            className="my-2 mx-5"
-            disabled={isLoader}
-          />
-        ) : (
           <IconButton
-            icon={<Plus size={24} />}
-            onClick={handleShowAllSpells}
-            className="my-2 mx-5"
+            icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
+            onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
+            className="my-2 mx-5 btn-warning"
             disabled={isLoader}
           />
-        ))}
+      }
       <MasonryContainer>
         {filteredSpells.slice(0, spellsLength).map((spell) => (
           <SpellCard
