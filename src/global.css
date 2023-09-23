@@ -17,11 +17,6 @@ body {
   background-color: #262626;
 }
 
-.auth {
-  max-width: 500px;
-  margin-top: calc(50vh - 164px);
-}
-
 input,
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
@@ -32,6 +27,11 @@ input:-webkit-autofill:focus {
 h1,h2,h3,h4,h5,h6,p,label {
   color: #DDCFBB;
   margin: 0;
+}
+
+.auth {
+  max-width: 500px;
+  margin-top: calc(50vh - 164px);
 }
 
 .nav-link,

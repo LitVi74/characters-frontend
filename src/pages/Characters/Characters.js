@@ -82,8 +82,9 @@ export default function Characters() {
     <Stack as="main" className="gap-2 align-self-center px-5">
       <IconButton
         icon={<Plus size={24} />}
+        variant="outline-warning"
         onClick={() => handleShowForm()}
-        className="mb-3 mx-auto btn-warning"
+        className="mb-3 mx-auto"
         isLoader={isLoader}
       >
         Добавить персонажа

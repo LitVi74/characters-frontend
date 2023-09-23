@@ -89,17 +89,19 @@ export default function Spells() {
 
   return (
     <main>
-      <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
-      {currentUser.role === "Admin" && (
-        <IconButton
-          icon={<Plus size={24} />}
-          onClick={() => handleShowForm()}
-          className="mb-3 mx-auto btn-warning"
-          disabled={isLoader}
-        >
-          Добавить заклинание
-        </IconButton>
-      )}
+      <div className="d-flex justify-content-center gap-3 p-lg-5">
+        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
+        {currentUser.role === "Admin" && (
+          <IconButton
+            icon={<Plus size={24} />}
+            onClick={() => handleShowForm()}
+            className="btn-warning"
+            disabled={isLoader}
+          >
+            Добавить заклинание
+          </IconButton>
+        )}
+      </div>
       <MasonryContainer>
         {filteredSpells.slice(0, spellsLength).map((spell) => (
           <SpellCard

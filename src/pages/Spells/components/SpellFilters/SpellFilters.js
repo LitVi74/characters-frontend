@@ -112,7 +112,7 @@ function SpellFilters({ spells, setFilteredSpells }) {
   });
 
   return (
-    <div className="d-flex align-items-center justify-content-center gap-3 p-lg-5">
+    <div className="d-flex justify-content-center flex-grow-1">
       <Filters filters={filters} handleSearchInputBlur={handleSearchInputBlur} />
     </div>
   );

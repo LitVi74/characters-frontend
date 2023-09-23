@@ -150,16 +150,18 @@ function CharacterSpells() {
 
   return (
     <main>
-      <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
-      {charID &&
-        isCreator &&
-          <IconButton
-            icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
-            onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
-            className="my-2 mx-5 btn-warning"
-            disabled={isLoader}
-          />
-      }
+      <div className="d-flex justify-content-center gap-3 p-lg-5">
+        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
+        {charID &&
+          isCreator &&
+            <IconButton
+              icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
+              onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
+              className="btn-warning"
+              disabled={isLoader}
+            />
+        }
+      </div>
       <MasonryContainer>
         {filteredSpells.slice(0, spellsLength).map((spell) => (
           <SpellCard
