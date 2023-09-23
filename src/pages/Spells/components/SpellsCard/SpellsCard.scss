@@ -36,9 +36,30 @@
     font-family: 'Inter', Arial, sans-serif;;
     font-style: normal;
     font-weight: 400;
-    font-size: 11px;
-    line-height: 13px;
+    font-size: 12px;
+    line-height: 14px;
     color: #000;
+
+    padding-bottom: 8px;
+
+    &_padding-none {
+      padding-bottom: 0;
+    }
+
+    &_style {
+      &_italic {
+        font-style: italic;
+      }
+
+      &_size-16 {
+        font-size: 16px;
+        line-height: 18px;
+      }
+    }
+  }
+
+  &__classes {
+    font-weight: 500;
   }
 }
 
@@ -55,13 +76,5 @@
     box-sizing: border-box;
 
     margin: 0;
-  }
-
-  &__text {
-    padding-bottom: 8px;
-
-    &:last-child {
-      padding: 0;
-    }
   }
 }
