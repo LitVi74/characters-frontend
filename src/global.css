@@ -20,8 +20,18 @@ body {
 input,
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  -webkit-box-shadow: inset 0 0 0 50px #DDCFBB;
-  -webkit-text-fill-color: #000;
+  -webkit-box-shadow: inset 0 0 0 50px #262626;
+  -webkit-text-fill-color: #DDCFBB;
+}
+
+.form-control {
+  border-color: gold;
+}
+
+.form-control:focus {
+  border-color: gold;
+  box-shadow: inset 0 0 0 50px #262626;
+  caret-color: gold;
 }
 
 h1,h2,h3,h4,h5,h6,p,label {
