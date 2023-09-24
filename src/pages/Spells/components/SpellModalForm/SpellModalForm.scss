@@ -1,0 +1,15 @@
+.modal {
+
+  &-content {
+    background-color: #262626;
+    color: #DDCFBB;
+  }
+  
+  &-header {
+    border-bottom: 1px solid gold;
+  }
+
+  &-footer {
+    border-top: 1px solid gold;
+  }
+}

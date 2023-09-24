@@ -7,7 +7,6 @@ export default function CharForm({ cbSubmit, char }) {
       name: char?.name ?? "",
     },
     onSubmit: (values) => {
-      console.log(values);
       cbSubmit(char?._id, values);
     },
   });
