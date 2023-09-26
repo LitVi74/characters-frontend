@@ -89,7 +89,7 @@ export default function SignupForm({ cbRegister, isSubmitted }) {
           </Form.Group>
           <Button
             type="submit"
-            variant="primary"
+            variant="warning"
             className="w-100"
             disabled={isSubmitted}
           >
