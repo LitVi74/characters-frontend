@@ -26,6 +26,7 @@ function CharacterSpells() {
   const [isCreator, setIsCreator] = useState(false);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [isLoader, setIsLoader] = useState(true);
+  const [isDontActiveLike, setIsDontActiveLike] = useState(false);
 
   const getAllSpells = useCallback(async () => {
     const allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
@@ -68,8 +69,7 @@ function CharacterSpells() {
 
   const handleUnlikedSpell = useCallback(
     async (spell) => {
-      setIsLoader(true);
-
+      setIsDontActiveLike(true);
       const { _id: spellID } = spell;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
 
@@ -84,16 +84,14 @@ function CharacterSpells() {
       if (!isAddLiseElements && !hasError) {
         setSpells(data.spells);
       }
-
-      setIsLoader(false);
+      setIsDontActiveLike(false);
     },
     [charID, charSpells, isAddLiseElements]
   );
 
   const handleLikedSpell = useCallback(
     async (spell) => {
-      setIsLoader(true);
-
+      setIsDontActiveLike(true);
       const spellsData = [...charSpells, spell];
       const { hasError, data } = await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
@@ -106,8 +104,7 @@ function CharacterSpells() {
       if (!isAddLiseElements && !hasError) {
         setSpells(data.spells);
       }
-
-      setIsLoader(false);
+      setIsDontActiveLike(false);
     },
     [charSpells, charID, isAddLiseElements]
   );
@@ -184,12 +181,12 @@ function CharacterSpells() {
                 (hasSpellLiked(spell) ? (
                   <CloseButton
                     onClick={() => handleUnlikedSpell(spell)}
-                    disabled={isLoader}
+                    disabled={isDontActiveLike}
                   />
                 ) : (
                   <OpenButton
                     onClick={() => handleLikedSpell(spell)}
-                    disabled={isLoader}
+                    disabled={isDontActiveLike}
                   />
                 ))
               }
