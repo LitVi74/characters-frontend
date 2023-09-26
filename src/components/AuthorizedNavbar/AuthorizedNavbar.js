@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Nav, Navbar } from "react-bootstrap";
+import "./AuthorizedNavbar.scss";
 import { useCallback, useContext } from "react";
 
 import { PATHS } from "../../constants/constants";

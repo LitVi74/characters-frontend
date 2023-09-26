@@ -39,11 +39,6 @@ header {
   margin-top: calc(50vh - 164px);
 }
 
-.nav-link,
-.nav-link:visited {
-  color: #DDCFBB;
-}
-
 @media screen and (min-width: 720px) {
   main {
     padding: 0 5vw 0;
