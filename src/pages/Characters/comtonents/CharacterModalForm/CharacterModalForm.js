@@ -23,18 +23,15 @@ export default function CharacterModalForm({ formState, handelHideForm, updateCh
 
   return (
     <Modal show={show} onHide={handelHideForm}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>{chosenChar?._id ? "Изменить" : "Добавить"} название</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <CharForm char={chosenChar} cbSubmit={handleCharFormSubmit} />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handelHideForm}>
-          Отменить
-        </Button>
         <Button
-          variant="primary"
+          variant="warning"
           type="submit"
           form={`character-${chosenChar ? chosenChar._id : "add"}-form`}
         >

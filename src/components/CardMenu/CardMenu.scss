@@ -8,3 +8,18 @@
     opacity: 0.7;
   }
 }
+
+.dropdown {
+  &-menu {
+    background-color: #1d1c1c;
+  }
+
+  &-item {
+    color: #DDCFBB;
+    
+    &:hover {
+      background-color: #353232;
+      color: #DDCFBB;
+    }
+  }
+}
