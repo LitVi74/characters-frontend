@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { CloseButton, Spinner } from "react-bootstrap";
+import { CloseButton } from "react-bootstrap";
 import { Plus, X } from "react-bootstrap-icons";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
@@ -8,6 +8,7 @@ import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import trottle from "../../utils/Decorations";
 
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
+import Spinner from "../../components/Spinner/Spinner";
 import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import OpenButton from "../../components/OpenButton/OpenButton";
@@ -27,12 +28,20 @@ function CharacterSpells() {
   const [isLoader, setIsLoader] = useState(true);
 
   const getAllSpells = useCallback(async () => {
+    const allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+
+    if(allSpells) {
+      setSpells(allSpells);
+      return;
+    }
+
+    setIsLoader(true);
     const { hasError, data } = await ResourcesService.getSpells();
-    const { spells: allSpells } = data;
 
     if (!hasError) {
-      setSpells(allSpells);
+      setSpells(data.spells);
     }
+    setIsLoader(false);
   }, []);
 
   const getCharSpells = useCallback(async () => {
@@ -151,7 +160,7 @@ function CharacterSpells() {
   return (
     <main>
       <div className="d-flex justify-content-center gap-3 p-3 p-md-4 p-lg-5">
-        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
+        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} isLoader={isLoader} />
         {charID &&
           isCreator &&
             <IconButton
@@ -162,29 +171,32 @@ function CharacterSpells() {
             />
         }
       </div>
-      <MasonryContainer>
-        {filteredSpells.slice(0, spellsLength).map((spell) => (
-          <SpellCard
-            key={spell._id}
-            spell={spell}
-            button={
-              isCreator &&
-              (hasSpellLiked(spell) ? (
-                <CloseButton
-                  onClick={() => handleUnlikedSpell(spell)}
-                  disabled={isLoader}
-                />
-              ) : (
-                <OpenButton
-                  onClick={() => handleLikedSpell(spell)}
-                  disabled={isLoader}
-                />
-              ))
-            }
-          />
-        ))}
-      </MasonryContainer>
-      {isLoader && <Spinner />}
+      {isLoader ? (
+        <Spinner />
+      ) : (
+        <MasonryContainer>
+          {filteredSpells.slice(0, spellsLength).map((spell) => (
+            <SpellCard
+              key={spell._id}
+              spell={spell}
+              button={
+                isCreator &&
+                (hasSpellLiked(spell) ? (
+                  <CloseButton
+                    onClick={() => handleUnlikedSpell(spell)}
+                    disabled={isLoader}
+                  />
+                ) : (
+                  <OpenButton
+                    onClick={() => handleLikedSpell(spell)}
+                    disabled={isLoader}
+                  />
+                ))
+              }
+            />
+          ))}
+        </MasonryContainer>
+      )}
     </main>
   );
 }

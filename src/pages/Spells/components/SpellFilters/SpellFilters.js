@@ -5,7 +5,7 @@ import useFilterAction from "./hooks/useFilterAction";
 import { SPELL } from "../../../../constants/constants";
 import Filters from "../../../../components/Filters/Filters";
 
-function SpellFilters({ spells, setFilteredSpells }) {
+function SpellFilters({ spells, setFilteredSpells, isLoader }) {
   const [spellsFilterState, setSpellsFilterState] = useState({
     selectedLevels: [],
     selectedClasses: [],
@@ -113,7 +113,7 @@ function SpellFilters({ spells, setFilteredSpells }) {
 
   return (
     <div className="d-flex justify-content-center flex-grow-1">
-      <Filters filters={filters} handleSearchInputBlur={handleSearchInputBlur} />
+      <Filters filters={filters} handleSearchInputBlur={handleSearchInputBlur} isLoader={isLoader} />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { FormControl, InputGroup } from "react-bootstrap";
 import IconButton from "../IconButton/IconButton";
 import FiltersModal from "../FiltersModal/FiltersModal";
 
-function Filters({ filters, handleSearchInputBlur }) {
+function Filters({ filters, handleSearchInputBlur, isLoader }) {
   const [show, setShow] = useState(false);
 
   const handleModalClose = () => {
@@ -16,11 +16,13 @@ function Filters({ filters, handleSearchInputBlur }) {
       <FormControl
         onBlur={handleSearchInputBlur}
         onKeyDown={(event) => event.keyCode === 13 && event.currentTarget.blur()}
+        disabled={isLoader}
       />
       <IconButton
         variant="outline-warning"
         icon={<Funnel size={20} />}
         onClick={() => setShow(true)}
+        disabled={isLoader}
       />
       <FiltersModal filters={filters} show={show} handleModalClose={handleModalClose} />
     </InputGroup>

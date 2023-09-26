@@ -19,9 +19,9 @@ export default function CharacterLink({ char, cbForm, cbClose }) {
     });
   }, [cbForm, char]);
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback(async () => {
     setIsLoader(true);
-    cbClose(char);
+    await cbClose(char);
     setIsLoader(false);
   }, [cbClose, char]);
 

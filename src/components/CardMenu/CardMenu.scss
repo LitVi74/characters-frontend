@@ -16,6 +16,10 @@
 
   &-item {
     color: #DDCFBB;
+
+    & .disabled {
+      color: #919191;
+    }
     
     &:hover {
       background-color: #353232;
