@@ -3,14 +3,14 @@
   &-select,
   &-control {
     background-color: #262626;
-    border-color: gold;
+    border-color: #FFD700;
     box-shadow: inset 0 0 0 50px #262626;
     color:#DDCFBB;
 
     &:focus {
-      border-color: gold;
+      border-color: #FFD700;
       box-shadow: inset 0 0 0 50px #262626;
-      caret-color: gold;
+      caret-color: #FFD700;
       color:#DDCFBB;
     }
   }
@@ -22,12 +22,12 @@
 
   &-check-input {
     background-color: #262626;
-    border-color: gold;
+    border-color: #FFD700;
     box-shadow: 0 0 0 .25rem #262626;
 
     &:checked,
     &:focus {
-      border-color: gold;
+      border-color: #FFD700;
       background-color: #262626;
       box-shadow: 0 0 0 .25rem #262626;
     }

@@ -4,11 +4,12 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "react-bootstrap";
+import "./FiltersModal.scss";
 
 function FiltersModal({ filters, show, handleModalClose }) {
   return (
     <Modal as="aside" show={show} onHide={handleModalClose}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>Фильтр</Modal.Title>
       </Modal.Header>
       <Modal.Body
@@ -32,7 +33,7 @@ function FiltersModal({ filters, show, handleModalClose }) {
                       key={value}
                       id={`tgb-${index}-${value}`}
                       value={value}
-                      variant="outline-primary"
+                      variant="outline-warning"
                     >
                       {filter?.valuesName?.[valueIndex] ?? value}
                     </ToggleButton>
