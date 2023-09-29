@@ -22,7 +22,7 @@ export default function SignUp() {
   }, []);
 
   return (
-    <main className="px-5">
+    <main className="auth">
       <h1>Регистрация</h1>
       <SignupForm cbRegister={handleSignupFormSubmit} isSubmitted={isSubmitted} />
       <InfoToast

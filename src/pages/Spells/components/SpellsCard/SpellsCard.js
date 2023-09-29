@@ -23,24 +23,42 @@ export default function SpellCard({ spell, button }) {
         <h3 className="spell__title">{name}</h3>
         {button}
       </div>
-      <div className="spell__container">
-        <p className="spell__text">
-          {school} {ritual ? " (ритуал)" : ""}
+      <div className="spell__grid grid">
+        <div className="spell__container grid__element">
+          <p className="spell__text spell__text_padding-none spell__text_style_italic">
+            {school} {ritual ? " (ритуал)" : ""}
+          </p>
+          <p className="spell__text spell__text_padding-none spell__text_style_italic">{`${level} уровень`}</p>
+        </div>
+        <div className="grid__element">
+          <p className="spell__text">
+            <span className="spell__classes">Время накладывания: </span>
+            {castingTime}
+          </p>
+          <p className="spell__text">
+            <span className="spell__classes">Дистанция: </span>
+            {range}
+          </p>
+          <p className="spell__text spell__text_padding-none">
+            <span className="spell__classes">Длительность: </span>
+            {`${concentration ? "Концентрация, вплоть до " : ""}${duration}`}
+          </p>
+        </div>
+        <p className="spell__text grid__element">
+          <span className="spell__classes">Компоненты: </span>
+          {`${components.join(", ")}${material ? `(${material})` : ""}`}
         </p>
-        <p className="spell__text">{`${level} уровень`}</p>
       </div>
-      <p className="spell__text">{`Время накладывания: ${castingTime}`}</p>
-      <p className="spell__text">{`Дистанция: ${range}`}</p>
-      <p className="spell__text">{`Компоненты: ${components.join(", ")}${
-        material ? `(${material})` : ""
-      }`}</p>
-      <p className="spell__text">{`Длительность: ${
-        concentration ? "Концентрация, вплоть до " : ""
-      }${duration}`}</p>
-      <p className="spell__text">{`Классы: ${classes.join(", ")}`}</p>
-      <p className="spell__text">{desc}</p>
+      <p className="spell__text spell__text_style_size-16">
+        <span className="spell__classes">Классы: </span>
+        {classes.join(", ")}
+      </p>
+      <p className="spell__text spell__text_style_size-16">{desc}</p>
       {higherLevel ? (
-        <p className="spell__text">{`На больших уровнях: ${higherLevel}`}</p>
+        <p className="spell__text spell__text_padding-none spell__text_style_size-16">
+          <span className="spell__classes">На больших уровнях: </span>
+          {higherLevel}
+        </p>
       ) : null}
     </li>
   );

@@ -14,15 +14,10 @@ export default class ResourcesService {
     };
 
     try {
-      let spells = JSON.parse(sessionStorage.getItem("spellsData"));
-
-      if (!spells) {
-        const response = await api.get("/spells");
-        spells = response.data;
-
-        sessionStorage.setItem("spellsData", JSON.stringify(spells));
-      }
-
+      const response = await api.get("/spells");
+      const spells = response.data;
+      
+      sessionStorage.setItem("spellsData", JSON.stringify(spells));
       result.data = { spells };
     } catch (err) {
       result.data = {};

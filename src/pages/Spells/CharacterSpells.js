@@ -1,15 +1,17 @@
 import { useParams } from "react-router-dom";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { CloseButton, Spinner } from "react-bootstrap";
-import { Plus } from "react-bootstrap-icons";
+import { CloseButton } from "react-bootstrap";
+import { Plus, X } from "react-bootstrap-icons";
 
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
 import trottle from "../../utils/Decorations";
 
 import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
+import Spinner from "../../components/Spinner/Spinner";
 import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
+import OpenButton from "../../components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 
 function CharacterSpells() {
@@ -24,14 +26,23 @@ function CharacterSpells() {
   const [isCreator, setIsCreator] = useState(false);
   const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
   const [isLoader, setIsLoader] = useState(true);
+  const [isDontActiveLike, setIsDontActiveLike] = useState(false);
 
   const getAllSpells = useCallback(async () => {
+    const allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+
+    if(allSpells) {
+      setSpells(allSpells);
+      return;
+    }
+
+    setIsLoader(true);
     const { hasError, data } = await ResourcesService.getSpells();
-    const { spells: allSpells } = data;
 
     if (!hasError) {
-      setSpells(allSpells);
+      setSpells(data.spells);
     }
+    setIsLoader(false);
   }, []);
 
   const getCharSpells = useCallback(async () => {
@@ -58,8 +69,7 @@ function CharacterSpells() {
 
   const handleUnlikedSpell = useCallback(
     async (spell) => {
-      setIsLoader(true);
-
+      setIsDontActiveLike(true);
       const { _id: spellID } = spell;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
 
@@ -74,16 +84,14 @@ function CharacterSpells() {
       if (!isAddLiseElements && !hasError) {
         setSpells(data.spells);
       }
-
-      setIsLoader(false);
+      setIsDontActiveLike(false);
     },
     [charID, charSpells, isAddLiseElements]
   );
 
   const handleLikedSpell = useCallback(
     async (spell) => {
-      setIsLoader(true);
-
+      setIsDontActiveLike(true);
       const spellsData = [...charSpells, spell];
       const { hasError, data } = await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
@@ -96,8 +104,7 @@ function CharacterSpells() {
       if (!isAddLiseElements && !hasError) {
         setSpells(data.spells);
       }
-
-      setIsLoader(false);
+      setIsDontActiveLike(false);
     },
     [charSpells, charID, isAddLiseElements]
   );
@@ -149,47 +156,44 @@ function CharacterSpells() {
 
   return (
     <main>
-      <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
-      {charID &&
-        isCreator &&
-        (isAddLiseElements ? (
-          <CloseButton
-            onClick={handleShowCharSpells}
-            className="my-2 mx-5"
-            disabled={isLoader}
-          />
-        ) : (
-          <IconButton
-            icon={<Plus size={24} />}
-            onClick={handleShowAllSpells}
-            className="my-2 mx-5"
-            disabled={isLoader}
-          />
-        ))}
-      <MasonryContainer>
-        {filteredSpells.slice(0, spellsLength).map((spell) => (
-          <SpellCard
-            key={spell._id}
-            spell={spell}
-            button={
-              isCreator &&
-              (hasSpellLiked(spell) ? (
-                <CloseButton
-                  onClick={() => handleUnlikedSpell(spell)}
-                  disabled={isLoader}
-                />
-              ) : (
-                <IconButton
-                  icon={<Plus size={24} />}
-                  onClick={() => handleLikedSpell(spell)}
-                  disabled={isLoader}
-                />
-              ))
-            }
-          />
-        ))}
-      </MasonryContainer>
-      {isLoader && <Spinner />}
+      <div className="d-flex justify-content-center gap-3 p-3 p-md-4 p-lg-5">
+        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} isLoader={isLoader} />
+        {charID &&
+          isCreator &&
+            <IconButton
+              icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
+              onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
+              className="btn-warning"
+              disabled={isLoader}
+            />
+        }
+      </div>
+      {isLoader ? (
+        <Spinner />
+      ) : (
+        <MasonryContainer>
+          {filteredSpells.slice(0, spellsLength).map((spell) => (
+            <SpellCard
+              key={spell._id}
+              spell={spell}
+              button={
+                isCreator &&
+                (hasSpellLiked(spell) ? (
+                  <CloseButton
+                    onClick={() => handleUnlikedSpell(spell)}
+                    disabled={isDontActiveLike}
+                  />
+                ) : (
+                  <OpenButton
+                    onClick={() => handleLikedSpell(spell)}
+                    disabled={isDontActiveLike}
+                  />
+                ))
+              }
+            />
+          ))}
+        </MasonryContainer>
+      )}
     </main>
   );
 }

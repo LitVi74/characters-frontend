@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect, useCallback } from "react";
-import { Spinner } from "react-bootstrap";
 import { Plus } from "react-bootstrap-icons";
 
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
@@ -9,6 +8,7 @@ import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
 import trottle from "../../utils/Decorations";
 
+import Spinner from "../../components/Spinner/Spinner";
 import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
@@ -26,7 +26,7 @@ export default function Spells() {
     chosenSpell: {},
   });
 
-  const [isLoader, setIsLoader] = useState(true);
+  const [isLoader, setIsLoader] = useState(false);
 
   const handleShowForm = useCallback((spell = {}) => {
     setFormState({
@@ -43,22 +43,30 @@ export default function Spells() {
   }, []);
 
   const getAllSpells = useCallback(async () => {
+    const allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+
+    if(allSpells) {
+      setSpells(allSpells);
+      return;
+    }
+
     setIsLoader(true);
     const { hasError, data } = await ResourcesService.getSpells();
-    const { spells: allSpells } = data;
 
     if (!hasError) {
-      setSpells(allSpells);
+      setSpells(data.spells);
     }
     setIsLoader(false);
   }, []);
 
   const handleDeleteSpell = useCallback(async (spellID) => {
+    setIsLoader(true);
     const { hasError, data } = await ResourcesService.deleteSpell(spellID);
 
     if (!hasError) {
       setSpells(data.spells);
     }
+    setIsLoader(false);
   }, []);
 
   useEffect(() => {
@@ -89,17 +97,19 @@ export default function Spells() {
 
   return (
     <main>
-      <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} />
-      {currentUser.role === "Admin" && (
-        <IconButton
-          icon={<Plus size={24} />}
-          onClick={() => handleShowForm()}
-          className="mb-3 mx-auto"
-          disabled={isLoader}
-        >
-          Добавить заклинание
-        </IconButton>
-      )}
+      <div className="d-flex justify-content-center flex-column flex-md-row gap-3 p-3 p-md-4 p-lg-5">
+        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} isLoader={isLoader} />
+        {currentUser.role === "Admin" && (
+          <IconButton
+            icon={<Plus size={24} />}
+            onClick={() => handleShowForm()}
+            className="btn-warning align-self-center"
+            disabled={isLoader}
+          >
+            Добавить заклинание
+          </IconButton>
+        )}
+      </div>
       <MasonryContainer>
         {filteredSpells.slice(0, spellsLength).map((spell) => (
           <SpellCard

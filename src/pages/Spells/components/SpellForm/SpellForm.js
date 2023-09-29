@@ -1,4 +1,5 @@
 import { Container, Form } from "react-bootstrap";
+import "./SpellForm.scss"
 import { useFormik } from "formik";
 
 export default function SpellForm({ cbSubmit, spell }) {

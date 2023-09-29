@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Nav, Navbar } from "react-bootstrap";
+import "./AuthorizedNavbar.scss";
 import { useCallback, useContext } from "react";
 
 import { PATHS } from "../../constants/constants";
@@ -29,7 +30,7 @@ export default function AuthorizedNavbar() {
           Заклинания
         </Nav.Link>
         <Nav.Link as={Link} to={PATHS.characters}>
-          Чарники
+          Персонажи
         </Nav.Link>
         <Nav.Link
           as={Button}

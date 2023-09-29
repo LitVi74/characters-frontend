@@ -45,7 +45,7 @@ export default function LogIn() {
   );
 
   return (
-    <main className="px-5">
+    <main className="auth">
       <h1>Вход</h1>
       <LoginForm cbLogin={handleLoginFormSubmit} isSubmitted={isSubmitted} />
       <InfoToast

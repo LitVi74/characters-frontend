@@ -61,7 +61,7 @@ export default function LoginForm({ cbLogin, isSubmitted }) {
           </Form.Group>
           <Button
             type="submit"
-            variant="primary"
+            variant="warning"
             className="w-100"
             disabled={isSubmitted}
           >

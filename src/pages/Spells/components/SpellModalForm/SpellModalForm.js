@@ -1,4 +1,5 @@
 import { Button, Modal } from "react-bootstrap";
+import "./SpellModalForm.scss";
 import { useCallback } from "react";
 
 import SpellForm from "../SpellForm/SpellForm";
@@ -26,18 +27,15 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells })
 
   return (
     <Modal show={show} onHide={handelHideForm}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>{chosenSpell?._id ? "Изменить" : "Добавить"} заклинание</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <SpellForm spell={chosenSpell} cbSubmit={handleSpellFormSubmit} />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handelHideForm}>
-          Отменить
-        </Button>
         <Button
-          variant="primary"
+          variant="warning"
           type="submit"
           form={`spell-${chosenSpell ? chosenSpell._id : "add"}-form`}
         >
