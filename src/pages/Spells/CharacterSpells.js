@@ -11,7 +11,7 @@ import MasonryContainer from "../../components/MasonryContainer/MasonryContainer
 import Spinner from "../../components/Spinner/Spinner";
 import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
-import OpenButton from "../../components/OpenButton/OpenButton.tsx";
+import OpenButton from "../../components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 
 function CharacterSpells() {

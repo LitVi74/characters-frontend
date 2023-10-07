@@ -24,7 +24,7 @@ enum Classes {
 export interface ISpell {
   name: string;
   desc: string;
-  hight_level?: string;
+  higher_level?: string;
   range: string;
   components: ['В', 'С'?, 'М'?];
   material?: string;
