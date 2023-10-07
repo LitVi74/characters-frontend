@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import "./OpenButton.scss";
-import * as React from 'react';
+import {FC} from 'react';
 
-type Props = {
+interface Props {
   [x: string]: any
 };
 
-const OpenButton: React.FC<Props> = ({ ...props }) => (
+const OpenButton: FC<Props> = ({ ...props }) => (
   <button
     {...props}
     className="open-button" 

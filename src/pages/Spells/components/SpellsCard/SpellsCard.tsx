@@ -1,6 +1,11 @@
 import "./SpellsCard.scss";
+import { FC } from "react";
 
-export default function SpellCard({ spell, button }) {
+interface SpellCardProps {
+  spell:
+}
+
+const SpellCard: FC<SpellCardProps> = ({ spell, button }) => {
   const {
     name,
     school,
@@ -63,3 +68,5 @@ export default function SpellCard({ spell, button }) {
     </li>
   );
 }
+
+export default SpellCard;
