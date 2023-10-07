@@ -29,6 +29,7 @@ export default class AuthService {
     try {
       const response = await api.post("/signin", { email, password });
 
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       const { _id, role, isActivated, accessToken } = response.data;
       localStorage.setItem("token", accessToken);
       result.data = { _id, email, role, isActivated };

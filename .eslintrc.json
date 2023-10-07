@@ -35,6 +35,21 @@
         "react/prop-types": 0,
         "react/react-in-jsx-scope": "off",
         "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
-        "react/function-component-definition": "off"
+        "react/function-component-definition": "off",
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+            "selector": "property",
+            "format": [
+                "camelCase",
+                "PascalCase",
+                "UPPER_CASE"
+            ],
+            "filter": {
+                "regex": "^(_id|higher_level|casting_time)$",
+                "match": false
+            }
+            }
+        ]
     }
 }
