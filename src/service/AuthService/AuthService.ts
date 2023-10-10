@@ -1,25 +1,29 @@
 /* eslint-disable no-console */
+import { AxiosError } from "axios";
 import api from "./AuthAxios";
+import { IUser } from "../../constants/constants";
 
 export default class AuthService {
-  static async registration(email, password) {
+  static async registration(email: string, password: string) {
     const result = {
       hasError: false,
       errorMessage: "",
     };
     try {
-      const response = await api.post("/signup", { email, password });
+      const response = await api.post<IUser>("/signup", { email, password });
 
       localStorage.setItem("token", response.data.accessToken);
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       result.hasError = true;
-      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
       console.log(err);
     }
+
     return result;
   }
 
-  static async login(email, password) {
+  static async login(email: string, password: string) {
     const result = {
       hasError: false,
       errorMessage: "",
@@ -27,16 +31,16 @@ export default class AuthService {
     };
 
     try {
-      const response = await api.post("/signin", { email, password });
+      const response = await api.post<IUser>("/signin", { email, password });
 
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const { _id, role, isActivated, accessToken } = response.data;
       localStorage.setItem("token", accessToken);
       result.data = { _id, email, role, isActivated };
-    } catch (err) {
-      result.data = {};
+    } catch (error) {
+      const err = error as AxiosError;
       result.hasError = true;
-      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 
@@ -55,9 +59,10 @@ export default class AuthService {
       if (response.status === 200) {
         localStorage.removeItem("token");
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as AxiosError;
       result.hasError = true;
-      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 
@@ -72,15 +77,15 @@ export default class AuthService {
     };
 
     try {
-      const response = await api.get("/refresh");
+      const response = await api.get<IUser>("/refresh");
 
       const { _id, email, role, isActivated, accessToken } = response.data;
       localStorage.setItem("token", accessToken);
       result.data = { _id, email, role, isActivated };
-    } catch (err) {
-      result.data = {};
+    } catch (error) {
+      const err = error as AxiosError;
       result.hasError = true;
-      result.errorMessage = err?.response?.data?.message || "Что-то сильно пошло не так";
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
       console.log(err);
     }
 

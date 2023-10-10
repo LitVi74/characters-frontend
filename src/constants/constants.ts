@@ -22,6 +22,7 @@ enum Classes {
 }
 
 export interface ISpell {
+  _id: string;
   name: string;
   desc: string;
   higher_level?: string;
@@ -38,9 +39,11 @@ export interface ISpell {
 }
 
 export interface IUser {
+  _id: string;
   email: string;
   role: 'User' | 'Admin';
-  isActiveted: boolean;
+  isActivated: boolean;
+  accessToken: string;
 }
 
 export interface ICharacter {

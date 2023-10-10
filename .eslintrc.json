@@ -31,7 +31,7 @@
     "rules": {
         "no-extra-boolean-cast": 0,
         "no-nested-ternary": 0,
-        "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+        "no-underscore-dangle": ["error", { "allow": ["_id", "_isRetry"] }],
         "react/prop-types": 0,
         "react/react-in-jsx-scope": "off",
         "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
@@ -46,7 +46,7 @@
                 "UPPER_CASE"
             ],
             "filter": {
-                "regex": "^(_id|higher_level|casting_time)$",
+                "regex": "^(_id|higher_level|casting_time|_isRetry)$",
                 "match": false
             }
             }

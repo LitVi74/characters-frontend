@@ -1,0 +1,231 @@
+/* eslint-disable no-console */
+import { AxiosError } from "axios";
+import api from "./ResourcesAxios";
+import { ICharacter, ISpell } from "../../constants/constants";
+
+export default class ResourcesService {
+  static _extractData(res: any) {
+    return res.data;
+  }
+
+  static async getSpells() {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get<ISpell[]>("/spells");
+      const spells = response.data;
+      
+      sessionStorage.setItem("spellsData", JSON.stringify(spells));
+      result.data = { spells };
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async createSpell(data: ISpell) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.post<ISpell>("/spells", data);
+
+      const newSpell = response.data;
+      let allSpells = JSON.parse(sessionStorage.getItem("spellsData") || '[]');
+
+      allSpells = [...allSpells, newSpell];
+
+      sessionStorage.setItem("spellsData", JSON.stringify(allSpells));
+
+      result.data = {
+        newSpell,
+        allSpells,
+      };
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async deleteSpell(spellId: string) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      await api.delete<ISpell>(`/spells/${spellId}`);
+
+      let spellsData = JSON.parse(sessionStorage.getItem("spellsData") || '[]');
+      spellsData = spellsData.filter((s: ISpell) => s._id !== spellId);
+      sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
+
+      result.data = {
+        spells: spellsData,
+      };
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async updateSpell(spellId: string, data: ISpell) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.patch<ISpell>(`/spells/${spellId}`, data);
+
+      const newSpell = response.data;
+      let allSpells = JSON.parse(sessionStorage.getItem("spellsData") || '[]');
+
+      allSpells = allSpells.map((s: ISpell): ISpell => {
+        if (newSpell._id === s._id) {
+          return newSpell;
+        }
+        return s;
+      });
+
+      sessionStorage.setItem("spellsData", JSON.stringify(allSpells));
+
+      result.data = {
+        newSpell,
+        allSpells,
+      };
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+    return result;
+  }
+
+  static async getUserCharacters() {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get<ICharacter[]>("/characters");
+
+      result.data = response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async createCharacter(charData: ICharacter) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.post<ICharacter>("/characters", charData);
+
+      result.data = response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async getCharacter(charId: string) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.get<ICharacter>(`/characters/${charId}`);
+
+      result.data = response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async deleteCharacter(charId: string) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.delete<ICharacter>(`/characters/${charId}`);
+
+      result.data = response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+
+  static async updateCharacter(charId: string, obj: ICharacter) {
+    const result = {
+      hasError: false,
+      errorMessage: "",
+      data: {},
+    };
+
+    try {
+      const response = await api.patch<ICharacter>(`/characters/${charId}`, obj);
+
+      result.data = response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      result.hasError = true;
+      result.errorMessage = err.message || "Что-то сильно пошло не так";
+      console.log(err);
+    }
+
+    return result;
+  }
+}
