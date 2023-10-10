@@ -51,3 +51,9 @@ export interface ICharacter {
   spells: ISpell[];
   owner: string;
 }
+
+export interface objResult {
+  hasError: boolean,
+  errorMessage: string,
+  data?: object,
+};

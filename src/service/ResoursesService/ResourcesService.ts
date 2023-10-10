@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import { AxiosError } from "axios";
 import api from "./ResourcesAxios";
-import { ICharacter, ISpell } from "../../constants/constants";
+import { ICharacter, ISpell, objResult } from "../../constants/constants";
 
 export default class ResourcesService {
   static _extractData(res: any) {
@@ -23,9 +24,7 @@ export default class ResourcesService {
       result.data = { spells };
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -54,9 +53,7 @@ export default class ResourcesService {
       };
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -81,9 +78,7 @@ export default class ResourcesService {
       };
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -117,9 +112,7 @@ export default class ResourcesService {
       };
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
     return result;
   }
@@ -137,9 +130,7 @@ export default class ResourcesService {
       result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -158,9 +149,7 @@ export default class ResourcesService {
       result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -179,9 +168,7 @@ export default class ResourcesService {
       result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -200,9 +187,7 @@ export default class ResourcesService {
       result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -221,11 +206,14 @@ export default class ResourcesService {
       result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
+  }
+
+  static _handlerError(result: objResult, err: AxiosError) {
+    result.hasError = true;
+    result.errorMessage = err.message || "Что-то сильно пошло не так";
   }
 }

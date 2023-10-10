@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import { AxiosError } from "axios";
 import api from "./AuthAxios";
-import { IUser } from "../../constants/constants";
+import { IUser, objResult } from "../../constants/constants";
 
 export default class AuthService {
   static async registration(email: string, password: string) {
@@ -15,9 +16,7 @@ export default class AuthService {
       localStorage.setItem("token", response.data.accessToken);
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -39,9 +38,7 @@ export default class AuthService {
       result.data = { _id, email, role, isActivated };
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -61,9 +58,7 @@ export default class AuthService {
       }
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
@@ -84,11 +79,14 @@ export default class AuthService {
       result.data = { _id, email, role, isActivated };
     } catch (error) {
       const err = error as AxiosError;
-      result.hasError = true;
-      result.errorMessage = err.message || "Что-то сильно пошло не так";
-      console.log(err);
+      this._handlerError(result, err);
     }
 
     return result;
+  }
+
+  static _handlerError(result: objResult, err: AxiosError) {
+    result.hasError = true;
+    result.errorMessage = err.message || "Что-то сильно пошло не так";
   }
 }
