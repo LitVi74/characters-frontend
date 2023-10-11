@@ -1,10 +1,9 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
 import { AxiosError } from "axios";
 import api from "./ResourcesAxios";
-import { ICharacter, ISpell, objResult } from "../../constants/constants";
+import { ICharacter, ISpell } from "../../constants/constants";
+import ServicePrototype from "../ServicePrototype";
 
-export default class ResourcesService {
+export default class ResourcesService extends ServicePrototype {
   static _extractData(res: any) {
     return res.data;
   }
@@ -210,10 +209,5 @@ export default class ResourcesService {
     }
 
     return result;
-  }
-
-  static _handlerError(result: objResult, err: AxiosError) {
-    result.hasError = true;
-    result.errorMessage = err.message || "Что-то сильно пошло не так";
   }
 }

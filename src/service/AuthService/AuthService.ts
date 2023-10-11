@@ -1,10 +1,9 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
 import { AxiosError } from "axios";
 import api from "./AuthAxios";
-import { IUser, objResult } from "../../constants/constants";
+import { IUser } from "../../constants/constants";
+import ServicePrototype from "../ServicePrototype";
 
-export default class AuthService {
+export default class AuthService extends ServicePrototype {
   static async registration(email: string, password: string) {
     const result = {
       hasError: false,
@@ -83,10 +82,5 @@ export default class AuthService {
     }
 
     return result;
-  }
-
-  static _handlerError(result: objResult, err: AxiosError) {
-    result.hasError = true;
-    result.errorMessage = err.message || "Что-то сильно пошло не так";
   }
 }
