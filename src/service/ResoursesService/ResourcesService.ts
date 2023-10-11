@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import api from "./ResourcesAxios";
 import { ICharacter, ISpell } from "../../constants/constants";
-import ServicePrototype from "../ServicePrototype";
+import { ServicePrototype, Result } from "../ServicePrototype";
 
 export default class ResourcesService extends ServicePrototype {
   static _extractData(res: any) {
@@ -9,10 +9,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async getSpells() {
-    const result = {
+    const result: Result<ISpell[]> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -20,7 +20,7 @@ export default class ResourcesService extends ServicePrototype {
       const spells = response.data;
       
       sessionStorage.setItem("spellsData", JSON.stringify(spells));
-      result.data = { spells };
+      result.data = spells;
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
@@ -30,26 +30,23 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async createSpell(data: ISpell) {
-    const result = {
+    const result: Result<ISpell[]> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
       const response = await api.post<ISpell>("/spells", data);
 
       const newSpell = response.data;
-      let allSpells = JSON.parse(sessionStorage.getItem("spellsData") || '[]');
+      let allSpells: ISpell[] = JSON.parse(sessionStorage.getItem("spellsData") || '[]');
 
       allSpells = [...allSpells, newSpell];
 
       sessionStorage.setItem("spellsData", JSON.stringify(allSpells));
 
-      result.data = {
-        newSpell,
-        allSpells,
-      };
+      result.data = allSpells;
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
@@ -59,10 +56,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async deleteSpell(spellId: string) {
-    const result = {
+    const result: Result<ISpell[]> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -72,9 +69,7 @@ export default class ResourcesService extends ServicePrototype {
       spellsData = spellsData.filter((s: ISpell) => s._id !== spellId);
       sessionStorage.setItem("spellsData", JSON.stringify(spellsData));
 
-      result.data = {
-        spells: spellsData,
-      };
+      result.data = spellsData;
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
@@ -84,10 +79,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async updateSpell(spellId: string, data: ISpell) {
-    const result = {
+    const result: Result<ISpell[]> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -105,10 +100,7 @@ export default class ResourcesService extends ServicePrototype {
 
       sessionStorage.setItem("spellsData", JSON.stringify(allSpells));
 
-      result.data = {
-        newSpell,
-        allSpells,
-      };
+      result.data = allSpells;
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
@@ -117,10 +109,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async getUserCharacters() {
-    const result = {
+    const result: Result<ICharacter[]> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -136,10 +128,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async createCharacter(charData: ICharacter) {
-    const result = {
+    const result: Result<ICharacter> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -155,10 +147,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async getCharacter(charId: string) {
-    const result = {
+    const result: Result<ICharacter> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -174,10 +166,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async deleteCharacter(charId: string) {
-    const result = {
+    const result: Result<ICharacter> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
@@ -193,10 +185,10 @@ export default class ResourcesService extends ServicePrototype {
   }
 
   static async updateCharacter(charId: string, obj: ICharacter) {
-    const result = {
+    const result: Result<ICharacter> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {

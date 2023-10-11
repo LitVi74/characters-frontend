@@ -12,13 +12,13 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells })
     async (spell, spellID) => {
       const {
         hasError,
-        data: { allSpells },
+        data,
       } = spellID
         ? await ResourcesService.updateSpell(spellID, spell)
         : await ResourcesService.createSpell(spell);
 
       if (!hasError) {
-        setSpells(allSpells);
+        setSpells(data);
         handelHideForm();
       }
     },

@@ -14,19 +14,26 @@ import IconButton from "../../components/IconButton/IconButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 import CardMenu from "../../components/CardMenu/CardMenu";
 
+import { ISpell } from "../../constants/constants";
+
+interface FormState {
+  show: boolean;
+  chosenSpell: object;
+}
+
 export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
 
-  const [spells, setSpells] = useState([]);
-  const [spellsLength, setSpellsLength] = useState(30);
-  const [filteredSpells, setFilteredSpells] = useState([]);
+  const [spells, setSpells] = useState<ISpell[]>([]);
+  const [spellsLength, setSpellsLength] = useState<number>(30);
+  const [filteredSpells, setFilteredSpells] = useState<ISpell[]>([]);
 
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<FormState>({
     show: false,
     chosenSpell: {},
   });
 
-  const [isLoader, setIsLoader] = useState(false);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
 
   const handleShowForm = useCallback((spell = {}) => {
     setFormState({
@@ -43,28 +50,28 @@ export default function Spells() {
   }, []);
 
   const getAllSpells = useCallback(async () => {
-    const allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+    const allSpells = sessionStorage.getItem("spellsData");
 
     if(allSpells) {
-      setSpells(allSpells);
+      setSpells(JSON.parse(allSpells));
       return;
     }
 
     setIsLoader(true);
     const { hasError, data } = await ResourcesService.getSpells();
 
-    if (!hasError) {
-      setSpells(data.spells);
+    if (!hasError && data) {
+      setSpells(data);
     }
     setIsLoader(false);
   }, []);
 
-  const handleDeleteSpell = useCallback(async (spellID) => {
+  const handleDeleteSpell = useCallback(async (spellID: string) => {
     setIsLoader(true);
     const { hasError, data } = await ResourcesService.deleteSpell(spellID);
 
-    if (!hasError) {
-      setSpells(data.spells);
+    if (!hasError && data) {
+      setSpells(data);
     }
     setIsLoader(false);
   }, []);
@@ -76,6 +83,9 @@ export default function Spells() {
   useEffect(() => {
     if (spells.length > spellsLength) {
       const exeEventScroll = () => {
+        if (!document.scrollingElement) {
+          return;
+        }
         if (
           window.innerHeight + document.documentElement.scrollTop + 1000 >=
           document.scrollingElement.scrollHeight
@@ -99,7 +109,7 @@ export default function Spells() {
     <main>
       <div className="d-flex justify-content-center flex-column flex-md-row gap-3 p-3 p-md-4 p-lg-5">
         <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} isLoader={isLoader} />
-        {currentUser.role === "Admin" && (
+        {currentUser?.role === "Admin" && (
           <IconButton
             icon={<Plus size={24} />}
             onClick={() => handleShowForm()}
@@ -116,7 +126,7 @@ export default function Spells() {
             key={spell._id}
             spell={spell}
             button={
-              currentUser.role === "Admin" && (
+              currentUser?.role === "Admin" && (
                 <CardMenu
                   cbForm={() => handleShowForm(spell)}
                   cbDell={() => handleDeleteSpell(spell._id)}
@@ -128,7 +138,7 @@ export default function Spells() {
         ))}
       </MasonryContainer>
       {isLoader && <Spinner />}
-      {currentUser.role === "Admin" && (
+      {currentUser?.role === "Admin" && (
         <SpellModalForm
           formState={formState}
           handelHideForm={handelHideForm}

@@ -40,7 +40,7 @@ function CharacterSpells() {
     const { hasError, data } = await ResourcesService.getSpells();
 
     if (!hasError) {
-      setSpells(data.spells);
+      setSpells(data);
     }
     setIsLoader(false);
   }, []);

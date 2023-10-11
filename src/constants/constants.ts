@@ -43,7 +43,7 @@ export interface IUser {
   email: string;
   role: 'User' | 'Admin';
   isActivated: boolean;
-  accessToken: string;
+  accessToken?: string;
 }
 
 export interface ICharacter {
@@ -51,9 +51,3 @@ export interface ICharacter {
   spells: ISpell[];
   owner: string;
 }
-
-export interface objResult {
-  hasError: boolean,
-  errorMessage: string,
-  data?: object,
-};

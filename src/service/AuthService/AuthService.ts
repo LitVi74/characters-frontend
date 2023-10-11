@@ -1,18 +1,21 @@
 import { AxiosError } from "axios";
 import api from "./AuthAxios";
 import { IUser } from "../../constants/constants";
-import ServicePrototype from "../ServicePrototype";
+import { ServicePrototype, Result } from "../ServicePrototype";
 
 export default class AuthService extends ServicePrototype {
   static async registration(email: string, password: string) {
-    const result = {
+    const result: Result<IUser> = {
       hasError: false,
       errorMessage: "",
+      data: null,
     };
     try {
       const response = await api.post<IUser>("/signup", { email, password });
 
-      localStorage.setItem("token", response.data.accessToken);
+      if(response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+      }
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
@@ -22,19 +25,19 @@ export default class AuthService extends ServicePrototype {
   }
 
   static async login(email: string, password: string) {
-    const result = {
+    const result: Result<IUser> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
       const response = await api.post<IUser>("/signin", { email, password });
 
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { _id, role, isActivated, accessToken } = response.data;
-      localStorage.setItem("token", accessToken);
-      result.data = { _id, email, role, isActivated };
+      if(response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+      }
+      result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
@@ -44,9 +47,10 @@ export default class AuthService extends ServicePrototype {
   }
 
   static async logout() {
-    const result = {
+    const result: Result<IUser> = {
       hasError: false,
       errorMessage: "",
+      data: null,
     };
 
     try {
@@ -64,18 +68,19 @@ export default class AuthService extends ServicePrototype {
   }
 
   static async checkAuth() {
-    const result = {
+    const result: Result<IUser> = {
       hasError: false,
       errorMessage: "",
-      data: {},
+      data: null,
     };
 
     try {
       const response = await api.get<IUser>("/refresh");
 
-      const { _id, email, role, isActivated, accessToken } = response.data;
-      localStorage.setItem("token", accessToken);
-      result.data = { _id, email, role, isActivated };
+      if(response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+      }
+      result.data = response.data;
     } catch (error) {
       const err = error as AxiosError;
       this._handlerError(result, err);
