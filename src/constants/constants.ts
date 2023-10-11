@@ -47,7 +47,7 @@ export interface IUser {
 }
 
 export interface ICharacter {
-  name: string;
+  name?: string;
   spells: ISpell[];
-  owner: string;
+  owner?: string;
 }

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { CloseButton } from "react-bootstrap";
 import { Plus, X } from "react-bootstrap-icons";
 
@@ -13,33 +13,34 @@ import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import OpenButton from "../../components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
+import { ISpell } from "../../constants/constants";
 
 function CharacterSpells() {
   const { currentUser } = useContext(CurrentUserContext);
   const { charID = "" } = useParams();
 
-  const [charSpells, setCharSpells] = useState([]);
-  const [spells, setSpells] = useState([]);
-  const [spellsLength, setSpellsLength] = useState(30);
-  const [filteredSpells, setFilteredSpells] = useState([]);
+  const [charSpells, setCharSpells] = useState<ISpell[]>([]);
+  const [spells, setSpells] = useState<ISpell[]>([]);
+  const [spellsLength, setSpellsLength] = useState<number>(30);
+  const [filteredSpells, setFilteredSpells] = useState<ISpell[]>([]);
 
-  const [isCreator, setIsCreator] = useState(false);
-  const [isAddLiseElements, setIsAddLiseElements] = useState(false); // переключатель добавления карточек в чарлист
-  const [isLoader, setIsLoader] = useState(true);
-  const [isDontActiveLike, setIsDontActiveLike] = useState(false);
+  const [isCreator, setIsCreator] = useState<boolean>(false);
+  const [isAddLiseElements, setIsAddLiseElements] = useState<boolean>(false); // переключатель добавления карточек в чарлист
+  const [isLoader, setIsLoader] = useState<boolean>(true);
+  const [isDontActiveLike, setIsDontActiveLike] = useState<boolean>(false);
 
   const getAllSpells = useCallback(async () => {
-    const allSpells = JSON.parse(sessionStorage.getItem("spellsData"));
+    const allSpells = sessionStorage.getItem("spellsData");
 
     if(allSpells) {
-      setSpells(allSpells);
+      setSpells(JSON.parse(allSpells));
       return;
     }
 
     setIsLoader(true);
     const { hasError, data } = await ResourcesService.getSpells();
 
-    if (!hasError) {
+    if (!hasError && data) {
       setSpells(data);
     }
     setIsLoader(false);
@@ -47,12 +48,13 @@ function CharacterSpells() {
 
   const getCharSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getCharacter(charID);
-    const { spells: newCharSpells, owner } = data;
 
-    if (!hasError) {
+    if (!hasError && data) {
+      const { spells: newCharSpells, owner } = data;
+
       setCharSpells(newCharSpells);
       setSpells(newCharSpells);
-      setIsCreator(owner === currentUser._id);
+      setIsCreator(owner === currentUser?._id);
     }
   }, [charID, currentUser]);
 
@@ -68,7 +70,7 @@ function CharacterSpells() {
   }, [getAllSpells]);
 
   const handleUnlikedSpell = useCallback(
-    async (spell) => {
+    async (spell: ISpell) => {
       setIsDontActiveLike(true);
       const { _id: spellID } = spell;
       const spellsData = charSpells.filter((s) => s._id !== spellID);
@@ -77,11 +79,11 @@ function CharacterSpells() {
         spells: spellsData,
       });
 
-      if (!hasError) {
+      if (!hasError && data) {
         setCharSpells(data.spells);
       }
 
-      if (!isAddLiseElements && !hasError) {
+      if (!isAddLiseElements && !hasError && data) {
         setSpells(data.spells);
       }
       setIsDontActiveLike(false);
@@ -90,18 +92,18 @@ function CharacterSpells() {
   );
 
   const handleLikedSpell = useCallback(
-    async (spell) => {
+    async (spell: ISpell) => {
       setIsDontActiveLike(true);
       const spellsData = [...charSpells, spell];
       const { hasError, data } = await ResourcesService.updateCharacter(charID, {
         spells: spellsData,
       });
 
-      if (!hasError) {
+      if (!hasError && data) {
         setCharSpells(data.spells);
       }
 
-      if (!isAddLiseElements && !hasError) {
+      if (!isAddLiseElements && !hasError && data) {
         setSpells(data.spells);
       }
       setIsDontActiveLike(false);
@@ -110,7 +112,7 @@ function CharacterSpells() {
   );
 
   const hasSpellLiked = useCallback(
-    (spell) => {
+    (spell: ISpell) => {
       if (!isAddLiseElements) {
         return true;
       }
@@ -131,6 +133,9 @@ function CharacterSpells() {
   useEffect(() => {
     if (spells.length > spellsLength) {
       const exeEventScroll = () => {
+        if (!document.scrollingElement) {
+          return;
+        }
         if (
           window.innerHeight + document.documentElement.scrollTop + 1000 >=
           document.scrollingElement.scrollHeight
