@@ -9,7 +9,7 @@ enum School {
   Прорицание = 'Прорицание'
 }
 
-enum Classes {
+export enum Classes {
   Бард = 'Бард',
   Жрец = 'Жрец',
   Паладин = 'Паладин',
@@ -21,8 +21,7 @@ enum Classes {
   Изобретатель = 'Изобретатель'
 }
 
-export interface ISpell {
-  _id: string;
+export interface SpellData {
   name: string;
   desc: string;
   higher_level?: string;
@@ -36,6 +35,10 @@ export interface ISpell {
   level: number;
   school: School;
   classes: Classes[];
+}
+
+export interface ISpell extends SpellData {
+  _id: string;
 }
 
 export interface IUser {

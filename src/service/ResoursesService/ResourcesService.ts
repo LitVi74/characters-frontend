@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "./ResourcesAxios";
-import { ICharacter, ISpell } from "../../constants/IConstants";
+import { ICharacter, ISpell, SpellData } from "../../constants/IConstants";
 import { ServicePrototype, Result } from "../ServicePrototype";
 
 export default class ResourcesService extends ServicePrototype {
@@ -29,7 +29,7 @@ export default class ResourcesService extends ServicePrototype {
     return result;
   }
 
-  static async createSpell(data: ISpell) {
+  static async createSpell(data: SpellData) {
     const result: Result<ISpell[]> = {
       hasError: false,
       errorMessage: "",
@@ -78,7 +78,7 @@ export default class ResourcesService extends ServicePrototype {
     return result;
   }
 
-  static async updateSpell(spellId: string, data: ISpell) {
+  static async updateSpell(spellId: string, data: SpellData) {
     const result: Result<ISpell[]> = {
       hasError: false,
       errorMessage: "",

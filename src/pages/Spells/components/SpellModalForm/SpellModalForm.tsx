@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import SpellForm from "../SpellForm/SpellForm";
 import ResourcesService from "../../../../service/ResoursesService/ResourcesService";
 
-import { ISpell, FormState } from "../../../../constants/IConstants";
+import { ISpell, FormState, SpellData } from "../../../../constants/IConstants";
 
 interface PropsSpellModalForm {
   formState: FormState;
@@ -17,7 +17,7 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells }:
   const { show, chosenSpell } = formState;
 
   const handleSpellFormSubmit = useCallback(
-    async (spell: ISpell, spellID: string) => {
+    async (spell: SpellData, spellID: string) => {
       const {
         hasError,
         data,
