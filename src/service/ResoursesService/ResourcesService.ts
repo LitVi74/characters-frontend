@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "./ResourcesAxios";
-import { ICharacter, ISpell } from "../../constants/constants";
+import { ICharacter, ISpell } from "../../constants/IConstants";
 import { ServicePrototype, Result } from "../ServicePrototype";
 
 export default class ResourcesService extends ServicePrototype {

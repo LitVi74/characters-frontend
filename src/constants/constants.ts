@@ -1,53 +1,40 @@
-enum School {
-  Воплощение = 'Воплощение',
-  Вызов = 'Вызов',
-  Иллюзия = 'Иллюзия',
-  Некромантия = 'Некромантия',
-  Ограждение = 'Ограждение',
-  Очарование = 'Очарование',
-  Преобразование = 'Преобразование',
-  Прорицание = 'Прорицание'
-}
+const PATHS = {
+  home: "/",
+  login: "/login",
+  signup: "/signup",
+  characters: "/characters",
+  spells: "/spells",
+  page404: "/404",
+};
 
-enum Classes {
-  Бард = 'Бард',
-  Жрец = 'Жрец',
-  Паладин = 'Паладин',
-  Следопыт = 'Следопыт',
-  Чародей = 'Чародей',
-  Колдун = 'Колдун',
-  Волшебник = 'Волшебник',
-  Друид = 'Друид',
-  Изобретатель = 'Изобретатель'
-}
+const SPELL = {
+  levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  classes: [
+    "Бард",
+    "Волшебник",
+    "Друид",
+    "Изобретатель",
+    "Жрец",
+    "Колдун",
+    "Манах",
+    "Паладин",
+    "Плут",
+    "Следопыт",
+    "Чародей",
+  ],
+  schools: [
+    "Вызов",
+    "Воплощение",
+    "Илюзия",
+    "Некромантия",
+    "Ограждение",
+    "Очарование",
+    "Преобразование",
+    "Прорицание",
+  ],
+  castingTime: ["1 действие", "1 бонусное действие", "1 реакция"],
+};
 
-export interface ISpell {
-  _id: string;
-  name: string;
-  desc: string;
-  higher_level?: string;
-  range: string;
-  components: ['В', 'С'?, 'М'?];
-  material?: string;
-  ritual: boolean;
-  duration: string;
-  concentration: boolean;
-  casting_time: string;
-  level: number;
-  school: School;
-  classes: Classes[];
-}
+const API_URL = "https://dnd-characters.ru/api";
 
-export interface IUser {
-  _id: string;
-  email: string;
-  role: 'User' | 'Admin';
-  isActivated: boolean;
-  accessToken?: string;
-}
-
-export interface ICharacter {
-  name?: string;
-  spells: ISpell[];
-  owner?: string;
-}
+export { PATHS, API_URL, SPELL };

@@ -1,6 +1,6 @@
 import "./SpellsCard.scss";
 import { FC, ReactNode } from "react";
-import { ISpell } from "../../../../constants/constants";
+import { ISpell } from "../../../../constants/IConstants";
 
 interface SpellCardProps {
   spell: ISpell;

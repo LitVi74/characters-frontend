@@ -13,7 +13,7 @@ import SpellCard from "./components/SpellsCard/SpellsCard";
 import IconButton from "../../components/IconButton/IconButton";
 import OpenButton from "../../components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
-import { ISpell } from "../../constants/constants";
+import { ISpell } from "../../constants/IConstants";
 
 function CharacterSpells() {
   const { currentUser } = useContext(CurrentUserContext);

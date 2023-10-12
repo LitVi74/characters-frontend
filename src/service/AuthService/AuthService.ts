@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "./AuthAxios";
-import { IUser } from "../../constants/constants";
+import { IUser } from "../../constants/IConstants";
 import { ServicePrototype, Result } from "../ServicePrototype";
 
 export default class AuthService extends ServicePrototype {

@@ -27,7 +27,7 @@ api.interceptors.response.use(
       if (response.hasError) {
         localStorage.removeItem("token");
         window.location.href = "/";
-      } else {
+      } else if(response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
         return api.request(originalRequest);
       }

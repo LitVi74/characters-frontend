@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { IUser } from "../constants/constants";
+import { IUser } from "../constants/IConstants";
 
 interface IUserContext {
   currentUser: IUser | null;

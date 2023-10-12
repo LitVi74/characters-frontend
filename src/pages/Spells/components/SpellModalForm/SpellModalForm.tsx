@@ -5,11 +5,19 @@ import { useCallback } from "react";
 import SpellForm from "../SpellForm/SpellForm";
 import ResourcesService from "../../../../service/ResoursesService/ResourcesService";
 
-export default function SpellModalForm({ formState, handelHideForm, setSpells }) {
+import { ISpell, FormState } from "../../../../constants/IConstants";
+
+interface PropsSpellModalForm {
+  formState: FormState;
+  handelHideForm: () => void;
+  setSpells: (x: ISpell[]) => void;
+}
+
+export default function SpellModalForm({ formState, handelHideForm, setSpells }: PropsSpellModalForm) {
   const { show, chosenSpell } = formState;
 
   const handleSpellFormSubmit = useCallback(
-    async (spell, spellID) => {
+    async (spell: ISpell, spellID: string) => {
       const {
         hasError,
         data,
@@ -17,7 +25,7 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells })
         ? await ResourcesService.updateSpell(spellID, spell)
         : await ResourcesService.createSpell(spell);
 
-      if (!hasError) {
+      if (!hasError && data) {
         setSpells(data);
         handelHideForm();
       }

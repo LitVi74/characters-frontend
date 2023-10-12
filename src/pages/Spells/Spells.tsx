@@ -14,12 +14,7 @@ import IconButton from "../../components/IconButton/IconButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 import CardMenu from "../../components/CardMenu/CardMenu";
 
-import { ISpell } from "../../constants/constants";
-
-interface FormState {
-  show: boolean;
-  chosenSpell: object;
-}
+import { ISpell, FormState } from "../../constants/IConstants";
 
 export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
