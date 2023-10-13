@@ -1,14 +1,3 @@
-enum School {
-  Воплощение = 'Воплощение',
-  Вызов = 'Вызов',
-  Иллюзия = 'Иллюзия',
-  Некромантия = 'Некромантия',
-  Ограждение = 'Ограждение',
-  Очарование = 'Очарование',
-  Преобразование = 'Преобразование',
-  Прорицание = 'Прорицание'
-}
-
 export enum Classes {
   Бард = 'Бард',
   Жрец = 'Жрец',
@@ -26,14 +15,14 @@ export interface SpellData {
   desc: string;
   higher_level?: string;
   range: string;
-  components: ['В', 'С'?, 'М'?];
+  components: string[];
   material?: string;
   ritual: boolean;
   duration: string;
   concentration: boolean;
   casting_time: string;
   level: number;
-  school: School;
+  school: string;
   classes: Classes[];
 }
 

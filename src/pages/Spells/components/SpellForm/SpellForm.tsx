@@ -4,8 +4,8 @@ import { useFormik } from "formik";
 import { ISpell, SpellData, Classes } from "../../../../constants/IConstants";
 
 interface PropsSpellForm {
-  cbSubmit: (spell: SpellData, spellID: string) => Promise<void>;
-  spell: ISpell;
+  cbSubmit: (spell: SpellData, spellID: string | undefined) => Promise<void>;
+  spell: Partial<ISpell>;
 }
 
 export default function SpellForm({ cbSubmit, spell }: PropsSpellForm) {

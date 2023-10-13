@@ -17,7 +17,7 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells }:
   const { show, chosenSpell } = formState;
 
   const handleSpellFormSubmit = useCallback(
-    async (spell: SpellData, spellID: string) => {
+    async (spell: SpellData, spellID: string | undefined) => {
       const {
         hasError,
         data,
