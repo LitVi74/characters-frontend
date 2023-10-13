@@ -4,16 +4,24 @@ import { useCallback } from "react";
 import CharForm from "../CharForm/CharForm";
 import ResourcesService from "../../../../service/ResoursesService/ResourcesService";
 
-export default function CharacterModalForm({ formState, handelHideForm, updateChars }) {
-  const { show, chosenChar } = formState;
+import { CharData, FormState, ICharacter } from "../../../../constants/IConstants";
+
+interface PropsCharacterModalForm {
+  formState: FormState<ICharacter>;
+  handelHideForm: () => void;
+  updateChars: (newChar: ICharacter, isUpdate: boolean) => Promise<void>;
+}
+
+export default function CharacterModalForm({ formState, handelHideForm, updateChars }: PropsCharacterModalForm) {
+  const { show, chosenRes } = formState;
 
   const handleCharFormSubmit = useCallback(
-    async (charId, char) => {
+    async (charId: string | undefined, char: CharData) => {
       const { hasError, data: newChar } = charId
         ? await ResourcesService.updateCharacter(charId, char)
         : await ResourcesService.createCharacter(char);
 
-      if (!hasError) {
+      if (!hasError && newChar) {
         updateChars(newChar, !!charId);
         handelHideForm();
       }
@@ -24,16 +32,16 @@ export default function CharacterModalForm({ formState, handelHideForm, updateCh
   return (
     <Modal show={show} onHide={handelHideForm}>
       <Modal.Header>
-        <Modal.Title>{chosenChar?._id ? "Изменить" : "Добавить"} название</Modal.Title>
+        <Modal.Title>{chosenRes?._id ? "Изменить" : "Добавить"} название</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <CharForm char={chosenChar} cbSubmit={handleCharFormSubmit} />
+        <CharForm char={chosenRes} cbSubmit={handleCharFormSubmit} />
       </Modal.Body>
       <Modal.Footer>
         <Button
           variant="warning"
           type="submit"
-          form={`character-${chosenChar ? chosenChar._id : "add"}-form`}
+          form={`character-${chosenRes ? chosenRes._id : "add"}-form`}
         >
           Сохранить
         </Button>

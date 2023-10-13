@@ -4,9 +4,9 @@ import useFilterAction from "./hooks/useFilterAction";
 
 import { SPELL } from "../../../../constants/constants";
 import Filters from "../../../../components/Filters/Filters";
-import { ISpell } from "../../../../constants/IConstants";
 
-/*interface SpellsFilterState {
+/*
+interface SpellsFilterState {
   selectedLevels: MouseEvent[],
   selectedClasses: MouseEvent[],
   selectedSchools: MouseEvent[],

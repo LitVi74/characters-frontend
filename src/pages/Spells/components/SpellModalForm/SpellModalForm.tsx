@@ -8,13 +8,13 @@ import ResourcesService from "../../../../service/ResoursesService/ResourcesServ
 import { ISpell, FormState, SpellData } from "../../../../constants/IConstants";
 
 interface PropsSpellModalForm {
-  formState: FormState;
+  formState: FormState<ISpell>;
   handelHideForm: () => void;
   setSpells: (x: ISpell[]) => void;
 }
 
 export default function SpellModalForm({ formState, handelHideForm, setSpells }: PropsSpellModalForm) {
-  const { show, chosenSpell } = formState;
+  const { show, chosenRes } = formState;
 
   const handleSpellFormSubmit = useCallback(
     async (spell: SpellData, spellID: string | undefined) => {
@@ -36,16 +36,16 @@ export default function SpellModalForm({ formState, handelHideForm, setSpells }:
   return (
     <Modal show={show} onHide={handelHideForm}>
       <Modal.Header>
-        <Modal.Title>{chosenSpell?._id ? "Изменить" : "Добавить"} заклинание</Modal.Title>
+        <Modal.Title>{chosenRes?._id ? "Изменить" : "Добавить"} заклинание</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <SpellForm spell={chosenSpell} cbSubmit={handleSpellFormSubmit} />
+        <SpellForm spell={chosenRes} cbSubmit={handleSpellFormSubmit} />
       </Modal.Body>
       <Modal.Footer>
         <Button
           variant="warning"
           type="submit"
-          form={`spell-${chosenSpell ? chosenSpell._id : "add"}-form`}
+          form={`spell-${chosenRes ? chosenRes._id : "add"}-form`}
         >
           Сохранить
         </Button>

@@ -1,7 +1,14 @@
 import { Form } from "react-bootstrap";
 import { useFormik } from "formik";
 
-export default function CharForm({ cbSubmit, char }) {
+import { CharData, ICharacter } from "../../../../constants/IConstants"; 
+
+interface PropsCharForm {
+  cbSubmit: (charId: string | undefined, char: CharData) => Promise<void>;
+  char: Partial<ICharacter>;
+}
+
+export default function CharForm({ cbSubmit, char }: PropsCharForm) {
   const formik = useFormik({
     initialValues: {
       name: char?.name ?? "",

@@ -49,7 +49,7 @@ function CharacterSpells() {
   const getCharSpells = useCallback(async () => {
     const { hasError, data } = await ResourcesService.getCharacter(charID);
 
-    if (!hasError && data) {
+    if (!hasError && data?.spells) {
       const { spells: newCharSpells, owner } = data;
 
       setCharSpells(newCharSpells);
@@ -79,11 +79,11 @@ function CharacterSpells() {
         spells: spellsData,
       });
 
-      if (!hasError && data) {
+      if (!hasError && data?.spells) {
         setCharSpells(data.spells);
       }
 
-      if (!isAddLiseElements && !hasError && data) {
+      if (!isAddLiseElements && !hasError && data?.spells) {
         setSpells(data.spells);
       }
       setIsDontActiveLike(false);
@@ -99,11 +99,11 @@ function CharacterSpells() {
         spells: spellsData,
       });
 
-      if (!hasError && data) {
+      if (!hasError && data?.spells) {
         setCharSpells(data.spells);
       }
 
-      if (!isAddLiseElements && !hasError && data) {
+      if (!isAddLiseElements && !hasError && data?.spells) {
         setSpells(data.spells);
       }
       setIsDontActiveLike(false);

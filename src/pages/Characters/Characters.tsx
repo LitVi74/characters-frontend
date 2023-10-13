@@ -5,34 +5,35 @@ import { Plus } from "react-bootstrap-icons";
 import IconButton from "../../components/IconButton/IconButton";
 import Spinner from "../../components/Spinner/Spinner";
 import ResourcesService from "../../service/ResoursesService/ResourcesService";
-import CharacterLink from "./comtonents/CharacterLink/CharacterLink";
-import CharacterModalForm from "./comtonents/CharacterModalForm/CharacterModalForm";
+import CharacterLink from "./components/CharacterLink/CharacterLink";
+import CharacterModalForm from "./components/CharacterModalForm/CharacterModalForm";
+
+import { FormState, ICharacter } from "../../constants/IConstants";
 
 export default function Characters() {
-  const [chars, setChars] = useState([]);
-  const [isLoader, setIsLoader] = useState(false);
-
-  const [formState, setFormState] = useState({
+  const [chars, setChars] = useState<ICharacter[]>([]);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [formState, setFormState] = useState<FormState<ICharacter>>({
     show: false,
-    chosenChar: {},
+    chosenRes: {},
   });
 
   const handleShowForm = useCallback((char = {}) => {
     setFormState({
       show: true,
-      chosenChar: char,
+      chosenRes: char,
     });
   }, []);
 
   const handelHideForm = useCallback(() => {
     setFormState({
       show: false,
-      chosenChar: {},
+      chosenRes: {},
     });
   }, []);
 
   const updateChars = useCallback(
-    async (newChar, isUpdate) => {
+    async (newChar: ICharacter, isUpdate: boolean) => {
       const newChars = isUpdate
         ? chars.map((char) => {
             if (newChar._id === char._id) {
@@ -48,12 +49,12 @@ export default function Characters() {
   );
 
   const cbClose = useCallback(
-    async (char) => {
+    async (char: ICharacter) => {
       const { _id: charID } = char;
       const { hasError, data: charData } = await ResourcesService.deleteCharacter(charID);
 
       if (!hasError) {
-        const newChars = chars.filter((c) => c._id !== charData._id);
+        const newChars = chars.filter((c) => c._id !== charData?._id);
         setChars(newChars);
       }
     },
@@ -63,7 +64,7 @@ export default function Characters() {
   const getCharacters = useCallback(async () => {
     const { hasError, data: initialChars } = await ResourcesService.getUserCharacters();
 
-    if (!hasError) {
+    if (!hasError && initialChars) {
       setChars(initialChars);
     }
   }, [setChars]);

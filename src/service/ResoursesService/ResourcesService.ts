@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "./ResourcesAxios";
-import { ICharacter, ISpell, SpellData } from "../../constants/IConstants";
+import { ICharacter, ISpell, SpellData, CharData } from "../../constants/IConstants";
 import { ServicePrototype, Result } from "../ServicePrototype";
 
 export default class ResourcesService extends ServicePrototype {
@@ -127,7 +127,7 @@ export default class ResourcesService extends ServicePrototype {
     return result;
   }
 
-  static async createCharacter(charData: ICharacter) {
+  static async createCharacter(charData: CharData) {
     const result: Result<ICharacter> = {
       hasError: false,
       errorMessage: "",
@@ -184,7 +184,7 @@ export default class ResourcesService extends ServicePrototype {
     return result;
   }
 
-  static async updateCharacter(charId: string, obj: ICharacter) {
+  static async updateCharacter(charId: string, obj: CharData) {
     const result: Result<ICharacter> = {
       hasError: false,
       errorMessage: "",

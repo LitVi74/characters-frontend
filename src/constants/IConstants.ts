@@ -38,15 +38,19 @@ export interface IUser {
   accessToken?: string;
 }
 
-export interface ICharacter {
+export interface CharData {
+  spells?: ISpell[];
   name?: string;
-  spells: ISpell[];
-  owner?: string;
 }
 
-export interface FormState {
+export interface ICharacter extends CharData {
+  _id: string;
+  owner: string;
+}
+
+export interface FormState<T> {
   show: boolean;
-  chosenSpell: Partial<ISpell>;
+  chosenRes: Partial<T>;
 }
 
 export interface SignInResult {

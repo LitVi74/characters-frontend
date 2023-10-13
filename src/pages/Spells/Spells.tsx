@@ -23,9 +23,9 @@ export default function Spells() {
   const [spellsLength, setSpellsLength] = useState<number>(30);
   const [filteredSpells, setFilteredSpells] = useState<ISpell[]>([]);
 
-  const [formState, setFormState] = useState<FormState>({
+  const [formState, setFormState] = useState<FormState<ISpell>>({
     show: false,
-    chosenSpell: {},
+    chosenRes: {},
   });
 
   const [isLoader, setIsLoader] = useState<boolean>(false);
@@ -33,14 +33,14 @@ export default function Spells() {
   const handleShowForm = useCallback((spell = {}) => {
     setFormState({
       show: true,
-      chosenSpell: spell,
+      chosenRes: spell,
     });
   }, []);
 
   const handelHideForm = useCallback(() => {
     setFormState({
       show: false,
-      chosenSpell: {},
+      chosenRes: {},
     });
   }, []);
 

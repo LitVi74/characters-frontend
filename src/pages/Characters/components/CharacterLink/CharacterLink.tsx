@@ -1,23 +1,25 @@
 import "./CharacterLink.scss";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
+import { useCallback, useState, MouseEvent } from "react";
 
 import { PATHS } from "../../../../constants/constants";
-
 import CardMenu from "../../../../components/CardMenu/CardMenu";
+import { ICharacter } from "../../../../constants/IConstants";
 
-export default function CharacterLink({ char, cbForm, cbClose }) {
+interface PropsCharacterLink {
+  char: ICharacter;
+  cbForm: () => void;
+  cbClose: (char: ICharacter) => Promise<void>;
+}
+
+export default function CharacterLink({ char, cbForm, cbClose }: PropsCharacterLink) {
   const [isLoader, setIsLoader] = useState(false);
   const navigate = useNavigate();
   const { _id, name } = char;
 
   const handleUpdate = useCallback(() => {
-    cbForm({
-      isShow: true,
-      data: char,
-      update: true,
-    });
-  }, [cbForm, char]);
+    cbForm();
+  }, [cbForm]);
 
   const handleDelete = useCallback(async () => {
     setIsLoader(true);
@@ -26,7 +28,7 @@ export default function CharacterLink({ char, cbForm, cbClose }) {
   }, [cbClose, char]);
 
   const handleNavLink = useCallback(
-    (e) => {
+    (e: MouseEvent) => {
       if (e.target === e.currentTarget) {
         navigate(`${PATHS.characters}/${_id}`);
       }
