@@ -13,7 +13,7 @@ export default function SignUp() {
     errorMessage: "",
   });
 
-  const handleSignupFormSubmit = useCallback(async (email, password) => {
+  const handleSignupFormSubmit = useCallback(async (email: string, password: string) => {
     setIsSubmitted(true);
     const { hasError, errorMessage } = await AuthService.registration(email, password);
     setSignupResult({ hasError, errorMessage });

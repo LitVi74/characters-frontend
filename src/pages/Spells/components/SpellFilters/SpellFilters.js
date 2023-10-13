@@ -4,6 +4,23 @@ import useFilterAction from "./hooks/useFilterAction";
 
 import { SPELL } from "../../../../constants/constants";
 import Filters from "../../../../components/Filters/Filters";
+import { ISpell } from "../../../../constants/IConstants";
+
+/*interface SpellsFilterState {
+  selectedLevels: MouseEvent[],
+  selectedClasses: MouseEvent[],
+  selectedSchools: MouseEvent[],
+  selectedRitual: MouseEvent[],
+  selectedConcentration: MouseEvent[],
+  selectedCastingTime: MouseEvent[],
+}
+
+interface PropsSpellFilters {
+  spells: ISpell[];
+  setFilteredSpells: (x: ISpell[]) => void;
+  isLoader: boolean;
+}
+*/
 
 function SpellFilters({ spells, setFilteredSpells, isLoader }) {
   const [spellsFilterState, setSpellsFilterState] = useState({
