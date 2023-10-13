@@ -1,7 +1,8 @@
 import { Formik, Field } from "formik";
 import { Button, Form } from "react-bootstrap";
+import { PropsAuthForm } from "../../../../constants/IConstants";
 
-export default function LoginForm({ cbLogin, isSubmitted }) {
+export default function LoginForm({ cbSubmit, isSubmitted }: PropsAuthForm) {
   return (
     <Formik
       initialValues={{
@@ -11,7 +12,7 @@ export default function LoginForm({ cbLogin, isSubmitted }) {
       onSubmit={(values) => {
         const { email, password } = values;
 
-        cbLogin(email, password);
+        cbSubmit(email, password);
       }}
     >
       {({ handleSubmit, errors, touched }) => (
@@ -24,7 +25,7 @@ export default function LoginForm({ cbLogin, isSubmitted }) {
               type="email"
               isInvalid={!!errors.email && touched.email}
               disabled={isSubmitted}
-              validate={(value) => {
+              validate={(value: string) => {
                 const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
                 let error;
 
@@ -45,7 +46,7 @@ export default function LoginForm({ cbLogin, isSubmitted }) {
               type="password"
               isInvalid={!!errors.password && touched.password}
               disabled={isSubmitted}
-              validate={(value) => {
+              validate={(value: string) => {
                 let error;
 
                 if (value.length < 6) {

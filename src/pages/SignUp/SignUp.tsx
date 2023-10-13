@@ -4,11 +4,12 @@ import InfoToast from "../../components/InfoToast/InfoToast";
 import SignupForm from "./components/SignupForm/SignupForm";
 
 import AuthService from "../../service/AuthService/AuthService";
+import { SignInResult } from "../../constants/IConstants";
 
 export default function SignUp() {
-  const [showToast, setShowToast] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [signupResult, setSignupResult] = useState({
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [signupResult, setSignupResult] = useState<SignInResult>({
     hasError: false,
     errorMessage: "",
   });
@@ -24,7 +25,7 @@ export default function SignUp() {
   return (
     <main className="auth">
       <h1>Регистрация</h1>
-      <SignupForm cbRegister={handleSignupFormSubmit} isSubmitted={isSubmitted} />
+      <SignupForm cbSubmit={handleSignupFormSubmit} isSubmitted={isSubmitted} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}

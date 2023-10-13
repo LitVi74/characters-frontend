@@ -8,22 +8,26 @@ import AuthService from "../../service/AuthService/AuthService";
 
 import { PATHS } from "../../constants/constants";
 import { CurrentUserContext } from "../../contexts/currentUserContext";
+import { IUser, SignInResult } from "../../constants/IConstants";
 
 export default function LogIn() {
   const navigate = useNavigate();
   const { setCurrentUser } = useContext(CurrentUserContext);
 
-  const [showToast, setShowToast] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [signInResult, setSignInResult] = useState({
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [signInResult, setSignInResult] = useState<SignInResult>({
     hasError: false,
     errorMessage: "",
   });
 
   const handleLoginFormSubmit = useCallback(
-    async (email, password) => {
+    async (email: string, password: string) => {
       const { hasError, errorMessage, data } = await AuthService.login(email, password);
-      const { _id, role, isActivated } = data;
+      if(!data) {
+        return;
+      }
+      const { _id, role, isActivated }: IUser = data;
 
       setCurrentUser({
         _id,
@@ -47,7 +51,7 @@ export default function LogIn() {
   return (
     <main className="auth">
       <h1>Вход</h1>
-      <LoginForm cbLogin={handleLoginFormSubmit} isSubmitted={isSubmitted} />
+      <LoginForm cbSubmit={handleLoginFormSubmit} isSubmitted={isSubmitted} />
       <InfoToast
         show={showToast}
         setShow={setShowToast}

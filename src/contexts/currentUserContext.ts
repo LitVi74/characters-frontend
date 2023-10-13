@@ -3,7 +3,7 @@ import { IUser } from "../constants/IConstants";
 
 interface IUserContext {
   currentUser: IUser | null;
-  setCurrentUser: () => IUser | null;
+  setCurrentUser: (x: IUser) => IUser | null;
 }
 
 const UserContext = {

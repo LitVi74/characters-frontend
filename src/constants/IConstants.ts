@@ -48,3 +48,13 @@ export interface FormState {
   show: boolean;
   chosenSpell: Partial<ISpell>;
 }
+
+export interface SignInResult {
+  hasError: boolean;
+  errorMessage: string;
+}
+
+export interface PropsAuthForm {
+  cbSubmit: (email: string, password: string) => void;
+  isSubmitted: boolean;
+}

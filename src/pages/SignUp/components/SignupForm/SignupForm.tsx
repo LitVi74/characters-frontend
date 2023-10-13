@@ -1,12 +1,8 @@
 import { Field, Formik } from "formik";
 import { Button, Form } from "react-bootstrap";
+import { PropsAuthForm } from "../../../../constants/IConstants";
 
-interface PropsSignupForm {
-  cbRegister: (email: string, password: string) => void;
-  isSubmitted: boolean;
-}
-
-export default function SignupForm({ cbRegister, isSubmitted }: PropsSignupForm) {
+export default function SignupForm({ cbSubmit, isSubmitted }: PropsAuthForm) {
   return (
     <Formik
       initialValues={{
@@ -18,7 +14,7 @@ export default function SignupForm({ cbRegister, isSubmitted }: PropsSignupForm)
         const { email, password, passwordRepeat } = values;
 
         if (password === passwordRepeat) {
-          cbRegister(email, password);
+          cbSubmit(email, password);
         }
       }}
     >
