@@ -1,7 +1,7 @@
 /* eslint no-undef-init: off */
 
-export default function trottle(func, time) {
-  let previousCall = undefined;
+export default function trottle(func: () => void, time: number) {
+  let previousCall: undefined | number = undefined;
 
   return () => {
     const lastCall = Date.now();

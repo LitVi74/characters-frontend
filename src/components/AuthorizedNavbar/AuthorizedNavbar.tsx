@@ -17,7 +17,7 @@ export default function AuthorizedNavbar() {
       setCurrentUser({
         _id: "",
         email: "",
-        role: "",
+        role: "User",
         isActivated: false,
       });
     }

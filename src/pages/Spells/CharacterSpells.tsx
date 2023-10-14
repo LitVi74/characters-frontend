@@ -15,7 +15,7 @@ import OpenButton from "../../components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 import { ISpell } from "../../constants/IConstants";
 
-function CharacterSpells() {
+export default function CharacterSpells() {
   const { currentUser } = useContext(CurrentUserContext);
   const { charID = "" } = useParams();
 
@@ -203,4 +203,3 @@ function CharacterSpells() {
   );
 }
 
-export default CharacterSpells;

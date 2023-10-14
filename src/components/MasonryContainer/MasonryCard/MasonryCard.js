@@ -5,6 +5,8 @@ import { useLayoutEffect, useRef } from "react";
 import constants from "../../../constants/constants.scss";
 import "./MasonryCard.scss";
 
+// Настя, чо за тип, этот твой card?! :(
+
 export default function MasonryCard({ cardWidth, children }) {
   const card = useRef(null);
 
