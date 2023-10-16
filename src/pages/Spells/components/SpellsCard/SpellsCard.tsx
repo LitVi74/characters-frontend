@@ -1,6 +1,6 @@
 import "./SpellsCard.scss";
 import { FC, ReactNode } from "react";
-import { ISpell } from "../../../../constants/IConstants";
+import { ISpell } from "../../../../shared/constants/IConstants";
 
 interface SpellCardProps {
   spell: ISpell;
@@ -69,6 +69,6 @@ const SpellCard: FC<SpellCardProps> = ({ spell, button }) => {
       ) : null}
     </li>
   );
-}
+};
 
 export default SpellCard;

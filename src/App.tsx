@@ -3,18 +3,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRoutes } from "react-router-dom";
 
 import ROUTES from "./pages/routes";
-import Header from "./components/Header/Header";
-import AuthService from "./service/AuthService/AuthService";
-import { CurrentUserContext } from "./contexts/currentUserContext";
+import Header from "./shared/components/Header/Header";
+import AuthService from "./shared/service/AuthService/AuthService";
 
-import { IUser } from "./constants/IConstants";
+import { CurrentUserContext } from "./shared/contexts/currentUserContext";
+import { IUser } from "./shared/constants/IConstants";
 
 export default function App() {
   const [hasFirstLoader, setHasFirstLoader] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser>({
-    _id: '',
-    email: '',
-    role: 'User',
+    _id: "",
+    email: "",
+    role: "User",
     isActivated: false,
   });
 

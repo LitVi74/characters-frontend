@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useEffect } from "react";
 
-import { PATHS } from "../../constants/constants";
-import { CurrentUserContext } from "../../contexts/currentUserContext";
+import { PATHS } from "../../shared/constants/constants";
+import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
 
 export default function Home() {
   const navigate = useNavigate();

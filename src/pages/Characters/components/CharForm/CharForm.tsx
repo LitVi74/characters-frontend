@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
 import { useFormik } from "formik";
 
-import { CharData, ICharacter } from "../../../../constants/IConstants"; 
+import { CharData, ICharacter } from "../../../../shared/constants/IConstants";
 
 interface PropsCharForm {
   cbSubmit: (charId: string | undefined, char: CharData) => Promise<void>;

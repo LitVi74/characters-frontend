@@ -2,9 +2,9 @@ import "./CharacterLink.scss";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useState, MouseEvent } from "react";
 
-import { PATHS } from "../../../../constants/constants";
-import CardMenu from "../../../../components/CardMenu/CardMenu";
-import { ICharacter } from "../../../../constants/IConstants";
+import { PATHS } from "../../../../shared/constants/constants";
+import CardMenu from "../../../../shared/components/CardMenu/CardMenu";
+import { ICharacter } from "../../../../shared/constants/IConstants";
 
 interface PropsCharacterLink {
   char: ICharacter;

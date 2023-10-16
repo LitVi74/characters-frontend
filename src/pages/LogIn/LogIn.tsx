@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback, useContext, useState } from "react";
 
-import InfoToast from "../../components/InfoToast/InfoToast";
+import InfoToast from "../../shared/components/InfoToast/InfoToast";
 import LoginForm from "./components/LoginForm/LoginForm";
 
-import AuthService from "../../service/AuthService/AuthService";
+import AuthService from "../../shared/service/AuthService/AuthService";
 
-import { PATHS } from "../../constants/constants";
-import { CurrentUserContext } from "../../contexts/currentUserContext";
-import { IUser, SignInResult } from "../../constants/IConstants";
+import { PATHS } from "../../shared/constants/constants";
+import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import { IUser, SignInResult } from "../../shared/constants/IConstants";
 
 export default function LogIn() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function LogIn() {
   const handleLoginFormSubmit = useCallback(
     async (email: string, password: string) => {
       const { hasError, errorMessage, data } = await AuthService.login(email, password);
-      if(!data) {
+      if (!data) {
         return;
       }
       const { _id, role, isActivated }: IUser = data;

@@ -2,9 +2,9 @@ import { Button, Modal } from "react-bootstrap";
 
 import { useCallback } from "react";
 import CharForm from "../CharForm/CharForm";
-import ResourcesService from "../../../../service/ResoursesService/ResourcesService";
+import ResourcesService from "../../../../shared/service/ResoursesService/ResourcesService";
 
-import { CharData, FormState, ICharacter } from "../../../../constants/IConstants";
+import { CharData, FormState, ICharacter } from "../../../../shared/constants/IConstants";
 
 interface PropsCharacterModalForm {
   formState: FormState<ICharacter>;
@@ -12,7 +12,11 @@ interface PropsCharacterModalForm {
   updateChars: (newChar: ICharacter, isUpdate: boolean) => Promise<void>;
 }
 
-export default function CharacterModalForm({ formState, handelHideForm, updateChars }: PropsCharacterModalForm) {
+export default function CharacterModalForm({
+  formState,
+  handelHideForm,
+  updateChars,
+}: PropsCharacterModalForm) {
   const { show, chosenRes } = formState;
 
   const handleCharFormSubmit = useCallback(

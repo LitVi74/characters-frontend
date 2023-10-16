@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import logo from "../../assets/logo.svg";
+import logo from "../../../assets/logo.svg";
 
 import AuthorizedNavbar from "../AuthorizedNavbar/AuthorizedNavbar";
 import UnauthorizedNavbar from "../UnauthorizedNavbar/UnauthorizedNavbar";

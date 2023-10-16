@@ -1,20 +1,20 @@
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Plus } from "react-bootstrap-icons";
 
-import ResourcesService from "../../service/ResoursesService/ResourcesService";
-import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
+import ResourcesService from "../../shared/service/ResoursesService/ResourcesService";
+import MasonryContainer from "../../shared/components/MasonryContainer/MasonryContainer";
 import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 
-import { CurrentUserContext } from "../../contexts/currentUserContext";
-import trottle from "../../utils/Decorations";
+import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import trottle from "../../shared/utils/Decorations";
 
-import Spinner from "../../components/Spinner/Spinner";
+import Spinner from "../../shared/components/Spinner/Spinner";
 import SpellCard from "./components/SpellsCard/SpellsCard";
-import IconButton from "../../components/IconButton/IconButton";
+import IconButton from "../../shared/components/IconButton/IconButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
-import CardMenu from "../../components/CardMenu/CardMenu";
+import CardMenu from "../../shared/components/CardMenu/CardMenu";
 
-import { ISpell, FormState } from "../../constants/IConstants";
+import { ISpell, FormState } from "../../shared/constants/IConstants";
 
 export default function Spells() {
   const { currentUser } = useContext(CurrentUserContext);
@@ -47,7 +47,7 @@ export default function Spells() {
   const getAllSpells = useCallback(async () => {
     const allSpells = sessionStorage.getItem("spellsData");
 
-    if(allSpells) {
+    if (allSpells) {
       setSpells(JSON.parse(allSpells));
       return;
     }
@@ -103,7 +103,11 @@ export default function Spells() {
   return (
     <main>
       <div className="d-flex justify-content-center flex-column flex-md-row gap-3 p-3 p-md-4 p-lg-5">
-        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} isLoader={isLoader} />
+        <SpellFilters
+          spells={spells}
+          setFilteredSpells={setFilteredSpells}
+          isLoader={isLoader}
+        />
         {currentUser?.role === "Admin" && (
           <IconButton
             icon={<Plus size={24} />}

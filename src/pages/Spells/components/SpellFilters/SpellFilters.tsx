@@ -2,9 +2,9 @@ import { FocusEvent, useState } from "react";
 
 import useFilterAction from "./hooks/useFilterAction";
 
-import { SPELL } from "../../../../constants/constants";
-import Filters from "../../../../components/Filters/Filters";
-import { IFilter, ISpell } from "../../../../constants/IConstants";
+import { SPELL } from "../../../../shared/constants/constants";
+import Filters from "../../../../shared/components/Filters/Filters";
+import { IFilter, ISpell } from "../../../../shared/constants/IConstants";
 
 interface SpellsFilterState {
   selectedLevels: number[];

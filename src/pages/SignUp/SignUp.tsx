@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 
-import InfoToast from "../../components/InfoToast/InfoToast";
+import InfoToast from "../../shared/components/InfoToast/InfoToast";
 import SignupForm from "./components/SignupForm/SignupForm";
 
-import AuthService from "../../service/AuthService/AuthService";
-import { SignInResult } from "../../constants/IConstants";
+import AuthService from "../../shared/service/AuthService/AuthService";
+import { SignInResult } from "../../shared/constants/IConstants";
 
 export default function SignUp() {
   const [showToast, setShowToast] = useState<boolean>(false);

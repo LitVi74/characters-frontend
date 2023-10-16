@@ -2,13 +2,13 @@ import { ListGroup, Stack } from "react-bootstrap";
 import { useState, useCallback, useEffect } from "react";
 import { Plus } from "react-bootstrap-icons";
 
-import IconButton from "../../components/IconButton/IconButton";
-import Spinner from "../../components/Spinner/Spinner";
-import ResourcesService from "../../service/ResoursesService/ResourcesService";
+import IconButton from "../../shared/components/IconButton/IconButton";
+import Spinner from "../../shared/components/Spinner/Spinner";
+import ResourcesService from "../../shared/service/ResoursesService/ResourcesService";
 import CharacterLink from "./components/CharacterLink/CharacterLink";
 import CharacterModalForm from "./components/CharacterModalForm/CharacterModalForm";
 
-import { FormState, ICharacter } from "../../constants/IConstants";
+import { FormState, ICharacter } from "../../shared/constants/IConstants";
 
 export default function Characters() {
   const [chars, setChars] = useState<ICharacter[]>([]);

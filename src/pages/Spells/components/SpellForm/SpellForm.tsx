@@ -1,7 +1,7 @@
 import { Container, Form } from "react-bootstrap";
-import "./SpellForm.scss"
+import "./SpellForm.scss";
 import { useFormik } from "formik";
-import { ISpell, SpellData, Classes } from "../../../../constants/IConstants";
+import { ISpell, SpellData, Classes } from "../../../../shared/constants/IConstants";
 
 interface PropsSpellForm {
   cbSubmit: (spell: SpellData, spellID: string | undefined) => Promise<void>;

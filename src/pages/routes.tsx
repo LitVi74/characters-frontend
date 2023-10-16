@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 
-import { PATHS } from "../constants/constants";
+import { PATHS } from "../shared/constants/constants";
 
 import LogIn from "./LogIn/LogIn";
 import SignUp from "./SignUp/SignUp";
 import Spells from "./Spells/Spells";
-import ProtectedRoute from "../utils/ProtectedRoute";
+import ProtectedRoute from "../shared/utils/ProtectedRoute";
 import Characters from "./Characters/Characters";
 import Error404 from "./Error404/Error404";
 import Home from "./Home/Home";

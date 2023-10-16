@@ -1,6 +1,6 @@
 import { Formik, Field } from "formik";
 import { Button, Form } from "react-bootstrap";
-import { PropsAuthForm } from "../../../../constants/IConstants";
+import { PropsAuthForm } from "../../../../shared/constants/IConstants";
 
 export default function LoginForm({ cbSubmit, isSubmitted }: PropsAuthForm) {
   return (

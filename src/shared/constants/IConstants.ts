@@ -1,5 +1,3 @@
-import { ChangeEvent } from "react";
-
 export enum Classes {
   Бард = "Бард",
   Жрец = "Жрец",

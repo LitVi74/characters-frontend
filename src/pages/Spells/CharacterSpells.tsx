@@ -3,17 +3,17 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { CloseButton } from "react-bootstrap";
 import { Plus, X } from "react-bootstrap-icons";
 
-import { CurrentUserContext } from "../../contexts/currentUserContext";
-import ResourcesService from "../../service/ResoursesService/ResourcesService";
-import trottle from "../../utils/Decorations";
+import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import ResourcesService from "../../shared/service/ResoursesService/ResourcesService";
+import trottle from "../../shared/utils/Decorations";
 
-import MasonryContainer from "../../components/MasonryContainer/MasonryContainer";
-import Spinner from "../../components/Spinner/Spinner";
+import MasonryContainer from "../../shared/components/MasonryContainer/MasonryContainer";
+import Spinner from "../../shared/components/Spinner/Spinner";
 import SpellCard from "./components/SpellsCard/SpellsCard";
-import IconButton from "../../components/IconButton/IconButton";
-import OpenButton from "../../components/OpenButton/OpenButton";
+import IconButton from "../../shared/components/IconButton/IconButton";
+import OpenButton from "../../shared/components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
-import { ISpell } from "../../constants/IConstants";
+import { ISpell } from "../../shared/constants/IConstants";
 
 export default function CharacterSpells() {
   const { currentUser } = useContext(CurrentUserContext);
@@ -32,7 +32,7 @@ export default function CharacterSpells() {
   const getAllSpells = useCallback(async () => {
     const allSpells = sessionStorage.getItem("spellsData");
 
-    if(allSpells) {
+    if (allSpells) {
       setSpells(JSON.parse(allSpells));
       return;
     }
@@ -162,16 +162,19 @@ export default function CharacterSpells() {
   return (
     <main>
       <div className="d-flex justify-content-center gap-3 p-3 p-md-4 p-lg-5">
-        <SpellFilters spells={spells} setFilteredSpells={setFilteredSpells} isLoader={isLoader} />
-        {charID &&
-          isCreator &&
-            <IconButton
-              icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
-              onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
-              className="btn-warning"
-              disabled={isLoader}
-            />
-        }
+        <SpellFilters
+          spells={spells}
+          setFilteredSpells={setFilteredSpells}
+          isLoader={isLoader}
+        />
+        {charID && isCreator && (
+          <IconButton
+            icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
+            onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
+            className="btn-warning"
+            disabled={isLoader}
+          />
+        )}
       </div>
       {isLoader ? (
         <Spinner />
@@ -202,4 +205,3 @@ export default function CharacterSpells() {
     </main>
   );
 }
-
