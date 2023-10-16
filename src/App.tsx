@@ -7,12 +7,14 @@ import Header from "./components/Header/Header";
 import AuthService from "./service/AuthService/AuthService";
 import { CurrentUserContext } from "./contexts/currentUserContext";
 
+import { IUser } from "./constants/IConstants";
+
 export default function App() {
   const [hasFirstLoader, setHasFirstLoader] = useState(false);
-  const [currentUser, setCurrentUser] = useState({
-    _id: "",
-    email: "",
-    role: "",
+  const [currentUser, setCurrentUser] = useState<IUser>({
+    _id: '',
+    email: '',
+    role: 'User',
     isActivated: false,
   });
 
@@ -25,9 +27,10 @@ export default function App() {
     }
 
     const { hasError, data } = await AuthService.checkAuth();
-    const { _id, email, role, isActivated } = data;
 
-    if (!hasError) {
+    if (!hasError && data) {
+      const { _id, email, role, isActivated } = data;
+
       setCurrentUser({ _id, email, role, isActivated });
     }
 

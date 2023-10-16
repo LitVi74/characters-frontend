@@ -3,7 +3,7 @@ import { IUser } from "../constants/IConstants";
 
 interface IUserContext {
   currentUser: IUser;
-  setCurrentUser: (x: IUser) => null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<IUser>>;
 }
 
 const UserContext = {
