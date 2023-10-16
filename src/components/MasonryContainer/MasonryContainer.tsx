@@ -10,7 +10,7 @@ interface PropsMasonryContainer {
 }
 
 export default function MasonryContainer({ children }: PropsMasonryContainer) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLSelectElement>(null);
   const cardWidth = useGetCardWidth(ref);
 
   return (

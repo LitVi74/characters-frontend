@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState, RefObject } from "react";
 import constants from "../../../constants/constants.scss";
 
-function useGetCardWidth(containerRef) {
+function useGetCardWidth(containerRef: RefObject<HTMLSelectElement>): number {
   const [containerWidth, setContainerWidth] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
 

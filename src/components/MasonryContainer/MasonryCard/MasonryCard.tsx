@@ -5,13 +5,16 @@ import { useLayoutEffect, useRef } from "react";
 import constants from "../../../constants/constants.scss";
 import "./MasonryCard.scss";
 
-// Настя, чо за тип, этот твой card?! :(
+interface PropsMasonryCard {
+  cardWidth: number;
+  children: JSX.Element;
+}
 
-export default function MasonryCard({ cardWidth, children }) {
-  const card = useRef(null);
+export default function MasonryCard({ cardWidth, children }: PropsMasonryCard) {
+  const card = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (card.current === undefined) return;
+    if (!card.current) return;
 
     const gap = +constants.gap.match(/^\d+/)[0];
     const rowHeight = +constants.rowHeight.match(/^\d+/)[0];
