@@ -11,16 +11,19 @@
         "plugin:jsx-a11y/recommended",
         "plugin:import/recommended",
         "airbnb",
+        "airbnb-typescript",
         "prettier"
     ],
     "overrides": [
     ],
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "tsx": true
         },
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": ["tsconfig.json"]
     },
     "plugins": [
         "react"
@@ -28,9 +31,25 @@
     "rules": {
         "no-extra-boolean-cast": 0,
         "no-nested-ternary": 0,
-        "no-underscore-dangle": 0,
+        "no-underscore-dangle": ["error", { "allow": ["_id", "_isRetry", "_handlerError"] }],
         "react/prop-types": 0,
         "react/react-in-jsx-scope": "off",
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+        "react/function-component-definition": "off",
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+            "selector": "property",
+            "format": [
+                "camelCase",
+                "PascalCase",
+                "UPPER_CASE"
+            ],
+            "filter": {
+                "regex": "^(_id|higher_level|casting_time|_isRetry)$",
+                "match": false
+            }
+            }
+        ]
     }
 }
