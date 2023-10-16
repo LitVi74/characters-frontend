@@ -1,12 +1,14 @@
-import {
-  Accordion,
-  Modal,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "react-bootstrap";
+import { Accordion, Modal, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import "./FiltersModal.scss";
+import { IFilter } from "../../constants/IConstants";
 
-function FiltersModal({ filters, show, handleModalClose }) {
+interface PropsFiltersModal {
+  filters: IFilter[];
+  show: boolean;
+  handleModalClose: () => void;
+}
+
+function FiltersModal({ filters, show, handleModalClose }: PropsFiltersModal) {
   return (
     <Modal as="aside" show={show} onHide={handleModalClose}>
       <Modal.Header>

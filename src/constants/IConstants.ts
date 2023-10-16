@@ -1,13 +1,15 @@
+import { ChangeEvent } from "react";
+
 export enum Classes {
-  Бард = 'Бард',
-  Жрец = 'Жрец',
-  Паладин = 'Паладин',
-  Следопыт = 'Следопыт',
-  Чародей = 'Чародей',
-  Колдун = 'Колдун',
-  Волшебник = 'Волшебник',
-  Друид = 'Друид',
-  Изобретатель = 'Изобретатель'
+  Бард = "Бард",
+  Жрец = "Жрец",
+  Паладин = "Паладин",
+  Следопыт = "Следопыт",
+  Чародей = "Чародей",
+  Колдун = "Колдун",
+  Волшебник = "Волшебник",
+  Друид = "Друид",
+  Изобретатель = "Изобретатель",
 }
 
 export interface SpellData {
@@ -33,7 +35,7 @@ export interface ISpell extends SpellData {
 export interface IUser {
   _id: string;
   email: string;
-  role: 'User' | 'Admin';
+  role: "User" | "Admin";
   isActivated: boolean;
   accessToken?: string;
 }
@@ -61,4 +63,12 @@ export interface SignInResult {
 export interface PropsAuthForm {
   cbSubmit: (email: string, password: string) => void;
   isSubmitted: boolean;
+}
+
+export interface IFilter<T = any> {
+  name: string;
+  selectedValue: T[];
+  onChange: (event: T[]) => void;
+  values: T[];
+  valuesName?: string[];
 }

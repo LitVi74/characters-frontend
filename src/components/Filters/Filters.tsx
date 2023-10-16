@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, FocusEvent } from "react";
 import { Funnel } from "react-bootstrap-icons";
 import { FormControl, InputGroup } from "react-bootstrap";
 
 import IconButton from "../IconButton/IconButton";
 import FiltersModal from "../FiltersModal/FiltersModal";
+import { IFilter } from "../../constants/IConstants";
 
-function Filters({ filters, handleSearchInputBlur, isLoader }) {
+interface PropsFilters {
+  filters: IFilter[];
+  handleSearchInputBlur: (event: FocusEvent<HTMLInputElement>) => void;
+  isLoader: boolean;
+}
+
+function Filters({ filters, handleSearchInputBlur, isLoader }: PropsFilters) {
   const [show, setShow] = useState(false);
 
   const handleModalClose = () => {

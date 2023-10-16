@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
-const useFilterAction = (data, setFilteredData) => {
+const useFilterAction = <T>(data: T[], setFilteredData: (t: T[]) => void) => {
   const [filterActionList, setFilterActionList] = useState(new Map());
 
   const deleteFilterFunctionByName = useCallback(
-    (name) => {
+    (name: string) => {
       const filterActionClone = new Map(filterActionList);
       if (filterActionClone.delete(name)) {
         setFilterActionList(filterActionClone);
@@ -14,7 +14,7 @@ const useFilterAction = (data, setFilteredData) => {
   );
 
   const addFilterFunctionToList = useCallback(
-    (name, filterFunc) => {
+    (name: string, filterFunc: (t: T[]) => void) => {
       const filterActionClone = new Map(filterActionList);
       filterActionClone.set(name, filterFunc);
       setFilterActionList(filterActionClone);
@@ -23,16 +23,17 @@ const useFilterAction = (data, setFilteredData) => {
   );
 
   const createFilterHandler = useCallback(
-    (functionName, handleFunction) => (event) => {
-      const searchFunction = handleFunction(event);
+    (functionName: string, handleFunction: (event: any) => (t: T[]) => void) =>
+      (event: any) => {
+        const searchFunction = handleFunction(event);
 
-      if (!event?.length && !event?.currentTarget?.value) {
-        deleteFilterFunctionByName(functionName);
-        return;
-      }
+        if (!event?.length && !event?.currentTarget?.value) {
+          deleteFilterFunctionByName(functionName);
+          return;
+        }
 
-      addFilterFunctionToList(functionName, searchFunction);
-    },
+        addFilterFunctionToList(functionName, searchFunction);
+      },
     [addFilterFunctionToList, deleteFilterFunctionByName]
   );
 

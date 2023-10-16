@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { FocusEvent, useState } from "react";
 
 import useFilterAction from "./hooks/useFilterAction";
 
 import { SPELL } from "../../../../constants/constants";
 import Filters from "../../../../components/Filters/Filters";
+import { IFilter, ISpell } from "../../../../constants/IConstants";
 
-/*
 interface SpellsFilterState {
-  selectedLevels: MouseEvent[],
-  selectedClasses: MouseEvent[],
-  selectedSchools: MouseEvent[],
-  selectedRitual: MouseEvent[],
-  selectedConcentration: MouseEvent[],
-  selectedCastingTime: MouseEvent[],
+  selectedLevels: number[];
+  selectedClasses: string[];
+  selectedSchools: string[];
+  selectedRitual: boolean[];
+  selectedConcentration: boolean[];
+  selectedCastingTime: string[];
 }
 
 interface PropsSpellFilters {
@@ -20,10 +20,9 @@ interface PropsSpellFilters {
   setFilteredSpells: (x: ISpell[]) => void;
   isLoader: boolean;
 }
-*/
 
-function SpellFilters({ spells, setFilteredSpells, isLoader }) {
-  const [spellsFilterState, setSpellsFilterState] = useState({
+function SpellFilters({ spells, setFilteredSpells, isLoader }: PropsSpellFilters) {
+  const [spellsFilterState, setSpellsFilterState] = useState<SpellsFilterState>({
     selectedLevels: [],
     selectedClasses: [],
     selectedSchools: [],
@@ -32,12 +31,12 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     selectedCastingTime: [],
   });
 
-  const { createFilterHandler } = useFilterAction(spells, setFilteredSpells);
-  const filters = [
+  const { createFilterHandler } = useFilterAction<ISpell>(spells, setFilteredSpells);
+  const filters: IFilter[] = [
     {
       name: "Уровень",
       selectedValue: spellsFilterState.selectedLevels,
-      onChange: createFilterHandler("searchSpellsByLevel", (event) => {
+      onChange: createFilterHandler("searchSpellsByLevel", (event: number[]) => {
         setSpellsFilterState({
           ...spellsFilterState,
           selectedLevels: event,
@@ -51,7 +50,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     {
       name: "Класс",
       selectedValue: spellsFilterState.selectedClasses,
-      onChange: createFilterHandler("searchSpellsByClass", (event) => {
+      onChange: createFilterHandler("searchSpellsByClass", (event: string[]) => {
         setSpellsFilterState({
           ...spellsFilterState,
           selectedClasses: event,
@@ -66,7 +65,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     {
       name: "Школа",
       selectedValue: spellsFilterState.selectedSchools,
-      onChange: createFilterHandler("searchSpellsBySchool", (event) => {
+      onChange: createFilterHandler("searchSpellsBySchool", (event: string[]) => {
         setSpellsFilterState({
           ...spellsFilterState,
           selectedSchools: event,
@@ -79,7 +78,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     {
       name: "Ритуал",
       selectedValue: spellsFilterState.selectedRitual,
-      onChange: createFilterHandler("searchSpellsByRitual", (event) => {
+      onChange: createFilterHandler("searchSpellsByRitual", (event: boolean[]) => {
         setSpellsFilterState({
           ...spellsFilterState,
           selectedRitual: event,
@@ -93,7 +92,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     {
       name: "Концентрация",
       selectedValue: spellsFilterState.selectedConcentration,
-      onChange: createFilterHandler("searchSpellsByConcentration", (event) => {
+      onChange: createFilterHandler("searchSpellsByConcentration", (event: boolean[]) => {
         setSpellsFilterState({
           ...spellsFilterState,
           selectedConcentration: event,
@@ -107,7 +106,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     {
       name: "Время наложения",
       selectedValue: spellsFilterState.selectedCastingTime,
-      onChange: createFilterHandler("searchSpellsByConcentration", (event) => {
+      onChange: createFilterHandler("searchSpellsByConcentration", (event: string[]) => {
         setSpellsFilterState({
           ...spellsFilterState,
           selectedCastingTime: event,
@@ -122,15 +121,22 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }) {
     },
   ];
 
-  const handleSearchInputBlur = createFilterHandler("searchSpellsByName", (event) => {
-    const regExp = new RegExp(event.currentTarget.value, "i");
+  const handleSearchInputBlur = createFilterHandler(
+    "searchSpellsByName",
+    (event: FocusEvent<HTMLInputElement>) => {
+      const regExp = new RegExp(event.currentTarget.value, "i");
 
-    return (currentSpells) => currentSpells.filter((spell) => regExp.test(spell.name));
-  });
+      return (currentSpells) => currentSpells.filter((spell) => regExp.test(spell.name));
+    }
+  );
 
   return (
     <div className="d-flex justify-content-center flex-grow-1">
-      <Filters filters={filters} handleSearchInputBlur={handleSearchInputBlur} isLoader={isLoader} />
+      <Filters
+        filters={filters}
+        handleSearchInputBlur={handleSearchInputBlur}
+        isLoader={isLoader}
+      />
     </div>
   );
 }
