@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Plus } from "react-bootstrap-icons";
 
