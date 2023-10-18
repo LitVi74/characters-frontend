@@ -1,4 +1,4 @@
-import { useState, FocusEvent } from "react";
+import { useState, FocusEvent, useCallback } from "react";
 import { Funnel } from "react-bootstrap-icons";
 import { FormControl, InputGroup } from "react-bootstrap";
 
@@ -13,16 +13,16 @@ interface PropsFilters {
 }
 
 function Filters({ filters, handleSearchInputBlur, isLoader }: PropsFilters) {
-  const [show, setShow] = useState(false);
-
-  const handleModalClose = () => {
+  const [show, setShow] = useState<boolean>(false);
+  
+  const handleModalClose = useCallback(() => {
     setShow(false);
-  };
+  }, []);
+
   return (
     <InputGroup>
       <FormControl
-        onBlur={handleSearchInputBlur}
-        onKeyDown={(event) => event.keyCode === 13 && event.currentTarget.blur()}
+        onChange={handleSearchInputBlur}
         disabled={isLoader}
       />
       <IconButton
