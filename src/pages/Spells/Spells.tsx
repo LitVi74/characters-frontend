@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Plus } from "react-bootstrap-icons";
 
@@ -76,15 +77,11 @@ export default function Spells() {
   }, [getAllSpells]);
 
   useEffect(() => {
-    if (spells.length > spellsLength) {
+    const screen = document.scrollingElement;
+
+    if (screen && spells.length > spellsLength) {
       const exeEventScroll = () => {
-        if (!document.scrollingElement) {
-          return;
-        }
-        if (
-          window.innerHeight + document.documentElement.scrollTop + 1000 >=
-          document.scrollingElement.scrollHeight
-        ) {
+        if (3 * screen.clientHeight + screen.scrollTop >= screen.scrollHeight) {
           setSpellsLength(spellsLength + 30);
         }
       };
