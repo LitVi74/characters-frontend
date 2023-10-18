@@ -1,5 +1,4 @@
 .form {
-
   &-select,
   &-control {
     background-color: #262626;
@@ -13,11 +12,16 @@
       caret-color: #FFD700;
       color:#DDCFBB;
     }
-  }
 
-  &-control::placeholder {
-    color:#DDCFBB;
-    opacity: .4;
+    &::placeholder {
+      color:#DDCFBB;
+      opacity: .4;
+    }
+
+    &.is-invalid:focus {
+      box-shadow: inset 0 0 0 50px #262626;
+      caret-color: #DC3545;
+    }
   }
 
   &-check-input {
