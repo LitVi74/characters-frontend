@@ -29,6 +29,8 @@ function SearchPanel({ filters, handleSearchInputBlur, isLoader }: PropsSearchPa
         setMobileVariant(true);
       }
     }
+
+    handlerResize();
     window.addEventListener('resize', handlerResize);
     return () => {
       window.removeEventListener('resize', handlerResize);

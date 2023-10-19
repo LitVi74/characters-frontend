@@ -23,6 +23,8 @@ export default function NavPopup({ navPopup, cbNavPopup }: PropsNavPopup) {
   const { pathname } = useLocation();
 
   const handleExitButtonClick = useCallback(async () => {
+    cbNavPopup();
+    
     const { hasError } = await AuthService.logout();
     if (!hasError) {
       setCurrentUser({
@@ -32,7 +34,7 @@ export default function NavPopup({ navPopup, cbNavPopup }: PropsNavPopup) {
         isActivated: false,
       });
     }
-  }, [setCurrentUser]);
+  }, [cbNavPopup, setCurrentUser]);
 
   const handleClickLink = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     if(pathname !== e.currentTarget.pathname) {
