@@ -1,4 +1,5 @@
 import { Nav, Navbar } from "react-bootstrap";
+import "./UnauthorizedNavbar.scss";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../constants/constants";
 

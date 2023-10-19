@@ -7,6 +7,8 @@ const PATHS = {
   page404: "/404",
 };
 
+const ESC = 13;
+
 const SPELL = {
   levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   classes: [
@@ -37,4 +39,4 @@ const SPELL = {
 
 const API_URL = "https://dnd-characters.ru/api";
 
-export { PATHS, API_URL, SPELL };
+export { PATHS, API_URL, SPELL, ESC };
