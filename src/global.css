@@ -7,7 +7,6 @@
 main {
   padding: 0 20px 0;
   width: 100%;
-  flex-grow: 1;
 }
 
 body {
@@ -33,7 +32,7 @@ header {
 
 .auth {
   max-width: 500px;
-  margin-top: calc(50vh - 164px);
+  margin: calc(50vh - 185px) auto 0;
 }
 
 @media screen and (min-width: 720px) {
