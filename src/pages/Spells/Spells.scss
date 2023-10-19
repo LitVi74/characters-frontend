@@ -1,0 +1,11 @@
+@use "../../shared/constants/constants.scss";
+
+.spells-page {
+  width: calc(100% - constants.$min-card-width - 40px);
+}
+
+@media screen and (max-width: 1024px) {
+  .spells-page {
+    width: 100%;
+  }
+}

@@ -3,7 +3,7 @@ import { FocusEvent, useState } from "react";
 import useFilterAction from "./hooks/useFilterAction";
 
 import { SPELL } from "../../../../shared/constants/constants";
-import Filters from "../../../../shared/components/Filters/Filters";
+import SearchPanel from "../../../../shared/components/SearchPanel/SearchPanel";
 import { IFilter, ISpell } from "../../../../shared/constants/IConstants";
 
 interface SpellsFilterState {
@@ -132,7 +132,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }: PropsSpellFilters
 
   return (
     <div className="d-flex justify-content-center flex-grow-1">
-      <Filters
+      <SearchPanel
         filters={filters}
         handleSearchInputBlur={handleSearchInputBlur}
         isLoader={isLoader}

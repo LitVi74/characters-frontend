@@ -1,0 +1,17 @@
+@use "../../constants/constants.scss";
+
+.desktop-mode {
+  position: fixed;
+  top: 107px;
+  right: 5vw;
+
+  width: constants.$min-card-width;
+
+  z-index: 1;
+}
+
+@media screen and (max-width: 1024px) {
+  .desktop-mode {
+    display: none;
+  }
+}

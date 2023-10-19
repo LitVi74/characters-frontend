@@ -1,3 +1,4 @@
+import "./Spells.scss";
 import { useParams } from "react-router-dom";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { CloseButton } from "react-bootstrap";
@@ -160,13 +161,8 @@ export default function CharacterSpells() {
   }, [renderPage]);
 
   return (
-    <main>
-      <div className="d-flex justify-content-center gap-3 p-3 p-md-4 p-lg-5">
-        <SpellFilters
-          spells={spells}
-          setFilteredSpells={setFilteredSpells}
-          isLoader={isLoader}
-        />
+    <main className="spells-page">
+      <div className="d-flex justify-content-center gap-3 p-3 p-md-4 pt-lg-5 pb-lg-4 px-lg-2">
         {charID && isCreator && (
           <IconButton
             icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
@@ -175,6 +171,11 @@ export default function CharacterSpells() {
             disabled={isLoader}
           />
         )}
+        <SpellFilters
+          spells={spells}
+          setFilteredSpells={setFilteredSpells}
+          isLoader={isLoader}
+        />
       </div>
       {isLoader ? (
         <Spinner />

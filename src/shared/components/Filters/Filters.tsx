@@ -1,39 +1,46 @@
-import { useState, FocusEvent, useCallback } from "react";
-import { Funnel } from "react-bootstrap-icons";
-import { FormControl, InputGroup } from "react-bootstrap";
-
-import IconButton from "../IconButton/IconButton";
-import FiltersModal from "../FiltersModal/FiltersModal";
+import { Accordion, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import "./Filters.scss";
 import { IFilter } from "../../constants/IConstants";
 
 interface PropsFilters {
+  className?: string;
   filters: IFilter[];
-  handleSearchInputBlur: (event: FocusEvent<HTMLInputElement>) => void;
-  isLoader: boolean;
 }
 
-function Filters({ filters, handleSearchInputBlur, isLoader }: PropsFilters) {
-  const [show, setShow] = useState<boolean>(false);
-  
-  const handleModalClose = useCallback(() => {
-    setShow(false);
-  }, []);
-
+function Filters({ filters, className }: PropsFilters) {
   return (
-    <InputGroup>
-      <FormControl
-        onChange={handleSearchInputBlur}
-        disabled={isLoader}
-      />
-      <IconButton
-        variant="outline-warning"
-        icon={<Funnel size={20} />}
-        onClick={() => setShow(true)}
-        disabled={isLoader}
-      />
-      <FiltersModal filters={filters} show={show} handleModalClose={handleModalClose} />
-    </InputGroup>
-  );
+    <Accordion defaultActiveKey={["0"]} className={className} alwaysOpen>
+      {filters.map((filter, index) => (
+        <Accordion.Item key={filter.name} eventKey={index.toString()}>
+          <Accordion.Header>{filter.name}</Accordion.Header>
+          <Accordion.Body>
+            <ToggleButtonGroup
+              className="flex-wrap"
+              type="checkbox"
+              value={filter.selectedValue}
+              onChange={filter.onChange}
+            >
+              {filter.values.map((value, valueIndex) => (
+                <ToggleButton
+                  className="m-1 rounded flex-grow-0"
+                  key={value}
+                  id={`tgb-${index}-${value}`}
+                  value={value}
+                  variant="outline-warning"
+                >
+                  {filter?.valuesName?.[valueIndex] ?? value}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </Accordion.Body>
+        </Accordion.Item>
+      ))}
+    </Accordion>
+  )
+}
+
+Filters.defaultProps = {
+  className: "",
 }
 
 export default Filters;
