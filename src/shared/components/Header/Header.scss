@@ -1,0 +1,14 @@
+.desctop-header {
+  position: fixed;
+  top: 0;
+
+  background-color: #262626;
+
+  z-index: 1;
+}
+
+@media screen and (max-width: 1024px) {
+  .desctop-header {
+    position: static;
+  }
+}
