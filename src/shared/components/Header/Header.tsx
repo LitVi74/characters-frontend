@@ -22,7 +22,14 @@ export default function Header({ cbNavPopup }: PropsHeader) {
 
   return (
     <header className={`d-flex flex-row align-content-center w-100 ${headerFixed ? 'desctop-header' : ''}`}>
-      <img alt="" src={logo} width="42" height="42" onClick={cbNavPopup}/>
+      <img 
+        alt="" 
+        src={logo} 
+        width="42" 
+        height="42" 
+        onClick={cbNavPopup} 
+        className={currentUser.isActivated ? 'image-button' : ''}
+      />
       {!currentUser.isActivated && <UnauthorizedNavbar />}
     </header>
   );
