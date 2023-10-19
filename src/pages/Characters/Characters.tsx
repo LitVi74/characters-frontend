@@ -85,7 +85,7 @@ export default function Characters() {
         icon={<Plus size={24} />}
         variant="outline-warning"
         onClick={() => handleShowForm()}
-        className="mb-3 mt-4 mx-auto"
+        className="d-flex mb-3 mt-4 mx-auto"
         disabled={isLoader}
       >
         Добавить персонажа

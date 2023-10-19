@@ -104,7 +104,7 @@ export default function Spells() {
           <IconButton
             icon={<Plus size={24} />}
             onClick={() => handleShowForm()}
-            className="btn-warning align-self-center"
+            className="d-flex btn-warning align-self-center"
             disabled={isLoader}
           >
             Добавить заклинание

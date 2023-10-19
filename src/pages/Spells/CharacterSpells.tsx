@@ -167,7 +167,7 @@ export default function CharacterSpells() {
           <IconButton
             icon={isAddLiseElements ? <X size={24} /> : <Plus size={24} />}
             onClick={isAddLiseElements ? handleShowCharSpells : handleShowAllSpells}
-            className="btn-warning"
+            className="d-flex btn-warning"
             disabled={isLoader}
           />
         )}

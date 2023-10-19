@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Button } from "react-bootstrap";
+import "./IconButton.scss";
 
 function IconButton({ icon, iconPosition = "left", children = "", ...props }: {
   [x: string]: any;
@@ -8,7 +9,7 @@ function IconButton({ icon, iconPosition = "left", children = "", ...props }: {
   return (
     <Button
       {...props}
-      className={`d-flex align-items-center gap-2 ${props.className ?? ""}`}
+      className={`align-items-center gap-2 ${props.className ?? ""}`}
     >
       {iconPosition === "left" && icon}
       {children}
