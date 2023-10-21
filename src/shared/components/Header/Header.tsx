@@ -21,7 +21,7 @@ export default function Header({ cbNavPopup }: PropsHeader) {
   const headerFixed = reg.test(location.pathname) ||  location.pathname === PATHS.spells;
 
   return (
-    <header className={`d-flex flex-row align-content-center w-100 ${headerFixed ? 'desctop-header' : ''}`}>
+    <header className={`d-flex align-items-center justify-content-between w-100 ${headerFixed ? 'desctop-header' : ''}`}>
       <img 
         alt="" 
         src={logo} 
@@ -30,7 +30,10 @@ export default function Header({ cbNavPopup }: PropsHeader) {
         onClick={cbNavPopup} 
         className={currentUser.isActivated ? 'image-button' : ''}
       />
-      {!currentUser.isActivated && <UnauthorizedNavbar />}
+      {!currentUser.isActivated 
+        ? <UnauthorizedNavbar /> 
+        : <p>{currentUser.email}</p>
+        }
     </header>
   );
 }
