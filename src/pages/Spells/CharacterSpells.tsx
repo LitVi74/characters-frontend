@@ -1,10 +1,11 @@
 import "./Spells.scss";
 import { useParams } from "react-router-dom";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import { CloseButton } from "react-bootstrap";
 import { Plus, X } from "react-bootstrap-icons";
 
-import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import user from "../../shared/contexts/userContext";
 import ResourcesService from "../../shared/service/ResoursesService/ResourcesService";
 import trottle from "../../shared/utils/Decorations";
 
@@ -16,8 +17,7 @@ import OpenButton from "../../shared/components/OpenButton/OpenButton";
 import SpellFilters from "./components/SpellFilters/SpellFilters";
 import { ISpell } from "../../shared/constants/IConstants";
 
-export default function CharacterSpells() {
-  const { currentUser } = useContext(CurrentUserContext);
+ const CharacterSpells = observer(() => {
   const { charID = "" } = useParams();
 
   const [charSpells, setCharSpells] = useState<ISpell[]>([]);
@@ -55,9 +55,9 @@ export default function CharacterSpells() {
 
       setCharSpells(newCharSpells);
       setSpells(newCharSpells);
-      setIsCreator(owner === currentUser?._id);
+      setIsCreator(owner === user.data?._id);
     }
-  }, [charID, currentUser]);
+  }, [charID]);
 
   const handleShowCharSpells = useCallback(() => {
     setSpells(charSpells);
@@ -205,4 +205,6 @@ export default function CharacterSpells() {
       )}
     </main>
   );
-}
+});
+
+export default CharacterSpells;

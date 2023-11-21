@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
+import { observer } from "mobx-react-lite";
 
 import InfoToast from "../../shared/components/InfoToast/InfoToast";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -7,12 +8,11 @@ import LoginForm from "./components/LoginForm/LoginForm";
 import AuthService from "../../shared/service/AuthService/AuthService";
 
 import { PATHS } from "../../shared/constants/constants";
-import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import user from "../../shared/contexts/userContext";
 import { IUser, SignInResult } from "../../shared/constants/IConstants";
 
-export default function LogIn() {
+const LogIn = observer(() => {
   const navigate = useNavigate();
-  const { setCurrentUser } = useContext(CurrentUserContext);
 
   const [showToast, setShowToast] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -29,7 +29,7 @@ export default function LogIn() {
       }
       const { _id, role, isActivated }: IUser = data;
 
-      setCurrentUser({
+      user.setUser({
         _id,
         email,
         role,
@@ -45,7 +45,7 @@ export default function LogIn() {
 
       setIsSubmitted(false);
     },
-    [navigate, setCurrentUser]
+    [navigate]
   );
 
   return (
@@ -72,4 +72,7 @@ export default function LogIn() {
       />
     </main>
   );
-}
+});
+
+export default LogIn;
+
