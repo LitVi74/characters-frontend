@@ -1,12 +1,13 @@
 import "./Spells.scss";
-import { useState, useContext, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { observer } from "mobx-react-lite";
 import { Plus } from "react-bootstrap-icons";
 
 import ResourcesService from "../../shared/service/ResoursesService/ResourcesService";
 import MasonryContainer from "../../shared/components/MasonryContainer/MasonryContainer";
 import SpellModalForm from "./components/SpellModalForm/SpellModalForm";
 
-import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import user from "../../shared/contexts/userContext";
 import trottle from "../../shared/utils/Decorations";
 
 import Spinner from "../../shared/components/Spinner/Spinner";
@@ -17,9 +18,7 @@ import CardMenu from "../../shared/components/CardMenu/CardMenu";
 
 import { ISpell, FormState } from "../../shared/constants/IConstants";
 
-export default function Spells() {
-  const { currentUser } = useContext(CurrentUserContext);
-
+ const Spells = observer(() => {
   const [spells, setSpells] = useState<ISpell[]>([]);
   const [spellsLength, setSpellsLength] = useState<number>(30);
   const [filteredSpells, setFilteredSpells] = useState<ISpell[]>([]);
@@ -100,7 +99,7 @@ export default function Spells() {
   return (
     <main className="spells-page">
       <div className="d-flex justify-content-center flex-column flex-md-row gap-3 p-3 p-md-4 pt-lg-5 pb-lg-4 px-lg-2">
-        {currentUser?.role === "Admin" && (
+        {user.data?.role === "Admin" && (
           <IconButton
             icon={<Plus size={24} />}
             onClick={() => handleShowForm()}
@@ -122,7 +121,7 @@ export default function Spells() {
             key={spell._id}
             spell={spell}
             button={
-              currentUser?.role === "Admin" && (
+              user.data?.role === "Admin" && (
                 <CardMenu
                   cbForm={() => handleShowForm(spell)}
                   cbDell={() => handleDeleteSpell(spell._id)}
@@ -134,7 +133,7 @@ export default function Spells() {
         ))}
       </MasonryContainer>
       {isLoader && <Spinner />}
-      {currentUser?.role === "Admin" && (
+      {user.data?.role === "Admin" && (
         <SpellModalForm
           formState={formState}
           handelHideForm={handelHideForm}
@@ -143,4 +142,6 @@ export default function Spells() {
       )}
     </main>
   );
-}
+});
+
+export default Spells;

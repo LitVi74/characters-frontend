@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import { useRoutes } from "react-router-dom";
 
 import ROUTES from "./pages/routes";
@@ -7,19 +8,12 @@ import Header from "./shared/components/Header/Header";
 import AuthService from "./shared/service/AuthService/AuthService";
 import NavPopup from "./shared/components/NavPopup/NavPopup";
 
-import { CurrentUserContext } from "./shared/contexts/currentUserContext";
-import { IUser } from "./shared/constants/IConstants";
+import user from "./shared/contexts/userContext";
 import { ESC } from "./shared/constants/constants";
 
-export default function App() {
+const App = observer(() => {
   const [hasFirstLoader, setHasFirstLoader] = useState(false);
   const [navPopup, setNavPopup] = useState<boolean>(false)
-  const [currentUser, setCurrentUser] = useState<IUser>({
-    _id: "",
-    email: "",
-    role: "User",
-    isActivated: false,
-  });
 
   const handleNavPopup = useCallback(() => {
     const handleEscClose = (e: KeyboardEvent) => {
@@ -50,7 +44,7 @@ export default function App() {
     if (!hasError && data) {
       const { _id, email, role, isActivated } = data;
 
-      setCurrentUser({ _id, email, role, isActivated });
+      user.setUser({ _id, email, role, isActivated });
     }
 
     setHasFirstLoader(true);
@@ -63,24 +57,21 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getUserData]);
 
-  const currentUserContextValue = useMemo(
-    () => ({ currentUser, setCurrentUser }),
-    [currentUser, setCurrentUser]
-  );
-
   const routes = useRoutes(ROUTES);
 
   return (
-    <CurrentUserContext.Provider value={currentUserContextValue}>
+    <>
       <Header 
         cbNavPopup={handleNavPopup} 
       />
       {hasFirstLoader && routes}
-      {currentUser.isActivated && 
+      {user.data.isActivated && 
         <NavPopup 
           navPopup={navPopup}
           cbNavPopup={handleNavPopup}
         />}
-    </CurrentUserContext.Provider>
+    </>
   );
-}
+});
+
+export default App;

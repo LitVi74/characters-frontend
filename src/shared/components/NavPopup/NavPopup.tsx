@@ -4,12 +4,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import './NavPopup.scss';
-
+import { useCallback } from "react";
 import { useLocation, NavLink } from 'react-router-dom';
-import { useCallback, useContext } from "react";
+import { observer } from "mobx-react-lite";
 
 import { PATHS } from '../../constants/constants';
-import { CurrentUserContext } from "../../contexts/currentUserContext";
+import user from "../../contexts/userContext";
 
 import AuthService from "../../service/AuthService/AuthService";
 
@@ -18,8 +18,7 @@ interface PropsNavPopup {
   cbNavPopup: () => void;
 }
 
-export default function NavPopup({ navPopup, cbNavPopup }: PropsNavPopup) {
-  const { setCurrentUser } = useContext(CurrentUserContext);
+const NavPopup = observer(({ navPopup, cbNavPopup }: PropsNavPopup) => {
   const { pathname } = useLocation();
 
   const handleExitButtonClick = useCallback(async () => {
@@ -27,14 +26,14 @@ export default function NavPopup({ navPopup, cbNavPopup }: PropsNavPopup) {
     
     const { hasError } = await AuthService.logout();
     if (!hasError) {
-      setCurrentUser({
+      user.setUser({
         _id: "",
         email: "",
         role: "User",
         isActivated: false,
       });
     }
-  }, [cbNavPopup, setCurrentUser]);
+  }, [cbNavPopup]);
 
   const handleClickLink = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     if(pathname !== e.currentTarget.pathname) {
@@ -60,4 +59,6 @@ export default function NavPopup({ navPopup, cbNavPopup }: PropsNavPopup) {
       </nav>
     </div>
   )
-}
+});
+
+export default NavPopup;

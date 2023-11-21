@@ -1,20 +1,21 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import { CurrentUserContext } from "../contexts/currentUserContext";
+import user from "../contexts/userContext";
 import { PATHS } from "../constants/constants";
 
-export default function ProtectedRoute() {
+const ProtectedRoute = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { currentUser } = useContext(CurrentUserContext);
-
   useEffect(() => {
-    if (location.pathname === "/" && currentUser.isActivated) {
+    if (location.pathname === "/" && user.data.isActivated) {
       navigate(PATHS.characters);
     }
-  }, [location, navigate, currentUser]);
+  }, [location, navigate]);
 
-  return currentUser.isActivated ? <Outlet /> : <Navigate to={PATHS.login} replace />;
-}
+  return user.data.isActivated ? <Outlet /> : <Navigate to={PATHS.login} replace />;
+});
+
+export default ProtectedRoute;

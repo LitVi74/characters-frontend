@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import React, { useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 
 import { PATHS } from "../../shared/constants/constants";
-import { CurrentUserContext } from "../../shared/contexts/currentUserContext";
+import user from "../../shared/contexts/userContext";
 
-export default function Home() {
+const Home = observer(() => {
   const navigate = useNavigate();
-  const { currentUser } = useContext(CurrentUserContext);
 
   useEffect(() => {
-    if (!currentUser.isActivated) {
+    if (!user.data.isActivated) {
       navigate(PATHS.login);
     } else {
       navigate(PATHS.characters);
@@ -17,4 +17,6 @@ export default function Home() {
   });
 
   return <h1>Welcome</h1>;
-}
+});
+
+export default Home;
