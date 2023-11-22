@@ -1,4 +1,4 @@
-import { FocusEvent, useState } from "react";
+import { useState } from "react";
 
 import useFilterAction from "./hooks/useFilterAction";
 
@@ -121,10 +121,10 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }: PropsSpellFilters
     },
   ];
 
-  const handleSearchInputBlur = createFilterHandler(
+  const handleSearchInputChange = createFilterHandler(
     "searchSpellsByName",
-    (event: FocusEvent<HTMLInputElement>) => {
-      const regExp = new RegExp(event.currentTarget.value, "i");
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const regExp = new RegExp(event.target.value, "i");
 
       return (currentSpells) => currentSpells.filter((spell) => regExp.test(spell.name));
     }
@@ -134,7 +134,7 @@ function SpellFilters({ spells, setFilteredSpells, isLoader }: PropsSpellFilters
     <div className="d-flex justify-content-center flex-grow-1">
       <SearchPanel
         filters={filters}
-        handleSearchInputBlur={handleSearchInputBlur}
+        cbInputChange={handleSearchInputChange}
         isLoader={isLoader}
       />
     </div>

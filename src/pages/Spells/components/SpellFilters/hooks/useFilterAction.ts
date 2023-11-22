@@ -27,7 +27,7 @@ const useFilterAction = <T>(data: T[], setFilteredData: (t: T[]) => void) => {
       (event: any) => {
         const searchFunction = handleFunction(event);
 
-        if (!event?.length && !event?.currentTarget?.value) {
+        if (!event?.length && !event?.target?.value) {
           deleteFilterFunctionByName(functionName);
           return;
         }
